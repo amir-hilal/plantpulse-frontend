@@ -2,10 +2,6 @@
 
 .grid-container {
   display: grid;
-  width: 100%;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(5, auto);
-  grid-gap: 2rem 0;
   position: relative;
   justify-content: center;
 }
@@ -25,25 +21,29 @@
 
 .step.left {
   grid-column: 1 / 2;
-  justify-self: center;
+  justify-self: end;
   margin-top: -30px;
+  margin-right: 5%;
 }
 
 .step.right {
   grid-column: 2 / 3;
-  justify-self: center;
-  margin-top: -90px; /* Adjust this value to stagger cards correctly */
+  justify-self: start;
+  margin-top: -100px; /* Adjust this value to stagger cards correctly */
+  margin-left: 5%;
+
 }
 
 .arrow-svg {
   z-index: 1;
   position: relative;
-  transform: translate(15%,-40%);
+  transform: translate(20%,-65%);
   grid-column: 1 / span 2;
   justify-self: center;
   margin-top: -100px; /* Adjust for better alignment */
 }
 
 .rotate {
-  transform: scale(-1,1) translate(10%,0%);
+  transform: scale(-1,1) translate(20%,-20%);
 }
+

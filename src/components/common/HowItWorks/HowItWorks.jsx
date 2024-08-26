@@ -40,7 +40,7 @@ const HowItWorks = () => {
                             className={`step ${index % 2 === 0 ? 'left' : 'right'}`}
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: activeStep > index ? 1 : 0, y: activeStep > index ? 0 : 50 }}
-                            transition={{ duration: 0.5, delay: index * 0.3 }}
+                            transition={{ duration: 1, delay: index * 0.3 }}
                         >
                             <div className="card-content">
                                 <i className={`${step.icon} text-green-600 text-3xl mr-4`}></i>
