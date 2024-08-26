@@ -1,11 +1,11 @@
 import React from 'react';
 import Carousel from '../components/common/Carousel';
 import ScrollAnimation from '../components/common/ScrollAnimation';
-
+import image from '../assets/images/landingpage-person.png'
 const LandingPage = () => {
     return (
         <div>
-            <section className="bg-blue-100 py-8">
+            <section className="bg-blue-100">
                 <div className="flex flex-col md:flex-row items-center container mx-auto px-4">
                     <div className="md:w-1/2">
                         <h1 className="text-4xl font-bold text-blue-900">Manage your <span className="text-green-600">Garden and Plants</span></h1>
@@ -16,7 +16,7 @@ const LandingPage = () => {
                         </div>
                     </div>
                     <div className="md:w-1/2 mt-8 md:mt-0">
-                        <img src="/path-to-hero-image.png" alt="Gardening" className="w-full rounded-lg shadow-lg" />
+                        <img src={image} height={300} alt="Gardening" className="w-full rounded-lg shadow-lg" />
                     </div>
                 </div>
             </section>
