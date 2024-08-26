@@ -8,6 +8,8 @@ import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store'; // Adjust the path according to your folder structure
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
