@@ -1,30 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/Logo.png';
 
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
     const navigate = useNavigate();
     const { isLoggedIn, userProfile } = useSelector((state) => state.auth);
+    const utilitiesRef = useRef(null);
 
     const menuItems = [
         { label: 'Home', path: "/home" },
         { label: 'My Gardens', path: "/my-gardens", disabled: !isLoggedIn },
-        { label: 'Tutorials', path: "/tutorials" },
-        { label: 'Calendar', path: "/calendar", disabled: !isLoggedIn },
-        { label: 'Flora', path: "/flora" },
         { label: 'Community', path: "/community", disabled: !isLoggedIn },
+    ];
+
+    const utilitiesItems = [
+        { label: 'Flora', path: "/flora" },
+        { label: 'Calendar', path: "/calendar", disabled: !isLoggedIn },
+        { label: 'Tutorials', path: "/tutorials" },
     ];
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const handleUtilitiesToggle = () => {
+        setIsUtilitiesOpen(!isUtilitiesOpen);
+    };
+
+    const handleClickOutside = (event) => {
+        if (utilitiesRef.current && !utilitiesRef.current.contains(event.target)) {
+            setIsUtilitiesOpen(false);
+        }
+    };
+
     const handleNavigation = (path, disabled) => {
         if (!disabled) {
             navigate(path);
-            setIsMenuOpen(false); // Close the menu after navigation
+            setIsMenuOpen(false);
+            setIsUtilitiesOpen(false); // Close utilities popover after navigation
         }
     };
 
@@ -36,9 +52,11 @@ const NavBar = () => {
         };
 
         window.addEventListener('resize', handleResize);
+        document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isMenuOpen]);
 
@@ -63,6 +81,36 @@ const NavBar = () => {
                         </button>
                     </li>
                 ))}
+
+                {/* Utilities Group with Custom Popover */}
+                <li ref={utilitiesRef}>
+                    <button
+                        onClick={handleUtilitiesToggle}
+                        className="bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary"
+                    >
+                        Utilities <i className="pi pi-chevron-down"></i>
+                    </button>
+                    {isUtilitiesOpen && (
+                        <div className="bg-tint-5 p-2 border-round shadow-lg absolute mt-2 z-50">
+                           <ul className="list-none m-0 p-0">
+                                {utilitiesItems.map((item, index) => (
+                                    <li
+                                        key={index}
+                                        className={` ${index < utilitiesItems.length - 1 ? 'border-bottom-1 border-gray-300' : ''}`}
+                                    >
+                                        <button
+                                            onClick={() => handleNavigation(item.path, item.disabled)}
+                                            className={` py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${item.disabled ? 'text-grey' : 'text-primary hover:bg-primary hover:text-tint-5'}`}
+                                            disabled={item.disabled}
+                                        >
+                                            {item.label}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </li>
             </ul>
             <div className="hidden lg:flex align-items-center">
                 {isLoggedIn ? (
@@ -118,6 +166,34 @@ const NavBar = () => {
                                 </button>
                             </li>
                         ))}
+                        <li className="mb-4">
+                            <button
+                                onClick={handleUtilitiesToggle}
+                                className="w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary"
+                            >
+                                Utilities <i className="pi pi-chevron-down"></i>
+                            </button>
+                            {isUtilitiesOpen && (
+                                <div className="bg-tint-5 p-2 border-round shadow-lg mt-2 z-50">
+                                     <ul className="list-none m-0 p-0">
+                                        {utilitiesItems.map((item, index) => (
+                                            <li
+                                                key={index}
+                                                className={` ${index < utilitiesItems.length - 1 ? 'border-bottom-1 border-gray-300' : ''}`}
+                                            >
+                                                <button
+                                                    onClick={() => handleNavigation(item.path, item.disabled)}
+                                                    className={` py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${item.disabled ? 'text-grey' : 'text-primary hover:bg-primary hover:text-tint-5'}`}
+                                                    disabled={item.disabled}
+                                                >
+                                                    {item.label}
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </li>
                     </ul>
                     <div className="flex flex-column align-items-start">
                         {isLoggedIn ? (
