@@ -1,8 +1,8 @@
 import React from 'react';
-import ScrollAnimation from '../common/ScrollAnimation';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import Carousel from '../components/common/Carousel';
+import ScrollAnimation from '../components/common/ScrollAnimation';
 
 const LandingPage = () => {
     const navigate = useNavigate();
