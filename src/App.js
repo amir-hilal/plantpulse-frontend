@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LandingPage from './views/LandingPage';
-import NavBar from './components/layouts/NavBar';
+import NavBar from './components/layouts/NavBar/NavBar';
 import Footer from './components/layouts/Footer';
 
 function App() {

@@ -1,0 +1,49 @@
+nav {
+  .hamburger-icon {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .hamburger-icon {
+      display: inline-block;
+    }
+
+    ul {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: var(--secondary-bg);
+    }
+
+    ul.show {
+      display: block;
+    }
+  }
+
+  ul {
+    display: flex;
+    list-style: none;
+
+    li {
+      margin: 0 10px;
+
+      button {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .user-actions {
+    display: flex;
+    align-items: center;
+
+    .profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+}
