@@ -3,34 +3,41 @@
 }
 
 .grid-container {
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 3rem;
+  grid-gap: 2rem;
   position: relative;
 }
 
 .step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  height: 200px; /* Set a fixed height for all cards */
   background-color: #f0fdf4;
   border-radius: 8px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   opacity: 0;
 }
 
 .step.left {
   grid-column: 1 / 2;
-  justify-self: start;
+  justify-self: center;
 }
 
 .step.right {
   grid-column: 2 / 3;
-  justify-self: end;
-  margin-top: 50px; /* Add margin to stagger the right-side cards */
+  justify-self: center;
+  margin-top: 150px;
 }
 
 .card-content {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .card-content i {
@@ -41,5 +48,5 @@
 
 svg {
   pointer-events: none;
-  z-index: -1;
+  z-index: 1;
 }

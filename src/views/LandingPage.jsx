@@ -35,7 +35,8 @@ const LandingPage = () => {
             <section>
                 <Carousel />
             </section>
-            <section className="bg-gray-100 py-8">
+            <hr />
+            <section className=" py-8">
                 <HowItWorks />
             </section>
         </div>

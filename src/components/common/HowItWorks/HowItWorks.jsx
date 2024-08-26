@@ -46,15 +46,14 @@ const HowItWorks = () => {
                             <i className={`${step.icon} text-green-600 text-3xl mr-4`}></i>
                             <div>
                                 <h3 className="text-xl font-bold text-blue-900">{step.title}</h3>
-                                <p className="text-gray-700">{step.description}</p>
+                                <p className="text-grey">{step.description}</p>
                             </div>
                         </div>
                     </motion.div>
                 ))}
                 <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                    {/* Adjust the paths below to match the design */}
                     <motion.path
-                        d="M200,100 C250,150 350,150 400,100" // Adjust coordinates as needed
+                        d="M200,100 C250,150 350,150 400,100"
                         stroke="#38b2ac"
                         strokeWidth="2"
                         fill="transparent"
@@ -63,7 +62,7 @@ const HowItWorks = () => {
                         transition={{ duration: 1, ease: "easeInOut" }}
                     />
                     <motion.path
-                        d="M400,200 C450,250 550,250 600,200" // Adjust coordinates as needed
+                        d="M400,250 C450,300 550,300 600,250"
                         stroke="#38b2ac"
                         strokeWidth="2"
                         fill="transparent"
@@ -71,7 +70,24 @@ const HowItWorks = () => {
                         animate={{ pathLength: activeStep >= 3 ? 1 : 0 }}
                         transition={{ duration: 1, ease: "easeInOut" }}
                     />
-                    {/* Continue adding paths for each arrow */}
+                    <motion.path
+                        d="M200,400 C250,450 350,450 400,400"
+                        stroke="#38b2ac"
+                        strokeWidth="2"
+                        fill="transparent"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: activeStep >= 4 ? 1 : 0 }}
+                        transition={{ duration: 1, ease: "easeInOut" }}
+                    />
+                    <motion.path
+                        d="M400,550 C450,600 550,600 600,550"
+                        stroke="#38b2ac"
+                        strokeWidth="2"
+                        fill="transparent"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: activeStep >= 5 ? 1 : 0 }}
+                        transition={{ duration: 1, ease: "easeInOut" }}
+                    />
                 </svg>
             </div>
         </div>
