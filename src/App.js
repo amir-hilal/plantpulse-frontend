@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavBar from './components/common/NavBar';
-import Footer from './components/common/Footer';
-import LandingPage from './components/pages/LandingPage';
 
-const App = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const userProfile = {
-        picture: "/path-to-user-profile-picture.png"
-    };
-
+function App() {
     return (
         <Router>
             <div className="App">
-                <NavBar isLoggedIn={isLoggedIn} userProfile={userProfile} />
-                <div className="content">
-                    <Routes>
-                        <Route path="/" element={<LandingPage />} />
-                        {/* Add more routes here, e.g., HomePage, MyGardenPage, etc. */}
-                    </Routes>
-                </div>
+                <NavBar />
+                <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/home" element={<HomePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/my-gardens" element={<MyGardenPage />} />
+                    <Route path="/plant-details" element={<PlantDetailsPage />} />
+                    <Route path="/flora" element={<FloraPage />} />
+                    <Route path="/tutorials" element={<TutorialsPage />} />
+                    <Route path="/tutorial-details" element={<TutorialDetailsPage />} />
+                    <Route path="/community" element={<CommunityPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/calendar" element={<CalendarPage />} />
+                    <Route path="/chats" element={<ChatsPage />} />
+                </Routes>
                 <Footer />
             </div>
         </Router>
