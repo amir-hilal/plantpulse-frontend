@@ -1,12 +1,15 @@
+import 'primeflex/primeflex.css';
+import 'primeicons/primeicons.css';
+import 'primereact/resources/primereact.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { Provider } from 'react-redux';
+import '../node_modules/primeflex/primeflex.css';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store'; // Adjust the path according to your folder structure
-import 'primeflex/primeflex.css';
-import '../node_modules/primeflex/primeflex.css'
-import { Provider } from 'react-redux';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>

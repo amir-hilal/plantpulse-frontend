@@ -1,3 +1,6 @@
+*{
+  letter-spacing: 1px;
+}
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -379,4 +382,25 @@ code {
 
 .text-success {
   color: var(--success);
+}
+
+.font-8{
+  font-size:8px
+}
+.font-10{
+  font-size: 10px;
+}
+.font-12{
+  font-size:12px;
+}
+.font-15{
+  font-size: 15px;
+}
+
+.font-16{
+  font-size: 16px;
+}
+
+.font-20{
+  font-size: 20px;
 }

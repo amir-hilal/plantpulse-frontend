@@ -1,5 +1,4 @@
 import React from 'react';
-import { Carousel as PrimeCarousel } from 'primereact/carousel';
 
 const Carousel = () => {
     const features = [
@@ -19,7 +18,7 @@ const Carousel = () => {
     };
 
     return (
-        <PrimeCarousel value={features} itemTemplate={itemTemplate} numVisible={3} circular autoplayInterval={3000} />
+        <p>carousel</p>
     );
 };
 
