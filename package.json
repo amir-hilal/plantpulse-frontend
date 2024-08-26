@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.5",
+    "classnames": "^2.5.1",
     "plantpulse-frontend": "file:",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",

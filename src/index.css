@@ -409,3 +409,7 @@ code {
 .font-45{
   font-size: 45px !important;
 }
+
+.min-h-10 {
+  min-height: 250px;
+}
