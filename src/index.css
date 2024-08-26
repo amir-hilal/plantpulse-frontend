@@ -193,3 +193,190 @@ code {
   --gray-900: #212121;
   color-scheme: light;
 }
+
+
+/* Background color classes */
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color);
+}
+
+.bg-info {
+  background-color: var(--info);
+}
+
+.bg-black {
+  background-color: var(--black);
+}
+
+.bg-dark-grey {
+  background-color: var(--dark_grey);
+}
+
+.bg-grey {
+  background-color: var(--grey);
+}
+
+.bg-light-grey {
+  background-color: var(--light_grey);
+}
+
+.bg-grey-blue {
+  background-color: var(--grey_blue);
+}
+
+.bg-silver {
+  background-color: var(--silver);
+}
+
+.bg-white {
+  background-color: var(--white);
+}
+
+.bg-shade-1 {
+  background-color: var(--shade_1);
+}
+
+.bg-shade-2 {
+  background-color: var(--shade_2);
+}
+
+.bg-shade-3 {
+  background-color: var(--shade_3);
+}
+
+.bg-shade-4 {
+  background-color: var(--shade_4);
+}
+
+.bg-shade-5 {
+  background-color: var(--shade_5);
+}
+
+.bg-tint-1 {
+  background-color: var(--tint_1);
+}
+
+.bg-tint-2 {
+  background-color: var(--tint_2);
+}
+
+.bg-tint-3 {
+  background-color: var(--tint_3);
+}
+
+.bg-tint-4 {
+  background-color: var(--tint_4);
+}
+
+.bg-tint-5 {
+  background-color: var(--tint_5);
+}
+
+.bg-warning {
+  background-color: var(--warning);
+}
+
+.bg-error {
+  background-color: var(--error);
+}
+
+.bg-success {
+  background-color: var(--success);
+}
+
+/* Text color classes */
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.text-info {
+  color: var(--info);
+}
+
+.text-black {
+  color: var(--black);
+}
+
+.text-dark-grey {
+  color: var(--dark_grey);
+}
+
+.text-grey {
+  color: var(--grey);
+}
+
+.text-light-grey {
+  color: var(--light_grey);
+}
+
+.text-grey-blue {
+  color: var(--grey_blue);
+}
+
+.text-silver {
+  color: var(--silver);
+}
+
+.text-white {
+  color: var(--white);
+}
+
+.text-shade-1 {
+  color: var(--shade_1);
+}
+
+.text-shade-2 {
+  color: var(--shade_2);
+}
+
+.text-shade-3 {
+  color: var(--shade_3);
+}
+
+.text-shade-4 {
+  color: var(--shade_4);
+}
+
+.text-shade-5 {
+  color: var(--shade_5);
+}
+
+.text-tint-1 {
+  color: var(--tint_1);
+}
+
+.text-tint-2 {
+  color: var(--tint_2);
+}
+
+.text-tint-3 {
+  color: var(--tint_3);
+}
+
+.text-tint-4 {
+  color: var(--tint_4);
+}
+
+.text-tint-5 {
+  color: var(--tint_5);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.text-success {
+  color: var(--success);
+}
