@@ -90,7 +90,7 @@ const Carousel = () => {
     };
 
     return (
-        <Slider {...settings}>
+        <Slider {...settings} className='max-width-screen overflow-hidden'>
             {features.map((feature, index) => (
                 renderFeature(feature, index)
             ))}

@@ -36,6 +36,7 @@
 
 .arrow-svg {
   z-index: 1;
+  width: 40%;
   position: relative;
   transform: translate(20%,-65%);
   grid-column: 1 / span 2;
