@@ -1,6 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/Logo.png';
 
 const NavBar = () => {
@@ -27,10 +27,10 @@ const NavBar = () => {
             />
             <ul className="flex  list-none m-0 p-0">
                 {menuItems.map((item, index) => (
-                    <li key={index} className='hover:bg-tint-5'>
+                    <li key={index}>
                         <button
-                            onClick={() => navigate(item.path)}
-                            className={`bg-transparent pr-4 pl-4 border-none font-16 hover:bg-tint-5 cursor-pointer ${item.disabled ? 'text-grey': 'text-tint-5'}`}
+                            onClick={() => !item.disabled && navigate(item.path)}
+                            className={`bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round  ${item.disabled ? 'text-grey' : 'text-tint-5 hover:bg-tint-5 hober:text-primary'}`}
                             disabled={item.disabled}
                         >
                             {item.label}
@@ -38,7 +38,7 @@ const NavBar = () => {
                     </li>
                 ))}
             </ul>
-            <div className="flex items-center">
+            <div className="flex align-items-center">
                 {isLoggedIn ? (
                     <>
                         <i className="pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
@@ -53,13 +53,13 @@ const NavBar = () => {
                     <>
                         <button
                             onClick={() => navigate('/login')}
-                            className="bg-info text-white px-4 py-2 rounded mr-2"
+                            className="bg-primary text-tint-5  px-4  py-3 border-round mr-2 border-none"
                         >
                             Login
                         </button>
                         <button
                             onClick={() => navigate('/register')}
-                            className="bg-success text-white px-4 py-2 rounded"
+                            className="bg-tint-5 text-primary  px-4 py-3 border-round border-none"
                         >
                             Sign up
                         </button>

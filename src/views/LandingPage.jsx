@@ -1,34 +1,34 @@
 import React from 'react';
-import { Button } from 'primereact/button';
-import { useNavigate } from 'react-router-dom';
 import Carousel from '../components/common/Carousel';
 import ScrollAnimation from '../components/common/ScrollAnimation';
 
 const LandingPage = () => {
-    const navigate = useNavigate();
-
     return (
         <div>
-            <section className="landing-hero grid">
-                <div className="col-12 md:col-6">
-                    <h1>Manage your <strong>Garden and Plants</strong></h1>
-                    <p>Start your gardening journey today with tools and resources designed for all skill levels.</p>
-                    <Button label="Get Started" className="p-button-success mr-2" onClick={() => navigate('/register')} />
-                    <Button label="Learn More" className="p-button-secondary" onClick={() => navigate('/tutorials')} />
-                </div>
-                <div className="col-12 md:col-6">
-                    <img src="/path-to-hero-image.png" alt="Gardening" />
+            <section className="bg-blue-100 py-8">
+                <div className="flex flex-col md:flex-row items-center container mx-auto px-4">
+                    <div className="md:w-1/2">
+                        <h1 className="text-4xl font-bold text-blue-900">Manage your <span className="text-green-600">Garden and Plants</span></h1>
+                        <p className="text-gray-700 mt-4">Start your gardening journey today with tools and resources designed for all skill levels.</p>
+                        <div className="mt-6">
+                            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full mr-4">Get Started</button>
+                            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full">Learn More</button>
+                        </div>
+                    </div>
+                    <div className="md:w-1/2 mt-8 md:mt-0">
+                        <img src="/path-to-hero-image.png" alt="Gardening" className="w-full rounded-lg shadow-lg" />
+                    </div>
                 </div>
             </section>
-            <section className="features-carousel">
+            <section>
                 <Carousel />
             </section>
-            <section className="how-it-works">
-                <h2>How It Works</h2>
+            <section className="bg-gray-100 py-8">
+                <h2 className="text-3xl font-bold text-center text-blue-900">How It Works</h2>
                 <ScrollAnimation />
             </section>
         </div>
     );
-}
+};
 
 export default LandingPage;

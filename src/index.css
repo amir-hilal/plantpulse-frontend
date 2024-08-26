@@ -15,9 +15,9 @@ code {
 :root {
   --text-color:#495057;
   --text-color-secondary:#263238;
-  --border-radius:20px;
+  --border-radius:6px;
 
-  --primary-color:#28CB8B;
+  --primary-color:#019444;
   --secondary-color:#263238;
   --info:#2194f3;
 
@@ -199,8 +199,10 @@ code {
 
 
 /* Background color classes */
-.bg-primary {
-  background-color: var(--primary-color);
+
+.bg-primary{
+  background-color: var(--primary-color) !important;
+  color: var(--tint_5) !important;
 }
 
 .bg-secondary {
@@ -292,9 +294,7 @@ code {
 }
 
 /* Text color classes */
-.text-primary {
-  color: var(--primary-color);
-}
+
 
 .text-secondary {
   color: var(--secondary-color);
