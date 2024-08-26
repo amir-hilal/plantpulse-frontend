@@ -1,15 +1,18 @@
 import React from 'react';
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import LandingPage from './views/LandingPage';
+import NavBar from './components/layouts/NavBar';
+import Footer from './components/layouts/Footer';
 
 function App() {
-    return (
-        <Router>
-            <div className="App">
-                <NavBar />
-                <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    <Route path="/home" element={<HomePage />} />
+  return (
+    <Router>
+      <div className="App">
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          {/* <Route path="/home" element={<HomePag />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/my-gardens" element={<MyGardenPage />} />
@@ -20,12 +23,12 @@ function App() {
                     <Route path="/community" element={<CommunityPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/calendar" element={<CalendarPage />} />
-                    <Route path="/chats" element={<ChatsPage />} />
-                </Routes>
-                <Footer />
-            </div>
-        </Router>
-    );
+                    <Route path="/chats" element={<ChatsPage />} /> */}
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
 export default App;
