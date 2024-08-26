@@ -1,7 +1,7 @@
 import React from 'react';
 import image from '../assets/images/landingpage-person.png';
 import Carousel from '../components/common/Carousel';
-import ScrollAnimation from '../components/common/ScrollAnimation';
+import HowItWorks from '../components/common/HowItWorks/HowItWorks';
 const LandingPage = () => {
     return (
         <div className='flex justify-content-center flex-column'>
@@ -36,8 +36,7 @@ const LandingPage = () => {
                 <Carousel />
             </section>
             <section className="bg-gray-100 py-8">
-                <h2 className="text-3xl font-bold text-center text-blue-900">How It Works</h2>
-                <ScrollAnimation />
+                <HowItWorks />
             </section>
         </div>
     );
