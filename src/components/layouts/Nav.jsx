@@ -18,14 +18,14 @@ const NavBar = ({ isLoggedIn, userProfile }) => {
     const start = <img alt="logo" src="/path-to-your-logo.png" height="40" className="mr-2" onClick={() => navigate('/')} style={{ cursor: 'pointer' }} />;
 
     const end = isLoggedIn ? (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="flex align-items-center">
             <i className="pi pi-bell" style={{ fontSize: '1.5rem', marginRight: '1rem', cursor: 'pointer' }}></i>
             <img src={userProfile.picture} alt="Profile" style={{ height: '40px', width: '40px', borderRadius: '50%', cursor: 'pointer' }} onClick={() => navigate('/profile')} />
         </div>
     ) : (
         <>
-            <Button label="Login" className="p-button-text p-mr-2" onClick={() => navigate('/login')} />
-            <Button label="Sign up" className="p-button-success p-mr-2" onClick={() => navigate('/register')} />
+            <Button label="Login" className="p-button-text mr-2" onClick={() => navigate('/login')} />
+            <Button label="Sign up" className="p-button-success mr-2" onClick={() => navigate('/register')} />
         </>
     );
 
