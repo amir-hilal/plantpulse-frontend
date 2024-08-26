@@ -32,7 +32,7 @@ const LandingPage = () => {
             </section>
 
 
-            <section>
+            <section className='max-w-screen overflow-hidden'>
                 <Carousel />
             </section>
             <hr />
