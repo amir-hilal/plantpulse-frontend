@@ -77,7 +77,7 @@ const Carousel = () => {
     const renderFeature = (feature, index) => {
         return (
             <div key={index} className="flex align-items-center justify-content-center m-2">
-                <div className="bg-tint-5  m-6  min-h-10  border-round-lg shadow-2 text-center flex flex-column align-items-center justify-content-center"
+                <div className="bg-tint-5  m-6 max-w-18rem  min-h-10  border-round-lg shadow-2 text-center flex flex-column align-items-center justify-content-center"
                     style={{
                         transition: 'all 0.5s ease'
                     }}>

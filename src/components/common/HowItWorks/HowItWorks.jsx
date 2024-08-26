@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import './HowItWorks.css';
-
+import ArrowSVG from '../../../assets/svg/Vector143.svg'
 const HowItWorks = () => {
     const [activeStep, setActiveStep] = useState(0);
 
@@ -31,64 +31,34 @@ const HowItWorks = () => {
     }, []);
 
     return (
-        <div className="how-it-works-container container mx-auto py-12 px-4">
+        <div className=" relative container py-12">
             <h2 className="text-center text-3xl font-bold text-blue-900 mb-8">How It Works</h2>
             <div className="grid-container">
                 {steps.map((step, index) => (
-                    <motion.div
-                        key={index}
-                        className={`step ${index % 2 === 0 ? 'left' : 'right'}`}
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: activeStep > index ? 1 : 0, y: activeStep > index ? 0 : 50 }}
-                        transition={{ duration: 0.5, delay: index * 0.3 }}
-                    >
-                        <div className="card-content">
-                            <i className={`${step.icon} text-green-600 text-3xl mr-4`}></i>
-                            <div>
-                                <h3 className="text-xl font-bold text-blue-900">{step.title}</h3>
-                                <p className="text-grey">{step.description}</p>
+                    <React.Fragment key={index}>
+                        <motion.div
+                            className={`step ${index % 2 === 0 ? 'left' : 'right'}`}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: activeStep > index ? 1 : 0, y: activeStep > index ? 0 : 50 }}
+                            transition={{ duration: 0.5, delay: index * 0.3 }}
+                        >
+                            <div className="card-content">
+                                <i className={`${step.icon} text-green-600 text-3xl mr-4`}></i>
+                                <div>
+                                    <h3 className="text-xl font-bold text-blue-900">{step.title}</h3>
+                                    <p className="text-grey">{step.description}</p>
+                                </div>
                             </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                        {index < steps.length - 1 && (
+                            <img
+                                src={ArrowSVG}
+                                alt="Arrow"
+                                className={`arrow-svg ${index % 2 === 0 ? '' : 'rotate'}`}
+                            />
+                        )}
+                    </React.Fragment>
                 ))}
-                <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                    <motion.path
-                        d="M200,100 C250,150 350,150 400,100"
-                        stroke="#38b2ac"
-                        strokeWidth="2"
-                        fill="transparent"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: activeStep >= 2 ? 1 : 0 }}
-                        transition={{ duration: 1, ease: "easeInOut" }}
-                    />
-                    <motion.path
-                        d="M400,250 C450,300 550,300 600,250"
-                        stroke="#38b2ac"
-                        strokeWidth="2"
-                        fill="transparent"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: activeStep >= 3 ? 1 : 0 }}
-                        transition={{ duration: 1, ease: "easeInOut" }}
-                    />
-                    <motion.path
-                        d="M200,400 C250,450 350,450 400,400"
-                        stroke="#38b2ac"
-                        strokeWidth="2"
-                        fill="transparent"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: activeStep >= 4 ? 1 : 0 }}
-                        transition={{ duration: 1, ease: "easeInOut" }}
-                    />
-                    <motion.path
-                        d="M400,550 C450,600 550,600 600,550"
-                        stroke="#38b2ac"
-                        strokeWidth="2"
-                        fill="transparent"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: activeStep >= 5 ? 1 : 0 }}
-                        transition={{ duration: 1, ease: "easeInOut" }}
-                    />
-                </svg>
             </div>
         </div>
     );
