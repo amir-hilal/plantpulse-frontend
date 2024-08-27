@@ -32,12 +32,13 @@ const LoginPage = () => {
         email: formData.emailOrUsername,
         password: formData.password,
       });
-
-      dispatch(login(response.data.user));
-      toast.success('Login successful!');
-      navigate('/home');
+      if (response.status===200) {
+        dispatch(login(response.data.user));
+        toast.success('Login successful!');
+        navigate('/home');
+      }
     } catch (error) {
-      toast.error('Login failed. Please try again.');
+      toast.error(error.response.data.error);
     } finally {
       setIsLoading(false);
     }
@@ -65,21 +66,21 @@ const LoginPage = () => {
               value={formData.emailOrUsername}
               onChange={handleChange}
               required
-              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
-          <div class="field col-12 flex p-0">
+          <div className="field col-12 flex p-0">
             <input
               type="password"
               name="password"
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
               required
             />
           </div>
-          <div class="field col-12 flex p-0">
+          <div className="field col-12 flex p-0">
             <Link
               className="font-15 text-grey cursor-pointer"
               to="/forgot-password"
@@ -94,14 +95,12 @@ const LoginPage = () => {
               'Login'
             )}
           </button>
-          <div class="field col-12 flex p-0">
-
-          <p className='font-15 text-grey cursor-pointer'>
-            Don’t have an account?{' '}
-            <Link to="/register">Sign up for PlantPulse</Link>
+          <div className="field col-12 flex p-0">
+            <p className="font-15 text-grey cursor-pointer">
+              Don’t have an account?{' '}
+              <Link to="/register">Sign up for PlantPulse</Link>
             </p>
           </div>
-
         </form>
       </div>
     </div>

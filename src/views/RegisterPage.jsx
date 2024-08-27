@@ -16,7 +16,7 @@ const RegisterPage = () => {
     username: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    password_confirmation: '',
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,7 +30,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.password_confirmation) {
       toast.error('Passwords do not match!');
       return;
     }
@@ -44,13 +44,15 @@ const RegisterPage = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
+        password_confirmation: formData.password_confirmation
       });
-
-      dispatch(login(response.data.user));
-      toast.success('Registration successful!');
-      navigate('/home');
+      if (response.status === 201) {
+        dispatch(login(response.data.user));
+        toast.success('Registration successful!', response.data.message);
+        navigate('/home');
+      }
     } catch (error) {
-      toast.error('Registration failed. Please try again.');
+      toast.error(error.response.data.error);
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +131,7 @@ const RegisterPage = () => {
           <div class="field col-12 flex p-0">
             <input
               type="password"
-              name="confirmPassword"
+              name="password_confirmation"
               placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={handleChange}
