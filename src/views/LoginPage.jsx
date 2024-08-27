@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
-import api from '../services/api';
+import { loginUser } from '../services/authService';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -28,15 +28,14 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await api.post('/login', {
+      const data = await loginUser({
         email: formData.emailOrUsername,
         password: formData.password,
       });
-      if (response.status===200) {
-        dispatch(login(response.data.user));
-        toast.success('Login successful!');
-        navigate('/home');
-      }
+
+      dispatch(login(data));
+      toast.success('Login successful!');
+      navigate('/home');
     } catch (error) {
       toast.error(error.response.data.error);
     } finally {
