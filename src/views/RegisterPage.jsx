@@ -78,7 +78,7 @@ const RegisterPage = () => {
               value={formData.firstName}
               onChange={handleChange}
               required
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
 
@@ -90,7 +90,7 @@ const RegisterPage = () => {
               value={formData.lastName}
               onChange={handleChange}
               required
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div class="field col-12 flex p-0">
@@ -101,7 +101,7 @@ const RegisterPage = () => {
               value={formData.username}
               onChange={handleChange}
               required
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div class="field col-12 flex p-0">
@@ -112,7 +112,7 @@ const RegisterPage = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div class="field col-12 flex p-0">
@@ -123,7 +123,7 @@ const RegisterPage = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div class="field col-12 flex p-0">
@@ -134,7 +134,7 @@ const RegisterPage = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
 
