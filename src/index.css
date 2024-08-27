@@ -413,3 +413,11 @@ code {
 .min-h-10 {
   min-height: 250px;
 }
+
+.p-button{
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius);
+  border: none;
+  color: var(--tint_5);
+  padding: .5rem 0;
+}
