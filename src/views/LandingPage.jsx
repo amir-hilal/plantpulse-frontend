@@ -5,8 +5,8 @@ import HowItWorks from '../components/common/HowItWorks/HowItWorks';
 const LandingPage = () => {
     return (
         <div className='flex justify-content-center flex-column'>
-            <section className="bg-tint-5 px-8">
-                <div className="container py-4 flex flex-column justify-content-between md:flex-row align-items-center">
+            <section className="bg-transparent px-8">
+                <div className="container py-4 flex flex-column justify-content-between md:flex-row align-items-center md:align-items-start">
                     <div className="md:w-1/2 text-center md:text-left">
                         <p className="text-xs md:text-sm text-grey italic mb-2"><i>"Empowering Gardeners Everywhere"</i></p>
                         <h1 className="my-3 font-bold text-secondary leading-tight text-3xl md:text-5xl">
@@ -25,7 +25,7 @@ const LandingPage = () => {
                             </button>
                         </div>
                     </div>
-                    <div className=" md:w-1/2 mt-2 md:mt-0">
+                    <div className="w-8 md:w-7 lg:w-5 mt-2 md:mt-0">
                         <img src={image}  alt="Gardening" className="w-full rounded-lg shadow-lg" />
                     </div>
                 </div>
@@ -33,7 +33,7 @@ const LandingPage = () => {
 
 
 
-            <section className='max-w-screen overflow-hidden'>
+            <section className='max-w-screen overflow-hidden flex justify-content-center'>
                 <Carousel />
             </section>
             <hr />

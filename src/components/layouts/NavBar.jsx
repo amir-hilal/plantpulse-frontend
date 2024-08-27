@@ -6,11 +6,11 @@ import logo from '../../assets/images/Logo.png';
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
-  const [isCommunityOpen, setIsCommunityOpen] = useState(false); // New state for Community dropdown
+  const [isCommunityOpen, setIsCommunityOpen] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn, userProfile } = useSelector((state) => state.auth);
   const utilitiesRef = useRef(null);
-  const communityRef = useRef(null); // Ref for Community dropdown
+  const communityRef = useRef(null);
 
   const menuItems = [
     { label: 'Home', path: '/home' },
@@ -24,7 +24,6 @@ const NavBar = () => {
   ];
 
   const communityItems = [
-    // Items for Community dropdown
     { label: 'Feed', path: '/community/feed', disabled: !isLoggedIn },
     { label: 'Chats', path: '/community/chats', disabled: !isLoggedIn },
   ];
@@ -38,7 +37,6 @@ const NavBar = () => {
   };
 
   const handleCommunityToggle = () => {
-    // Handler for Community dropdown
     setIsCommunityOpen(!isCommunityOpen);
   };
 
@@ -47,7 +45,6 @@ const NavBar = () => {
       setIsUtilitiesOpen(false);
     }
     if (communityRef.current && !communityRef.current.contains(event.target)) {
-      // Close Community dropdown when clicking outside
       setIsCommunityOpen(false);
     }
   };
@@ -57,14 +54,14 @@ const NavBar = () => {
       navigate(path);
       setIsMenuOpen(false);
       setIsUtilitiesOpen(false);
-      setIsCommunityOpen(false); // Close all popovers after navigation
+      setIsCommunityOpen(false);
     }
   };
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 992 && isMenuOpen) {
-        setIsMenuOpen(false); // Close the menu if the screen is resized to large
+        setIsMenuOpen(false); 
       }
     };
 

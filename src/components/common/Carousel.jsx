@@ -2,6 +2,11 @@ import React, { useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import learn from '../../assets/images/learn-green.png'
+import tracking from '../../assets/images/tracking-green.png'
+import weather from '../../assets/images/weather-green.png'
+import chatbot from '../../assets/images/chatbot-green.png'
+import connect from '../../assets/images/connect-green.png'
 
 const Carousel = () => {
     const settings = {
@@ -12,7 +17,7 @@ const Carousel = () => {
         slidesToScroll: 1,
         centerMode: true,
         centerPadding: '0',
-        autoplay: true,
+        autoplay: false,
         autoplaySpeed: 3000,
         afterChange: current => {
             const slides = document.querySelectorAll('.slick-slide');
@@ -39,27 +44,29 @@ const Carousel = () => {
         {
             title: "Connect With Other Gardeners",
             description: "Share tips and chat with others.",
-            icon: "pi pi-users",
+            img: connect
         },
         {
             title: "Advanced Plant Tracking and Management",
             description: "Monitor plant growth and get care alerts.",
-            icon: "pi pi-chart-line",
+            img: tracking
+
         },
         {
             title: "Explore And Learn",
             description: "Discover plant care tips and guides.",
-            icon: "pi pi-book",
+            img: learn
+
         },
         {
             title: "Real-Time Weather Updates",
             description: "Get live weather info.",
-            icon: "pi pi-cloud",
+            img: weather
         },
         {
             title: "Chatbot Assistance",
             description: "Get instant gardening advice and tips.",
-            icon: "pi pi-comment",
+            img: chatbot
         }
     ];
 
@@ -76,13 +83,13 @@ const Carousel = () => {
 
     const renderFeature = (feature, index) => {
         return (
-            <div key={index} className="flex align-items-center justify-content-center m-2 ">
-                <div className="bg-tint-5  m-6 max-w-18rem  min-h-10  border-round-lg shadow-2 text-center flex flex-column align-items-center justify-content-center"
+            <div key={index} className='flex justify-content-center'>
+                <div className="bg-tint-5 p-3 m-5 max-w-14rem  md:max-w-18rem min-h-10  border-round-lg shadow-2 text-center flex flex-column align-items-center justify-content-center"
                     style={{
                         transition: 'all 0.5s ease'
                     }}>
-                    <i className={`${feature.icon} text-4xl text-primary mb-4`}></i>
-                    <h3 className="text-xl font-bold m-0">{feature.title}</h3>
+                    <img src={feature.img} alt="image" />
+                    <h3 className="text-lg text-secondary font-bold m-0">{feature.title}</h3>
                     <p className="text-grey text-sm">{feature.description}</p>
                 </div>
             </div>
@@ -90,7 +97,7 @@ const Carousel = () => {
     };
 
     return (
-        <Slider {...settings} className='max-width-screen overflow-hidden'>
+        <Slider {...settings} className=' overflow-hidden flex justify-content-center'>
             {features.map((feature, index) => (
                 renderFeature(feature, index)
             ))}

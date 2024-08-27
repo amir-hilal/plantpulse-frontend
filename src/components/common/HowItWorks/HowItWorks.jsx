@@ -49,9 +49,9 @@ const HowItWorks = () => {
                             transition={{ duration: 1, delay: index * 0.3 }}
                         >
                             <div className=" card-content flex flex-column justify-content-around align-items-center">
-                                    <h3 className="text-xl font-bold text-black">{step.title}</h3>
+                                    <h3 className="text-xl font-bold text-black text-center">{step.title}</h3>
                                     <img src={step.img} alt="icon" />
-                                    <p className="text-secondary">{step.description}</p>
+                                    <p className="text-secondary text-center">{step.description}</p>
                             </div>
                         </motion.div>
                         {index < steps.length - 1 && (
