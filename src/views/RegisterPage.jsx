@@ -61,7 +61,7 @@ const RegisterPage = () => {
       <img
         src={logo}
         alt="PlantPulse"
-        className="logo mb-6"
+        className="logo mb-6 cursor-pointer"
         onClick={() => navigate('/')}
       />
       <div className=" flex flex-column align-items-center bg-tint-5 border-round-xl w-8">

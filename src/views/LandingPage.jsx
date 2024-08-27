@@ -17,10 +17,10 @@ const LandingPage = () => {
                             Start your gardening journey today with tools and resources designed for all skill levels.
                         </p>
                         <div className="mt-2 md:mt-6 flex justify-content-center md:justify-content-start">
-                            <button className="text-xs md:text-sm bg-primary hover:bg-green-700 text-tint-5 px-4 py-3 rounded-full mr-4 border-none border-round">
+                            <button className="text-xs md:text-sm bg-primary hover:bg-green-700 text-tint-5 px-4 py-3 rounded-full mr-4 border-none border-round cursor-pointer">
                                 Get Started
                             </button>
-                            <button className="text-xs md:text-sm bg-secondary hover:bg-gray-900 text-tint-5 px-4 py-3 rounded-full border-none border-round">
+                            <button className="text-xs md:text-sm bg-secondary hover:bg-gray-900 text-tint-5 px-4 py-3 rounded-full border-none border-round cursor-pointer">
                                 Learn More
                             </button>
                         </div>

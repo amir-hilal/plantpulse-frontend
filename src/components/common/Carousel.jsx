@@ -88,7 +88,7 @@ const Carousel = () => {
                     style={{
                         transition: 'all 0.5s ease'
                     }}>
-                    <img src={feature.img} alt="image" />
+                    <img src={feature.img} alt="feature" />
                     <h3 className="text-lg text-secondary font-bold m-0">{feature.title}</h3>
                     <p className="text-grey text-sm">{feature.description}</p>
                 </div>

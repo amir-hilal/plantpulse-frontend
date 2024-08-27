@@ -1,16 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/Logo.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { openMenu, closeMenu } from '../../features/ui/uiSlice';
 
 const NavBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isMenuOpen = useSelector((state) => state.ui.isMenuOpen);
   const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
   const [isCommunityOpen, setIsCommunityOpen] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn, userProfile } = useSelector((state) => state.auth);
   const utilitiesRef = useRef(null);
   const communityRef = useRef(null);
+  const dispatch = useDispatch();
 
   const menuItems = [
     { label: 'Home', path: '/home' },
@@ -29,8 +31,12 @@ const NavBar = () => {
   ];
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    if (isMenuOpen) {
+        dispatch(closeMenu());
+    } else {
+        dispatch(openMenu());
+    }
+};
 
   const handleUtilitiesToggle = () => {
     setIsUtilitiesOpen(!isUtilitiesOpen);
@@ -52,7 +58,7 @@ const NavBar = () => {
   const handleNavigation = (path, disabled) => {
     if (!disabled) {
       navigate(path);
-      setIsMenuOpen(false);
+      dispatch(closeMenu());
       setIsUtilitiesOpen(false);
       setIsCommunityOpen(false);
     }
@@ -61,7 +67,7 @@ const NavBar = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 992 && isMenuOpen) {
-        setIsMenuOpen(false); 
+        dispatch(closeMenu());
       }
     };
 
@@ -72,7 +78,7 @@ const NavBar = () => {
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isMenuOpen]);
+  }, [dispatch, isMenuOpen]);
 
   return (
     <nav className="bg-secondary p-4 flex justify-content-between align-items-center">
@@ -81,7 +87,7 @@ const NavBar = () => {
         alt="App Logo"
         height={40}
         className="cursor-pointer"
-        onClick={() => navigate('/')}
+        onClick={!isMenuOpen?() => navigate('/'):()=>{}}
       />
       <ul className="hidden lg:flex list-none m-0 p-0">
         {menuItems.map((item, index) => (
@@ -217,7 +223,7 @@ const NavBar = () => {
 
       {/* Slide-in Menu */}
       {isMenuOpen && (
-        <div className="fixed top-0 right-0 h-full w-64 bg-secondary shadow-lg z-50 p-4">
+        <div className="fixed top-0 right-0 h-full w-64 bg-secondary-light shadow-lg z-50 p-4">
           <button
             onClick={toggleMenu}
             className="text-tint-5 text-2xl cursor-pointer mb-4 bg-transparent border-none"

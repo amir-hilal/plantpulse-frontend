@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import MainLayout from './MainLayout';
 import LandingPage from './views/LandingPage';

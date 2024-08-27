@@ -20,8 +20,8 @@ code {
   --primary-color:#019444;
   --secondary-color:#263238;
   --info:#2194f3;
-
-  --black: #263238;
+  --seconday-light: #394c56;
+  --black: #161d21;
   --dark_grey:#4D4D4D;
   --grey:#717171;
   --light_grey:#89939E;
@@ -207,6 +207,10 @@ code {
 
 .bg-secondary {
   background-color: var(--secondary-color);
+}
+
+.bg-secondary-light{
+  background-color: var(--seconday-light);
 }
 
 .bg-info {
@@ -421,3 +425,18 @@ code {
   color: var(--tint_5);
   padding: .5rem 0;
 }
+
+.z-50{
+  z-index: 50;
+}
+.main-content {
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.main-content.blurred {
+  filter: blur(5px);
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default; /* Disable interactions with the blurred content */
+}
+

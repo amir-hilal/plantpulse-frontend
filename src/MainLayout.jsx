@@ -1,13 +1,26 @@
 import React from 'react';
-import NavBar from './components/layouts/NavBar';
+import { useDispatch, useSelector } from 'react-redux';
 import Footer from './components/layouts/Footer';
-
+import NavBar from './components/layouts/NavBar';
+import { closeMenu } from './features/ui/uiSlice';
 const MainLayout = ({ children }) => {
+  const isMenuOpen = useSelector((state) => state.ui.isMenuOpen);
+  const dispatch = useDispatch();
+  const handleOverlayClick = () => {
+    if (isMenuOpen) {
+      dispatch(closeMenu());
+    }
+  };
   return (
     <>
       <NavBar />
-      <main>{children}</main>
-      <Footer />
+      <div
+        className={`main-content ${isMenuOpen ? 'blurred' : ''}`}
+        onClick={handleOverlayClick}
+      >
+        <main>{children}</main>
+        <Footer />
+      </div>
     </>
   );
 };
