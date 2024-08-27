@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import logo from '../../assets/images/Logo.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { openMenu, closeMenu } from '../../features/ui/uiSlice';
+import { useNavigate } from 'react-router-dom';
+import emptyProfilePicture from '../../assets/images/empty-profile.png';
+import logo from '../../assets/images/Logo.png';
+import { closeMenu, openMenu } from '../../features/ui/uiSlice';
+import { logout } from '../../features/auth/authSlice';
 
 const NavBar = () => {
   const isMenuOpen = useSelector((state) => state.ui.isMenuOpen);
@@ -32,11 +34,11 @@ const NavBar = () => {
 
   const toggleMenu = () => {
     if (isMenuOpen) {
-        dispatch(closeMenu());
+      dispatch(closeMenu());
     } else {
-        dispatch(openMenu());
+      dispatch(openMenu());
     }
-};
+  };
 
   const handleUtilitiesToggle = () => {
     setIsUtilitiesOpen(!isUtilitiesOpen);
@@ -87,7 +89,7 @@ const NavBar = () => {
         alt="App Logo"
         height={40}
         className="cursor-pointer"
-        onClick={!isMenuOpen?() => navigate('/'):()=>{}}
+        onClick={!isMenuOpen ? () => navigate('/') : () => {}}
       />
       <ul className="hidden lg:flex list-none m-0 p-0">
         {menuItems.map((item, index) => (
@@ -182,14 +184,17 @@ const NavBar = () => {
           )}
         </li>
       </ul>
-      <div className="hidden lg:flex align-items-center">
+      <div className="hidden justify-content-end lg:flex align-items-center">
         {isLoggedIn ? (
           <>
-            <i className="pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
+            <i className="pi pi-bell text-white text-2xl mr-4 cursor-pointer"></i>
+
             <img
-              src={userProfile.picture}
+              src={
+                userProfile.picture ? userProfile.picture : emptyProfilePicture
+              }
               alt="Profile"
-              className="h-10 w-10 rounded-full cursor-pointer"
+              className="h-2 w-2 border-circle cursor-pointer"
               onClick={() => navigate('/profile')}
             />
           </>
@@ -223,14 +228,37 @@ const NavBar = () => {
 
       {/* Slide-in Menu */}
       {isMenuOpen && (
-        <div className="fixed top-0 right-0 h-full w-64 bg-secondary-light shadow-lg z-50 p-4">
-          <button
-            onClick={toggleMenu}
-            className="text-tint-5 text-2xl cursor-pointer mb-4 bg-transparent border-none"
-          >
-            <i className="pi pi-times"></i>
-          </button>
-          <ul className="list-none p-0">
+        <div className="fixed top-0 right-0 h-full w-64 bg-secondary-light shadow-lg z-50 p-4 flex flex-column justify-content-start">
+          {/* Top Section with Close Button, Bell Icon, and Profile Picture */}
+          <div className="flex justify-content-between align-items-center">
+            <button
+              onClick={toggleMenu}
+              className="text-tint-5 text-2xl cursor-pointer bg-transparent border-none"
+            >
+              <i className="pi pi-times"></i>
+            </button>
+            {isLoggedIn && (
+              <div className="flex align-items-center justify-content-end">
+                <i className="pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
+                <img
+                  src={
+                    userProfile.picture
+                      ? userProfile.picture
+                      : emptyProfilePicture
+                  }
+                  alt="Profile"
+                  className="h-2 w-2 border-circle cursor-pointer"
+                  onClick={() => {
+                    navigate('/profile');
+                    toggleMenu();
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Menu Items */}
+          <ul className="list-none p-0 mt-4 mb-0">
             {menuItems.map((item, index) => (
               <li key={index} className="mb-4">
                 <button
@@ -246,6 +274,7 @@ const NavBar = () => {
                 </button>
               </li>
             ))}
+
             {/* Community Group for Mobile */}
             <li className="mb-4">
               <button
@@ -280,6 +309,8 @@ const NavBar = () => {
                 </div>
               )}
             </li>
+
+            {/* Utilities Group for Mobile */}
             <li className="mb-4">
               <button
                 onClick={handleUtilitiesToggle}
@@ -319,16 +350,22 @@ const NavBar = () => {
               )}
             </li>
           </ul>
+
+          {/* Bottom Section with Login/Register/Logout Buttons */}
           <div className="flex flex-column align-items-start">
             {isLoggedIn ? (
               <>
-                <i className="pi pi-bell text-white text-2xl mb-3 cursor-pointer"></i>
-                <img
-                  src={userProfile.picture}
-                  alt="Profile"
-                  className="h-10 w-10 rounded-full cursor-pointer"
-                  onClick={() => navigate('/profile')}
-                />
+                <button
+                  onClick={() => {
+                    // Add your logout logic here
+                    dispatch(logout());
+                    navigate('/login');
+                    toggleMenu();
+                  }}
+                  className="bg-primary text-tint-5 px-4 py-3 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
+                >
+                  Logout
+                </button>
               </>
             ) : (
               <>
@@ -337,7 +374,7 @@ const NavBar = () => {
                     navigate('/login');
                     toggleMenu();
                   }}
-                  className="bg-primary text-tint-5 px-4 py-3 border-round mb-2 w-full text-left border-none hover:bg-tint-4"
+                  className="bg-primary text-tint-5 px-4 py-3 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
                 >
                   Login
                 </button>
@@ -346,7 +383,7 @@ const NavBar = () => {
                     navigate('/register');
                     toggleMenu();
                   }}
-                  className="bg-tint-5 text-primary px-4 py-3 border-round w-full text-left border-none hover:bg-tint-4"
+                  className="bg-tint-5 text-primary px-4 py-3 border-round w-full text-left border-none hover:bg-tint-4 cursor-pointer"
                 >
                   Register
                 </button>
