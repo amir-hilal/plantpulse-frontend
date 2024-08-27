@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
-import api from '../services/api';
+import { registerUser } from '../services/authService';
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,19 +38,18 @@ const RegisterPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await api.post('/register', {
+      const data = await registerUser({
         first_name: formData.firstName,
         last_name: formData.lastName,
         username: formData.username,
         email: formData.email,
         password: formData.password,
-        password_confirmation: formData.password_confirmation
+        password_confirmation: formData.password_confirmation,
       });
-      if (response.status === 201) {
-        dispatch(login(response.data.user));
-        toast.success('Registration successful!', response.data.message);
-        navigate('/home');
-      }
+
+      dispatch(login(data));
+      toast.success('Registration successful!', data.message);
+      navigate('/home');
     } catch (error) {
       toast.error(error.response.data.error);
     } finally {
