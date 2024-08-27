@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
-import { registerUser } from '../services/authService';
+import api from '../services/api';
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const RegisterPage = () => {
     setIsLoading(true);
 
     try {
-      const data = await registerUser({
+      const response = await api.post('/register', {
         first_name: formData.firstName,
         last_name: formData.lastName,
         username: formData.username,
@@ -46,12 +46,17 @@ const RegisterPage = () => {
         password: formData.password,
         password_confirmation: formData.password_confirmation,
       });
-
-      dispatch(login(data));
-      toast.success('Registration successful!', data.message);
-      navigate('/home');
+      if (response.status === 201) {
+        dispatch(login(response.data.user));
+        toast.success('Registration successful!', response.data.message);
+        navigate('/home');
+      }
     } catch (error) {
-      toast.error(error.response.data.error);
+      if (!error.response) {
+        toast.error('Unable to connect to the server. Please try again later.');
+      } else {
+        toast.error(error.response.data.error);
+      }
     } finally {
       setIsLoading(false);
     }

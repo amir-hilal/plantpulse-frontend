@@ -191,7 +191,7 @@ const NavBar = () => {
 
             <img
               src={
-                userProfile.picture ? userProfile.picture : emptyProfilePicture
+                userProfile.profile_photo_url ? userProfile.profile_photo_url : emptyProfilePicture
               }
               alt="Profile"
               className="h-2 w-2 border-circle cursor-pointer"
@@ -242,8 +242,8 @@ const NavBar = () => {
                 <i className="pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
                 <img
                   src={
-                    userProfile.picture
-                      ? userProfile.picture
+                    userProfile.profile_photo_url
+                      ? userProfile.profile_photo_url
                       : emptyProfilePicture
                   }
                   alt="Profile"
