@@ -54,7 +54,7 @@ const LoginPage = () => {
       <div className=" flex flex-column align-items-center bg-tint-5 border-round-xl w-6 p-5">
         <ToastContainer />
         <div className="flex flex-column align-items-center w-10">
-          <h2 className="text-center">Log in to PlantPulse</h2>
+          <h2 className="text-center text-secondary">Log in to PlantPulse</h2>
         </div>
         <form className="formgrid grid w-12 md:w-10" onSubmit={handleSubmit}>
           <div className="field col-12 flex p-0">
@@ -81,7 +81,7 @@ const LoginPage = () => {
           </div>
           <div class="field col-12 flex p-0">
             <Link
-              className="font-10 text-grey cursor-pointer"
+              className="font-15 text-grey cursor-pointer"
               to="/forgot-password"
             >
               Forgot Password?
@@ -96,7 +96,7 @@ const LoginPage = () => {
           </button>
           <div class="field col-12 flex p-0">
 
-          <p className='font-10 text-grey cursor-pointer'>
+          <p className='font-15 text-grey cursor-pointer'>
             Don’t have an account?{' '}
             <Link to="/register">Sign up for PlantPulse</Link>
             </p>

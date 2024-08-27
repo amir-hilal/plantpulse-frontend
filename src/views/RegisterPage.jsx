@@ -64,7 +64,7 @@ const RegisterPage = () => {
         className="logo mb-6"
         onClick={() => navigate('/')}
       />
-      <div className=" flex flex-column align-items-center bg-tint-5 border-round w-8">
+      <div className=" flex flex-column align-items-center bg-tint-5 border-round-xl w-8">
         <ToastContainer />
         <div className="flex flex-column align-items-center w-10">
           <h2 className="text-center text-secondary">Create New Account</h2>
