@@ -34,6 +34,7 @@ const LoginPage = () => {
       });
       if (response.status === 200) {
         dispatch(login(response.data.user));
+        localStorage.setItem('token', response.data.token);
         toast.success('Login successful!');
         navigate('/home');
       }
@@ -92,9 +93,9 @@ const LoginPage = () => {
               Forgot Password?
             </Link>
           </div>
-          <button type="submit" className="p-button w-full">
+          <button type="submit" className="p-button w-full flex align-items-center justify-content-center">
             {isLoading ? (
-              <Loading type="spin" color="#fff" height={20} width={20} />
+              <Loading type="spin" color="#fff" height={15} width={15} />
             ) : (
               'Login'
             )}

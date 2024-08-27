@@ -194,7 +194,7 @@ const NavBar = () => {
                 userProfile.profile_photo_url ? userProfile.profile_photo_url : emptyProfilePicture
               }
               alt="Profile"
-              className="h-2 w-2 border-circle cursor-pointer"
+              className="h-3rem h-3rem border-circle cursor-pointer"
               onClick={() => navigate('/profile')}
             />
           </>
@@ -228,12 +228,12 @@ const NavBar = () => {
 
       {/* Slide-in Menu */}
       {isMenuOpen && (
-        <div className="fixed top-0 right-0 h-full w-64 bg-secondary-light shadow-lg z-50 p-4 flex flex-column justify-content-start">
+        <div className="fixed top-0 right-0 h-full w-5 bg-secondary-light shadow-lg z-50 p-4 flex flex-column justify-content-start">
           {/* Top Section with Close Button, Bell Icon, and Profile Picture */}
           <div className="flex justify-content-between align-items-center">
             <button
               onClick={toggleMenu}
-              className="text-tint-5 text-2xl cursor-pointer bg-transparent border-none"
+              className="text-tint-5 text-2xl cursor-pointer bg-transparent border-none flex align-items-center"
             >
               <i className="pi pi-times"></i>
             </button>
@@ -247,7 +247,7 @@ const NavBar = () => {
                       : emptyProfilePicture
                   }
                   alt="Profile"
-                  className="h-2 w-2 border-circle cursor-pointer"
+                  className="h-3rem h-3rem border-circle cursor-pointer"
                   onClick={() => {
                     navigate('/profile');
                     toggleMenu();
