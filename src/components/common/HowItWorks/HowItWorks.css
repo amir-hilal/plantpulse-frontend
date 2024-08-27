@@ -1,5 +1,3 @@
-
-
 .grid-container {
   display: grid;
   position: relative;
@@ -17,6 +15,7 @@
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 2;
+  margin-bottom: 2rem;
 }
 
 .step.left {
@@ -31,7 +30,6 @@
   justify-self: start;
   margin-top: -100px; /* Adjust this value to stagger cards correctly */
   margin-left: 5%;
-
 }
 
 .arrow-svg {
@@ -57,7 +55,36 @@
   }
 }
 
-
 @media only screen and (max-width: 940px) {
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
+  .step {
+    max-width: 100vh;
+    width: 70%;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-size: 15px;
+  }
+
+  .step div{
+    width: 100%;
+  }
+
+  .step img{
+    height: 80px;
+  }
+
+  .step.left,
+  .step.right {
+    justify-self: center;
+  }
+
+  .arrow-svg {
+    display: none;
+  }
 }
