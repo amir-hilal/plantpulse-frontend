@@ -2,15 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import './HowItWorks.css';
 import ArrowSVG from '../../../assets/svg/Vector143.svg'
+import garden from '../../../assets/images/garden.png'
+import expert from '../../../assets/images/expert.png'
+import plant from '../../../assets/images/plant.png'
+import connect from '../../../assets/images/connect.png'
+import track from '../../../assets/images/track.png'
+
 const HowItWorks = () => {
     const [activeStep, setActiveStep] = useState(0);
 
     const steps = [
-        { title: "Create Your Virtual Garden", description: "Start by setting up your garden space within the app, where you'll add and manage your real-life plants.", icon: "pi pi-th-large" },
-        { title: "Add Your Real-Life Plants", description: "Enter details and upload pictures of your plants to begin tracking their progress.", icon: "pi pi-plus-circle" },
-        { title: "Track and Monitor Progress", description: "Monitor your plants' health with regular updates, photos, and notifications.", icon: "pi pi-chart-line" },
-        { title: "Join the Community", description: "Connect with fellow gardeners, share your progress, and learn from others.", icon: "pi pi-users" },
-        { title: "Get Expert Advice", description: "Use Flora, your garden helper, to get quick answers to your gardening questions.", icon: "pi pi-info-circle" }
+        { title: "🌱 Create Your Virtual Garden", description: "Start by setting up your garden space within the app, where you'll add and manage your real-life plants.",img:garden },
+        { title: "🌿 Add Your Real-Life Plants", description: "Enter details and upload pictures of your plants to begin tracking their progress.", img: plant },
+        { title: "📈 Track and Monitor Progress", description: "Monitor your plants' health with regular updates, photos, and notifications.", img: track },
+        { title: "🌍 Join the Community", description: "Connect with fellow gardeners, share your progress, and learn from others.", img:connect},
+        { title: "🤖  Get Expert Advice", description: "Use Flora, your garden helper, to get quick answers to your gardening questions.", img:expert }
     ];
 
     useEffect(() => {
@@ -32,7 +38,7 @@ const HowItWorks = () => {
 
     return (
         <div className=" relative container py-12">
-            <h2 className="text-center text-3xl font-bold text-blue-900 mb-8">How It Works</h2>
+            <h2 className="text-center text-3xl font-bold text-secondary mb-8">How It Works</h2>
             <div className="grid-container">
                 {steps.map((step, index) => (
                     <React.Fragment key={index}>
@@ -42,12 +48,10 @@ const HowItWorks = () => {
                             animate={{ opacity: activeStep > index ? 1 : 0, y: activeStep > index ? 0 : 50 }}
                             transition={{ duration: 1, delay: index * 0.3 }}
                         >
-                            <div className="card-content">
-                                <i className={`${step.icon} text-green-600 text-3xl mr-4`}></i>
-                                <div>
-                                    <h3 className="text-xl font-bold text-blue-900">{step.title}</h3>
-                                    <p className="text-grey">{step.description}</p>
-                                </div>
+                            <div className=" card-content flex flex-column justify-content-around align-items-center">
+                                    <h3 className="text-xl font-bold text-black">{step.title}</h3>
+                                    <img src={step.img} alt="icon" />
+                                    <p className="text-secondary">{step.description}</p>
                             </div>
                         </motion.div>
                         {index < steps.length - 1 && (
