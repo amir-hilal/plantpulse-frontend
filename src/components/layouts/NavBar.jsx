@@ -83,7 +83,7 @@ const NavBar = () => {
   }, [dispatch, isMenuOpen]);
 
   return (
-    <nav className="bg-secondary p-4 flex justify-content-between align-items-center">
+    <nav className="bg-secondary p-3 flex justify-content-between align-items-center">
       <img
         src={logo}
         alt="App Logo"
@@ -202,13 +202,13 @@ const NavBar = () => {
           <>
             <button
               onClick={() => navigate('/login')}
-              className="bg-primary text-tint-5 px-4 py-3 border-round mr-2 border-none hover:bg-tint-4"
+              className="bg-primary text-tint-5 px-4 py-2 border-round mr-2 border-none hover:bg-tint-4"
             >
               Login
             </button>
             <button
               onClick={() => navigate('/register')}
-              className="bg-tint-5 text-primary px-4 py-3 border-round border-none hover:bg-tint-4"
+              className="bg-tint-5 text-primary px-4 py-2 border-round border-none hover:bg-tint-4"
             >
               Register
             </button>
@@ -362,7 +362,7 @@ const NavBar = () => {
                     navigate('/login');
                     toggleMenu();
                   }}
-                  className="bg-primary text-tint-5 px-4 py-3 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
+                  className="bg-primary text-tint-5 px-4 py-2 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
                 >
                   Logout
                 </button>
@@ -374,7 +374,7 @@ const NavBar = () => {
                     navigate('/login');
                     toggleMenu();
                   }}
-                  className="bg-primary text-tint-5 px-4 py-3 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
+                  className="bg-primary text-tint-5 px-4 py-2 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
                 >
                   Login
                 </button>
@@ -383,7 +383,7 @@ const NavBar = () => {
                     navigate('/register');
                     toggleMenu();
                   }}
-                  className="bg-tint-5 text-primary px-4 py-3 border-round w-full text-left border-none hover:bg-tint-4 cursor-pointer"
+                  className="bg-tint-5 text-primary px-4 py-2 border-round w-full text-left border-none hover:bg-tint-4 cursor-pointer"
                 >
                   Register
                 </button>

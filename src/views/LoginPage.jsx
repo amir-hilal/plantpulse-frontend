@@ -87,7 +87,7 @@ const LoginPage = () => {
           </div>
           <div className="field col-12 flex p-0">
             <Link
-              className="font-15 text-grey cursor-pointer"
+              className="text-xs md:text-base text-grey cursor-pointer"
               to="/forgot-password"
             >
               Forgot Password?
@@ -101,7 +101,7 @@ const LoginPage = () => {
             )}
           </button>
           <div className="field col-12 flex p-0">
-            <p className="font-15 text-grey cursor-pointer">
+            <p className="text-xs md:text-base text-grey cursor-pointer">
               Don’t have an account?{' '}
               <Link to="/register">Sign up for PlantPulse</Link>
             </p>
