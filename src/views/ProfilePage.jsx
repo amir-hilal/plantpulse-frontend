@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import ProfileHeader from '../components/common/ProfileHeader';
+import ProfileHeader from '../components/Profile/ProfileHeader';
+import AboutSection from '../components/Profile/AboutSection';
 
 const ProfilePage = () => {
     const user = useSelector((state) => state.auth.userProfile);
@@ -14,7 +15,16 @@ const ProfilePage = () => {
                 lastName={user.last_name}
                 username={user.username}
             />
-            {/* Additional profile page content can go here */}
+            <div className="flex justify-content-between w-full mt-4 px-4">
+                {/* About section */}
+                <div className="w-4">
+                    <AboutSection />
+                </div>
+                {/* Post section (to be implemented later) */}
+                <div className="w-8">
+                    {/* Placeholder for posts */}
+                </div>
+            </div>
         </div>
     );
 };
