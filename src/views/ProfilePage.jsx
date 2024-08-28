@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import ProfileHeader from '../components/ProfileHeader';
+import ProfileHeader from '../components/common/ProfileHeader';
 
 const ProfilePage = () => {
     const user = useSelector((state) => state.auth.userProfile);
 
     return (
-        <div className="profile-page">
+        <div className="flex align-items-center flex-column">
             <ProfileHeader
                 profilePicture={user.profile_photo_url}
                 coverPhoto={user.cover_photo_url}

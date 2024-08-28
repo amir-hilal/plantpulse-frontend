@@ -6,6 +6,7 @@ import MainLayout from './MainLayout';
 import LandingPage from './views/LandingPage';
 import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
+import ProfilePage from './views/ProfilePage';
 function App() {
   const dispatch = useDispatch();
 
@@ -28,6 +29,7 @@ function App() {
             <MainLayout>
               <Routes>
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 {/* <Route path="/home" element={<HomePage />} />
                   <Route path="/my-gardens" element={<MyGardenPage />} />
                   <Route path="/plant-details" element={<PlantDetailsPage />} />
