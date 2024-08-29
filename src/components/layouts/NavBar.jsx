@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import emptyProfilePicture from '../../assets/images/empty-profile.png';
 import logo from '../../assets/images/Logo.png';
-import { closeMenu, openMenu } from '../../features/ui/uiSlice';
 import { logout } from '../../features/auth/authSlice';
+import { closeMenu, openMenu } from '../../features/ui/uiSlice';
 
 const NavBar = () => {
   const isMenuOpen = useSelector((state) => state.ui.isMenuOpen);
@@ -114,13 +114,13 @@ const NavBar = () => {
           onMouseEnter={() => setIsCommunityOpen(true)}
           onMouseLeave={() => setIsCommunityOpen(false)}
         >
-          <button
-            className="bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary"
-          >
+          <button className="bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary">
             Community <i className="pi pi-chevron-down"></i>
           </button>
           <div
-            className={`dropdown-content ${isCommunityOpen ? 'show' : ''} bg-tint-5 p-2 border-round shadow-lg absolute ml-4 mt-2 z-50`}
+            className={`dropdown-content ${
+              isCommunityOpen ? 'show' : ''
+            } bg-tint-5 p-2 border-round shadow-lg absolute ml-4 mt-2 z-50`}
           >
             <ul className="list-none m-0 p-0">
               {communityItems.map((item, index) => (
@@ -155,13 +155,13 @@ const NavBar = () => {
           onMouseEnter={() => setIsUtilitiesOpen(true)}
           onMouseLeave={() => setIsUtilitiesOpen(false)}
         >
-          <button
-            className="bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary"
-          >
+          <button className="bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary">
             Utilities <i className="pi pi-chevron-down"></i>
           </button>
           <div
-            className={`dropdown-content ${isUtilitiesOpen ? 'show' : ''} bg-tint-5 p-2 border-round shadow-lg absolute mt-2 z-50`}
+            className={`dropdown-content ${
+              isUtilitiesOpen ? 'show' : ''
+            } bg-tint-5 p-2 border-round shadow-lg absolute mt-2 z-50`}
           >
             <ul className="list-none m-0 p-0">
               {utilitiesItems.map((item, index) => (
@@ -193,14 +193,16 @@ const NavBar = () => {
       <div className="hidden justify-content-end lg:flex align-items-center">
         {isLoggedIn ? (
           <>
-            <i className="pi pi-bell text-white text-2xl mr-4 cursor-pointer"></i>
+            <i className="pt-1 pi pi-bell text-white text-2xl mr-4 cursor-pointer"></i>
 
             <img
               src={
-                userProfile.profile_photo_url ? userProfile.profile_photo_url : emptyProfilePicture
+                userProfile.profile_photo_url
+                  ? userProfile.profile_photo_url
+                  : emptyProfilePicture
               }
               alt="Profile"
-              className="h-3rem h-3rem border-circle cursor-pointer"
+              className="h-2rem h-2rem border-circle cursor-pointer"
               onClick={() => navigate('/profile')}
             />
           </>
@@ -239,13 +241,13 @@ const NavBar = () => {
           <div className="flex justify-content-between align-items-center">
             <button
               onClick={toggleMenu}
-              className="text-tint-5 text-2xl cursor-pointer bg-transparent border-none flex align-items-center"
+              className="pt-1 text-tint-5 text-2xl cursor-pointer bg-transparent border-none flex align-items-center"
             >
               <i className="pi pi-times"></i>
             </button>
             {isLoggedIn && (
               <div className="flex align-items-center justify-content-end">
-                <i className="pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
+                <i className="pt-1 pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
                 <img
                   src={
                     userProfile.profile_photo_url
@@ -253,7 +255,7 @@ const NavBar = () => {
                       : emptyProfilePicture
                   }
                   alt="Profile"
-                  className="h-3rem h-3rem border-circle cursor-pointer"
+                  className="h-2rem h-2rem border-circle cursor-pointer"
                   onClick={() => {
                     navigate('/profile');
                     toggleMenu();
@@ -289,7 +291,11 @@ const NavBar = () => {
               >
                 Community <i className="pi pi-chevron-down"></i>
               </button>
-              <div className={`dropdown-content ${isCommunityOpen ? 'show' : ''} bg-tint-5  border-round shadow-lg  z-50`}>
+              <div
+                className={`dropdown-content ${
+                  isCommunityOpen ? 'show' : ''
+                } bg-tint-5  border-round shadow-lg  z-50`}
+              >
                 <ul className="list-none m-0 p-0">
                   {communityItems.map((item, index) => (
                     <li
@@ -322,7 +328,11 @@ const NavBar = () => {
               >
                 Utilities <i className="pi pi-chevron-down"></i>
               </button>
-              <div className={`dropdown-content ${isUtilitiesOpen ? 'show' : ''} bg-tint-5  border-round shadow-lg  z-50`}>
+              <div
+                className={`dropdown-content ${
+                  isUtilitiesOpen ? 'show' : ''
+                } bg-tint-5  border-round shadow-lg  z-50`}
+              >
                 <ul className="list-none m-0 p-0">
                   {utilitiesItems.map((item, index) => (
                     <li
