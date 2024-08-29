@@ -19,7 +19,7 @@ const ProfileHeader = ({
           backgroundSize: 'cover', // Ensure the cover photo is displayed correctly
         }}
       >
-        <button className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-center items-center">
+        <button className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-content-center align-items-center">
           <span className="hidden sm:block">Edit Cover Photo</span>
           <FaEdit className="block sm:hidden text-xl" />
         </button>
@@ -31,17 +31,17 @@ const ProfileHeader = ({
           <img
             src={profilePicture ? profilePicture : emptyProfilePicture}
             alt="Profile"
-            className="absolute profile-picture-position h-6rem w-6rem border-circle shadow-1"
+            className="absolute profile-picture-position h-7rem w-7rem border-circle shadow-1"
           />
-          <div className="w-0 md:w-3 lg:w-2"></div>
-          <div className='absolute left-38 translate-x-0'>
+          <div className="w-0 md:w-3 "></div>
+          <div className='absolute left-38 md:static translate-x-0'>
             <h2 className="text-xl text-primary m-0">
               {firstName} {lastName}
             </h2>
             <p className="text-secondary m-0 text-center sm:text-left">{username}</p>
           </div>
           <div className="ml-2 ml-auto">
-            <button className="sm:w-9rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-center items-center">
+            <button className="sm:w-9rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center">
               <span className="hidden sm:block">Edit Profile</span>
               <FaEdit className="block sm:hidden text-xl" />
             </button>

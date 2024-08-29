@@ -441,8 +441,8 @@ code {
 }
 
 .profile-picture-position{
-  top:-60px;
-  left:20px !important;
+  top:-70px;
+  left:10% !important;
 }
 
 @media only screen and (max-width: 575px) {
