@@ -24,13 +24,14 @@ const ProfilePage = () => {
                 lastName={user.last_name}
                 username={user.username}
             />
-            <div className="flex justify-content-between w-9 px-4">
+            <div className="flex flex-column sm:flex-row w-full md:w-9">
                 {/* About section */}
-                <div className="w-4">
+                <div className="sm:w-4 flex justify-content-center">
                     <AboutSection />
                 </div>
                 {/* Post section (to be implemented later) */}
-                <div className="w-8">
+                <div className="sm:w-8 h-3rem">
+                    <div className='bg-primary w-full h-3'><p>Posts</p></div>
                     {/* Placeholder for posts */}
                 </div>
             </div>

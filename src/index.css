@@ -440,11 +440,18 @@ code {
   cursor: default; /* Disable interactions with the blurred content */
 }
 
-.top-minus-60{
-  top:-60px !important;
-  left:40px;
+.profile-picture-position{
+  top:-60px;
+  left:20px !important;
 }
 
+@media only screen and (max-width: 575px) {
+  .profile-picture-position{
+    top:-60px;
+
+    left:38% !important;
+  }
+}
 /* Smooth transition for dropdown */
 .dropdown-content {
   max-height: 0;
@@ -470,4 +477,12 @@ code {
 
 .dropdown-content.show .dropdown-item {
   opacity: 1;
+}
+
+.translate-x-50{
+  transform: translateX(50%);
+}
+
+.left-38{
+  left: 38%;
 }
