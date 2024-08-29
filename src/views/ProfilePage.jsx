@@ -2,9 +2,18 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ProfileHeader from '../components/Profile/ProfileHeader';
 import AboutSection from '../components/Profile/AboutSection';
+import Loading from 'react-loading';
 
 const ProfilePage = () => {
     const user = useSelector((state) => state.auth.userProfile);
+
+    if (!user) {
+        return (
+            <div className="flex justify-content-center align-items-center h-screen">
+                <Loading type="spin" color="#019444" height={50} width={50} />
+            </div>
+        );
+    }
 
     return (
         <div className="flex align-items-center flex-column">
@@ -15,7 +24,7 @@ const ProfilePage = () => {
                 lastName={user.last_name}
                 username={user.username}
             />
-            <div className="flex justify-content-between w-full mt-4 px-4">
+            <div className="flex justify-content-between w-9 px-4">
                 {/* About section */}
                 <div className="w-4">
                     <AboutSection />

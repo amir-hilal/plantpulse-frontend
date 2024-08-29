@@ -6,7 +6,7 @@ const AboutSection = () => {
     const user = useSelector((state) => state.auth.userProfile);
 
     return (
-        <div className="bg-tint-5 p-4 border-round-lg shadow-2" style={{ width: '100%', maxWidth: '300px' }}>
+        <div className="p-4" style={{ width: '100%', maxWidth: '300px' }}>
             <h2 className="text-primary">About</h2>
             <div className="flex align-items-center my-3">
                 <FaUser className="text-primary mr-2" />
@@ -28,7 +28,7 @@ const AboutSection = () => {
                 <FaPhone className="text-primary mr-2" />
                 <span>{user.phone_number}</span>
             </div>
-            <button className="p-button w-full mt-4 flex align-items-center justify-content-center">
+            <button className="p-button hover:bg-tint-1 w-full mt-4 flex align-items-center justify-content-center cursor-pointer ">
                 <FaDownload className="mr-2" />
                 Export Data
             </button>
