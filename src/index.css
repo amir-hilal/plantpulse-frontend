@@ -16,7 +16,7 @@ code {
   --text-color:#495057;
   --text-color-secondary:#263238;
   --border-radius:6px;
-
+  --primary-color-text:#E8F5E9;
   --primary-color:#019444;
   --secondary-color:#263238;
   --info:#2194f3;
@@ -373,7 +373,7 @@ code {
 }
 
 .text-tint-5 {
-  color: var(--tint_5) !important;
+  color: var(--tint_5);
 }
 
 .text-warning {
