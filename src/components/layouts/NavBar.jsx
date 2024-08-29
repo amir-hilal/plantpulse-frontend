@@ -109,79 +109,85 @@ const NavBar = () => {
         ))}
 
         {/* Community Group with Custom Popover */}
-        <li ref={communityRef}>
+        <li
+          ref={communityRef}
+          onMouseEnter={() => setIsCommunityOpen(true)}
+          onMouseLeave={() => setIsCommunityOpen(false)}
+        >
           <button
-            onClick={handleCommunityToggle}
             className="bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary"
           >
             Community <i className="pi pi-chevron-down"></i>
           </button>
-          {isCommunityOpen && (
-            <div className="bg-tint-5 p-2 border-round shadow-lg absolute ml-4 mt-2 z-50">
-              <ul className="list-none m-0 p-0">
-                {communityItems.map((item, index) => (
-                  <li
-                    key={index}
-                    className={` ${
-                      index < communityItems.length - 1
-                        ? 'border-bottom-1 border-gray-300'
-                        : ''
+          <div
+            className={`dropdown-content ${isCommunityOpen ? 'show' : ''} bg-tint-5 p-2 border-round shadow-lg absolute ml-4 mt-2 z-50`}
+          >
+            <ul className="list-none m-0 p-0">
+              {communityItems.map((item, index) => (
+                <li
+                  key={index}
+                  className={` ${
+                    index < communityItems.length - 1
+                      ? 'border-bottom-1 border-gray-300'
+                      : ''
+                  }`}
+                >
+                  <button
+                    onClick={() => handleNavigation(item.path, item.disabled)}
+                    className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                      item.disabled
+                        ? 'text-grey'
+                        : 'text-primary hover:bg-primary hover:text-tint-5'
                     }`}
+                    disabled={item.disabled}
                   >
-                    <button
-                      onClick={() => handleNavigation(item.path, item.disabled)}
-                      className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
-                        item.disabled
-                          ? 'text-grey'
-                          : 'text-primary hover:bg-primary hover:text-tint-5'
-                      }`}
-                      disabled={item.disabled}
-                    >
-                      {item.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </li>
 
         {/* Utilities Group with Custom Popover */}
-        <li ref={utilitiesRef}>
+        <li
+          ref={utilitiesRef}
+          onMouseEnter={() => setIsUtilitiesOpen(true)}
+          onMouseLeave={() => setIsUtilitiesOpen(false)}
+        >
           <button
-            onClick={handleUtilitiesToggle}
             className="bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary"
           >
             Utilities <i className="pi pi-chevron-down"></i>
           </button>
-          {isUtilitiesOpen && (
-            <div className="bg-tint-5 p-2 border-round shadow-lg absolute mt-2 z-50">
-              <ul className="list-none m-0 p-0">
-                {utilitiesItems.map((item, index) => (
-                  <li
-                    key={index}
-                    className={` ${
-                      index < utilitiesItems.length - 1
-                        ? 'border-bottom-1 border-gray-300'
-                        : ''
+          <div
+            className={`dropdown-content ${isUtilitiesOpen ? 'show' : ''} bg-tint-5 p-2 border-round shadow-lg absolute mt-2 z-50`}
+          >
+            <ul className="list-none m-0 p-0">
+              {utilitiesItems.map((item, index) => (
+                <li
+                  key={index}
+                  className={` ${
+                    index < utilitiesItems.length - 1
+                      ? 'border-bottom-1 border-gray-300'
+                      : ''
+                  }`}
+                >
+                  <button
+                    onClick={() => handleNavigation(item.path, item.disabled)}
+                    className={` py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                      item.disabled
+                        ? 'text-grey'
+                        : 'text-primary hover:bg-primary hover:text-tint-5'
                     }`}
+                    disabled={item.disabled}
                   >
-                    <button
-                      onClick={() => handleNavigation(item.path, item.disabled)}
-                      className={` py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
-                        item.disabled
-                          ? 'text-grey'
-                          : 'text-primary hover:bg-primary hover:text-tint-5'
-                      }`}
-                      disabled={item.disabled}
-                    >
-                      {item.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </li>
       </ul>
       <div className="hidden justify-content-end lg:flex align-items-center">
@@ -283,31 +289,29 @@ const NavBar = () => {
               >
                 Community <i className="pi pi-chevron-down"></i>
               </button>
-              {isCommunityOpen && (
-                <div className="bg-tint-5 p-2 border-round shadow-lg mt-2 z-50">
-                  <ul className="list-none m-0 p-0">
-                    {communityItems.map((item, index) => (
-                      <li
-                        key={index}
-                        className={` ${
-                          index < communityItems.length - 1
-                            ? 'border-bottom-1 border-gray-300'
-                            : ''
-                        }`}
+              <div className={`dropdown-content ${isCommunityOpen ? 'show' : ''} bg-tint-5  border-round shadow-lg  z-50`}>
+                <ul className="list-none m-0 p-0">
+                  {communityItems.map((item, index) => (
+                    <li
+                      key={index}
+                      className={` ${
+                        index < communityItems.length - 1
+                          ? 'border-bottom-1 border-gray-300'
+                          : ''
+                      }`}
+                    >
+                      <button
+                        onClick={() =>
+                          handleNavigation(item.path, item.disabled)
+                        }
+                        className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-primary hover:bg-primary hover:text-tint-5`}
                       >
-                        <button
-                          onClick={() =>
-                            handleNavigation(item.path, item.disabled)
-                          }
-                          className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-primary hover:bg-primary hover:text-tint-5`}
-                        >
-                          {item.label}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                        {item.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </li>
 
             {/* Utilities Group for Mobile */}
@@ -318,36 +322,34 @@ const NavBar = () => {
               >
                 Utilities <i className="pi pi-chevron-down"></i>
               </button>
-              {isUtilitiesOpen && (
-                <div className="bg-tint-5 p-2 border-round shadow-lg mt-2 z-50">
-                  <ul className="list-none m-0 p-0">
-                    {utilitiesItems.map((item, index) => (
-                      <li
-                        key={index}
-                        className={` ${
-                          index < utilitiesItems.length - 1
-                            ? 'border-bottom-1 border-gray-300'
-                            : ''
+              <div className={`dropdown-content ${isUtilitiesOpen ? 'show' : ''} bg-tint-5  border-round shadow-lg  z-50`}>
+                <ul className="list-none m-0 p-0">
+                  {utilitiesItems.map((item, index) => (
+                    <li
+                      key={index}
+                      className={` ${
+                        index < utilitiesItems.length - 1
+                          ? 'border-bottom-1 border-gray-300'
+                          : ''
+                      }`}
+                    >
+                      <button
+                        onClick={() =>
+                          handleNavigation(item.path, item.disabled)
+                        }
+                        className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                          item.disabled
+                            ? 'text-grey'
+                            : 'text-primary hover:bg-primary hover:text-tint-5'
                         }`}
+                        disabled={item.disabled}
                       >
-                        <button
-                          onClick={() =>
-                            handleNavigation(item.path, item.disabled)
-                          }
-                          className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
-                            item.disabled
-                              ? 'text-grey'
-                              : 'text-primary hover:bg-primary hover:text-tint-5'
-                          }`}
-                          disabled={item.disabled}
-                        >
-                          {item.label}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+                        {item.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </li>
           </ul>
 
@@ -357,7 +359,6 @@ const NavBar = () => {
               <>
                 <button
                   onClick={() => {
-                    // Add your logout logic here
                     dispatch(logout());
                     navigate('/login');
                     toggleMenu();
