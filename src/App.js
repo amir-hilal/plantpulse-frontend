@@ -1,21 +1,31 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import Loading from 'react-loading';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { initializeUser } from './features/auth/authSlice';
 import MainLayout from './MainLayout';
 import LandingPage from './views/LandingPage';
 import LoginPage from './views/LoginPage';
-import RegisterPage from './views/RegisterPage';
 import ProfilePage from './views/ProfilePage';
+import RegisterPage from './views/RegisterPage';
+
 function App() {
   const dispatch = useDispatch();
-
+  const loading = useSelector((state) => state.auth.loading);
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       dispatch(initializeUser());
     }
   }, [dispatch]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-content-center align-items-center h-screen">
+        <Loading type="spin" color="#019444" height={50} width={50} />
+      </div>
+    );
+  }
 
   return (
     <Router>
