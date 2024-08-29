@@ -1,19 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchUserData } from '../../services/authService';
+import api from '../../services/api';
 
 const initialState = {
     isLoggedIn: false,
     userProfile: null,
 };
 
-// Async thunk to fetch user data if a token exists
 export const initializeUser = createAsyncThunk(
     'auth/initializeUser',
-    async (_, { rejectWithValue }) => {
+    async (_, { dispatch, rejectWithValue }) => {
         try {
-            const user = await fetchUserData();
-            return user;
+            const response = await api.get('/me');
+            return response.data;
         } catch (error) {
+            if (error.response && error.response.status === 401) {
+                dispatch(logout());
+            }
             return rejectWithValue(error);
         }
     }
@@ -30,7 +32,7 @@ const authSlice = createSlice({
         logout(state) {
             state.isLoggedIn = false;
             state.userProfile = null;
-            localStorage.removeItem('token'); // Remove token from localStorage on logout
+            localStorage.removeItem('token');
         },
     },
     extraReducers: (builder) => {
