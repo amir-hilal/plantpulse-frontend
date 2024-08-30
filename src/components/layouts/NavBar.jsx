@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import emptyProfilePicture from '../../assets/images/empty-profile.png';
 import logo from '../../assets/images/Logo.png';
-import { logout } from '../../features/auth/authSlice';
+import { logoutUser } from '../../features/auth/authSlice';
 import { closeMenu, openMenu } from '../../features/ui/uiSlice';
-import routes from '../../routes'
+import routes from '../../routes';
 const NavBar = () => {
   const isMenuOpen = useSelector((state) => state.ui.isMenuOpen);
   const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
@@ -23,7 +23,7 @@ const NavBar = () => {
 
   const utilitiesItems = [
     { label: 'Flora', path: routes.flora },
-    { label: 'Calendar', path: routes.calendar , disabled: !isLoggedIn },
+    { label: 'Calendar', path: routes.calendar, disabled: !isLoggedIn },
     { label: 'Tutorials', path: routes.tutorials },
   ];
 
@@ -314,7 +314,8 @@ const NavBar = () => {
                           item.disabled
                             ? 'text-grey'
                             : 'text-primary hover:bg-primary hover:text-tint-5'
-                        }`}                        disabled={item.disabled}
+                        }`}
+                        disabled={item.disabled}
                       >
                         {item.label}
                       </button>
@@ -373,12 +374,12 @@ const NavBar = () => {
               <>
                 <button
                   onClick={() => {
-                    dispatch(logout());
+                    dispatch(logoutUser());
                     navigate(routes.login);
                     toggleMenu();
                   }}
                   className="w-full bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2 pl-4 font-16 text-left cursor-pointer"
-                  >
+                >
                   Logout
                 </button>
               </>
