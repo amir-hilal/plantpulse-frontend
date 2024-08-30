@@ -145,7 +145,7 @@ const RegisterPage = () => {
             />
           </div>
 
-          <button type="submit" className="p-button w-full flex align-items-center justify-content-center">
+          <button type="submit" className="p-button text-xs md:text-base w-full flex align-items-center justify-content-center">
             {isLoading ? (
               <Loading type="spin" color="#fff" height={15} width={15} />
             ) : (
@@ -153,7 +153,7 @@ const RegisterPage = () => {
             )}
           </button>
           <div class="field col-12 flex p-0">
-            <p className="font-15 text-grey cursor-pointer">
+            <p className="font-15 text-grey cursor-pointer text-xs md:text-base">
               Already have an account? <Link to="/login">Log In</Link>
             </p>
           </div>

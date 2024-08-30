@@ -93,7 +93,7 @@ const LoginPage = () => {
               Forgot Password?
             </Link>
           </div>
-          <button type="submit" className="p-button w-full flex align-items-center justify-content-center">
+          <button type="submit" className="p-button  text-xs md:text-base w-full flex align-items-center justify-content-center cursor-pointer">
             {isLoading ? (
               <Loading type="spin" color="#fff" height={15} width={15} />
             ) : (

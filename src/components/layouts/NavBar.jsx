@@ -377,8 +377,8 @@ const NavBar = () => {
                     navigate(routes.login);
                     toggleMenu();
                   }}
-                  className="bg-primary text-tint-5 px-4 py-2 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
-                >
+                  className="w-full bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2 pl-4 font-16 text-left cursor-pointer"
+                  >
                   Logout
                 </button>
               </>
@@ -389,7 +389,7 @@ const NavBar = () => {
                     navigate(routes.login);
                     toggleMenu();
                   }}
-                  className="bg-primary text-tint-5 px-4 py-2 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
+                  className="text-tint-5  font-16 bg-primary hover:bg-tint-4  px-4 py-2 border-round mb-2 w-full text-left border-none  cursor-pointer"
                 >
                   Login
                 </button>
@@ -398,7 +398,7 @@ const NavBar = () => {
                     navigate(routes.register);
                     toggleMenu();
                   }}
-                  className="bg-tint-5 text-primary px-4 py-2 border-round w-full text-left border-none hover:bg-tint-4 cursor-pointer"
+                  className="bg-tint-5  font-16 text-primary  hover:bg-tint-4 px-4 py-2 border-round w-full text-left border-none  cursor-pointer"
                 >
                   Register
                 </button>
