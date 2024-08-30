@@ -210,13 +210,13 @@ const NavBar = () => {
           <>
             <button
               onClick={() => navigate(routes.login)}
-              className="bg-primary text-tint-5 px-4 py-2 border-round mr-2 border-none hover:bg-tint-4"
+              className="bg-primary text-tint-5 px-4 py-2 border-round mr-2 border-none hover:bg-tint-4 cursor-pointer"
             >
               Login
             </button>
             <button
               onClick={() => navigate(routes.register)}
-              className="bg-tint-5 text-primary px-4 py-2 border-round border-none hover:bg-tint-4"
+              className="bg-tint-5 text-primary px-4 py-2 border-round border-none hover:bg-tint-4 cursor-pointer"
             >
               Register
             </button>
