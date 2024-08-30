@@ -8,6 +8,7 @@ import LandingPage from './views/LandingPage';
 import LoginPage from './views/LoginPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
+import routes from './routes';
 
 function App() {
   const dispatch = useDispatch();
@@ -30,16 +31,16 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path={routes.login} element={<LoginPage />} />
+        <Route path={routes.register} element={<RegisterPage />} />
 
         <Route
           path="/*"
           element={
             <MainLayout>
               <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/profile/:username" element={<ProfilePage />} />
+                <Route path={routes.home} element={<LandingPage />} />
+                <Route path={routes.profile()} element={<ProfilePage />} />
                 {/* <Route path="/home" element={<HomePage />} />
                   <Route path="/my-gardens" element={<MyGardenPage />} />
                   <Route path="/plant-details" element={<PlantDetailsPage />} />

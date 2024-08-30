@@ -5,7 +5,7 @@ import emptyProfilePicture from '../../assets/images/empty-profile.png';
 import logo from '../../assets/images/Logo.png';
 import { logout } from '../../features/auth/authSlice';
 import { closeMenu, openMenu } from '../../features/ui/uiSlice';
-
+import routes from '../../routes'
 const NavBar = () => {
   const isMenuOpen = useSelector((state) => state.ui.isMenuOpen);
   const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
@@ -17,19 +17,19 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   const menuItems = [
-    { label: 'Home', path: '/home' },
-    { label: 'My Gardens', path: '/my-gardens', disabled: !isLoggedIn },
+    { label: 'Home', path: routes.home },
+    { label: 'My Gardens', path: routes.myGardens, disabled: !isLoggedIn },
   ];
 
   const utilitiesItems = [
-    { label: 'Flora', path: '/flora' },
-    { label: 'Calendar', path: '/calendar', disabled: !isLoggedIn },
-    { label: 'Tutorials', path: '/tutorials' },
+    { label: 'Flora', path: routes.flora },
+    { label: 'Calendar', path: routes.calendar , disabled: !isLoggedIn },
+    { label: 'Tutorials', path: routes.tutorials },
   ];
 
   const communityItems = [
-    { label: 'Feed', path: '/community/feed', disabled: !isLoggedIn },
-    { label: 'Chats', path: '/community/chats', disabled: !isLoggedIn },
+    { label: 'Feed', path: routes.community_feed, disabled: !isLoggedIn },
+    { label: 'Chats', path: routes.community_chats, disabled: !isLoggedIn },
   ];
 
   const toggleMenu = () => {
@@ -89,7 +89,7 @@ const NavBar = () => {
         alt="App Logo"
         height={40}
         className="cursor-pointer"
-        onClick={!isMenuOpen ? () => navigate('/') : () => {}}
+        onClick={!isMenuOpen ? () => navigate(routes.home) : () => {}}
       />
       <ul className="hidden lg:flex list-none m-0 p-0">
         {menuItems.map((item, index) => (
@@ -203,19 +203,19 @@ const NavBar = () => {
               }
               alt="Profile"
               className="h-2rem h-2rem border-circle cursor-pointer"
-              onClick={() => navigate('/profile')}
+              onClick={() => navigate(routes.profile(userProfile.username))}
             />
           </>
         ) : (
           <>
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate(routes.login)}
               className="bg-primary text-tint-5 px-4 py-2 border-round mr-2 border-none hover:bg-tint-4"
             >
               Login
             </button>
             <button
-              onClick={() => navigate('/register')}
+              onClick={() => navigate(routes.register)}
               className="bg-tint-5 text-primary px-4 py-2 border-round border-none hover:bg-tint-4"
             >
               Register
@@ -257,7 +257,7 @@ const NavBar = () => {
                   alt="Profile"
                   className="h-2rem h-2rem border-circle cursor-pointer"
                   onClick={() => {
-                    navigate('/profile');
+                    navigate(routes.profile(userProfile.username));
                     toggleMenu();
                   }}
                 />
@@ -370,7 +370,7 @@ const NavBar = () => {
                 <button
                   onClick={() => {
                     dispatch(logout());
-                    navigate('/login');
+                    navigate(routes.login);
                     toggleMenu();
                   }}
                   className="bg-primary text-tint-5 px-4 py-2 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
@@ -382,7 +382,7 @@ const NavBar = () => {
               <>
                 <button
                   onClick={() => {
-                    navigate('/login');
+                    navigate(routes.login);
                     toggleMenu();
                   }}
                   className="bg-primary text-tint-5 px-4 py-2 border-round mb-2 w-full text-left border-none hover:bg-tint-4 cursor-pointer"
@@ -391,7 +391,7 @@ const NavBar = () => {
                 </button>
                 <button
                   onClick={() => {
-                    navigate('/register');
+                    navigate(routes.register);
                     toggleMenu();
                   }}
                   className="bg-tint-5 text-primary px-4 py-2 border-round w-full text-left border-none hover:bg-tint-4 cursor-pointer"
