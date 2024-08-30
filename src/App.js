@@ -33,8 +33,22 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path={routes.login} element={<LoginPage />} />
-        <Route path={routes.register} element={<RegisterPage />} />
+        <Route
+          path={routes.login}
+          element={
+            <Guard authRequired={false} redirectPath={routes.home}>
+              <LoginPage />
+            </Guard>
+          }
+        />
+        <Route
+          path={routes.register}
+          element={
+            <Guard authRequired={false} redirectPath={routes.home}>
+              <RegisterPage />
+            </Guard>
+          }
+        />
 
         <Route
           path="/*"
@@ -42,11 +56,18 @@ function App() {
             <MainLayout>
               <Routes>
                 <Route path={routes.home} element={<LandingPage />} />
-                <Route path={routes.profile()} element={<ProfilePage />} />
+                <Route
+                  path={routes.profile()}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <ProfilePage />
+                    </Guard>
+                  }
+                />
                 <Route
                   path={routes.myGardens}
                   element={
-                    <Guard>
+                    <Guard authRequired={true} redirectPath={routes.home}>
                       <MyGardenPage />
                     </Guard>
                   }
