@@ -53,15 +53,20 @@ const ProfilePage = () => {
       </div>
     );
   }
-
+  console.log(profileData)
   return (
     <div className="flex align-items-center flex-column">
       <ProfileHeader
-        profilePicture={profileData.profile_photo_url}
-        coverPhoto={profileData.cover_photo_url}
-        firstName={profileData.first_name}
-        lastName={profileData.last_name}
+        profile_photo_url={profileData.profile_photo_url}
+        cover_photo_url={profileData.cover_photo_url}
+        first_name={profileData.first_name}
+        last_name={profileData.last_name}
+        email={profileData.email}
+        birthday={profileData.birthday}
+        address={profileData.address}
+        about={profileData.about}
         username={profileData.username}
+        phone_number={profileData.phone_number}
         isOwner={isOwner}
       />
       <div className="flex flex-column sm:flex-row w-full md:w-10">
@@ -70,7 +75,7 @@ const ProfilePage = () => {
           <AboutSection />
         </div>
         {/* Post section (to be implemented later) */}
-        <div className="sm:w-9 h-3rem">
+        <div className="w-full h-3rem">
           <div className="bg-primary w-full h-3">
             <p>Posts</p>
           </div>

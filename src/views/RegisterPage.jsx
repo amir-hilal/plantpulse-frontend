@@ -39,8 +39,8 @@ const RegisterPage = () => {
 
     try {
       const response = await api.post('/register', {
-        first_name: formData.firstName,
-        last_name: formData.lastName,
+        firstname: formData.firstName,
+        lastname: formData.lastName,
         username: formData.username,
         email: formData.email,
         password: formData.password,
@@ -85,11 +85,11 @@ const RegisterPage = () => {
               value={formData.firstName}
               onChange={handleChange}
               required
-              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
 
-          <div class="field col-12 md:col-6 flex p-0 md:pl-1">
+          <div className="field col-12 md:col-6 flex p-0 md:pl-1">
             <input
               type="text"
               name="lastName"
@@ -97,10 +97,10 @@ const RegisterPage = () => {
               value={formData.lastName}
               onChange={handleChange}
               required
-              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
-          <div class="field col-12 flex p-0">
+          <div className="field col-12 flex p-0">
             <input
               type="text"
               name="username"
@@ -108,10 +108,10 @@ const RegisterPage = () => {
               value={formData.username}
               onChange={handleChange}
               required
-              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
-          <div class="field col-12 flex p-0">
+          <div className="field col-12 flex p-0">
             <input
               type="email"
               name="email"
@@ -119,10 +119,10 @@ const RegisterPage = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
-          <div class="field col-12 flex p-0">
+          <div className="field col-12 flex p-0">
             <input
               type="password"
               name="password"
@@ -130,10 +130,10 @@ const RegisterPage = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
-          <div class="field col-12 flex p-0">
+          <div className="field col-12 flex p-0">
             <input
               type="password"
               name="password_confirmation"
@@ -141,18 +141,21 @@ const RegisterPage = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              class="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
             />
           </div>
 
-          <button type="submit" className="p-button text-xs md:text-base w-full flex align-items-center justify-content-center">
+          <button
+            type="submit"
+            className="p-button text-xs md:text-base w-full flex align-items-center justify-content-center"
+          >
             {isLoading ? (
               <Loading type="spin" color="#fff" height={15} width={15} />
             ) : (
               'Sign Up'
             )}
           </button>
-          <div class="field col-12 flex p-0">
+          <div className="field col-12 flex p-0">
             <p className="font-15 text-grey cursor-pointer text-xs md:text-base">
               Already have an account? <Link to="/login">Log In</Link>
             </p>

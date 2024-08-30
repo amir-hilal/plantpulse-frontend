@@ -4,23 +4,30 @@ import emptyProfilePicture from '../../assets/images/empty-profile.png';
 import EditProfileModal from './EditProfileModal';
 
 const ProfileHeader = ({
-  profilePicture,
-  coverPhoto,
-  firstName,
-  lastName,
+  profile_photo_url,
+  cover_photo_url,
+  first_name,
+  last_name,
+  phone_number,
   username,
+  email,
+  about,
+  address,
+  birthday,
   isOwner,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  if (!profile_photo_url) {
+    profile_photo_url = emptyProfilePicture
+  }
   return (
     <div className="profile-header flex flex-column align-items-center w-full md:w-10">
       {/* Cover Photo */}
       <div
         className="relative cover-photo h-10rem bg-light-grey border-noround md:border-round-lg border-noround-bottom w-full"
         style={{
-          backgroundImage: `url(${coverPhoto})`,
-          backgroundSize: 'cover', // Ensure the cover photo is displayed correctly
+          backgroundImage: `url(${cover_photo_url})`,
+          backgroundSize: 'cover',
         }}
       >
         <button className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-content-center align-items-center">
@@ -33,14 +40,14 @@ const ProfileHeader = ({
       <div className="profile-info flex bg-tint-5 border-noround md:border-round-xl border-noround-top w-full">
         <div className="relative flex align-items-center w-full pt-7 px-4 pb-2 sm:p-4 justify-content-between">
           <img
-            src={profilePicture ? profilePicture : emptyProfilePicture}
+            src={profile_photo_url}
             alt="Profile"
             className="absolute profile-picture-position h-7rem w-7rem border-circle shadow-1"
           />
           <div className="w-0 md:w-3 "></div>
           <div className="absolute left-38 md:static translate-x-0">
             <h2 className="text-xl text-primary m-0">
-              {firstName} {lastName}
+              {first_name} {last_name}
             </h2>
             <p className="text-secondary m-0 text-center sm:text-left">
               {username}
@@ -64,11 +71,16 @@ const ProfileHeader = ({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           userProfile={{
-            firstName,
-            lastName,
+            first_name,
+            last_name,
             username,
-            profilePicture,
-            coverPhoto,
+            phone_number,
+            email,
+            about,
+            birthday,
+            address,
+            profile_photo_url,
+            cover_photo_url,
           }}
         />
       )}
