@@ -1,6 +1,7 @@
-import React from 'react';
-import emptyProfilePicture from '../../assets/images/empty-profile.png';
+import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
+import emptyProfilePicture from '../../assets/images/empty-profile.png';
+import EditProfileModal from './EditProfileModal';
 
 const ProfileHeader = ({
   profilePicture,
@@ -8,7 +9,10 @@ const ProfileHeader = ({
   firstName,
   lastName,
   username,
+  isOwner,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="profile-header flex flex-column align-items-center w-full md:w-10">
       {/* Cover Photo */}
@@ -34,20 +38,40 @@ const ProfileHeader = ({
             className="absolute profile-picture-position h-7rem w-7rem border-circle shadow-1"
           />
           <div className="w-0 md:w-3 "></div>
-          <div className='absolute left-38 md:static translate-x-0'>
+          <div className="absolute left-38 md:static translate-x-0">
             <h2 className="text-xl text-primary m-0">
               {firstName} {lastName}
             </h2>
-            <p className="text-secondary m-0 text-center sm:text-left">{username}</p>
+            <p className="text-secondary m-0 text-center sm:text-left">
+              {username}
+            </p>
           </div>
           <div className="ml-2 ml-auto">
-            <button className="sm:w-9rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center">
+            <button
+              className="sm:w-9rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+              onClick={() => setIsModalOpen(true)}
+            >
               <span className="hidden sm:block">Edit Profile</span>
               <FaEdit className="block sm:hidden text-xl" />
             </button>
           </div>
         </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      {isOwner && (
+        <EditProfileModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          userProfile={{
+            firstName,
+            lastName,
+            username,
+            profilePicture,
+            coverPhoto,
+          }}
+        />
+      )}
     </div>
   );
 };
