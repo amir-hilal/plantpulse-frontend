@@ -39,7 +39,7 @@ function App() {
             <MainLayout>
               <Routes>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/profile/:username" element={<ProfilePage />} />
                 {/* <Route path="/home" element={<HomePage />} />
                   <Route path="/my-gardens" element={<MyGardenPage />} />
                   <Route path="/plant-details" element={<PlantDetailsPage />} />
