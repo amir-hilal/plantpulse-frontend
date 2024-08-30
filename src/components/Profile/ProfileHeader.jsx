@@ -10,7 +10,7 @@ const ProfileHeader = ({
   username,
 }) => {
   return (
-    <div className="profile-header flex flex-column align-items-center w-full md:w-9">
+    <div className="profile-header flex flex-column align-items-center w-full md:w-10">
       {/* Cover Photo */}
       <div
         className="relative cover-photo h-10rem bg-light-grey border-noround md:border-round-lg border-noround-bottom w-full"

@@ -63,13 +63,13 @@ const ProfilePage = () => {
                 lastName={profileData.last_name}
                 username={profileData.username}
             />
-            <div className="flex flex-column sm:flex-row w-full md:w-9">
+            <div className="flex flex-column sm:flex-row w-full md:w-10">
                 {/* About section */}
-                <div className="sm:w-4 flex justify-content-center">
+                <div className="sm:w-auto flex justify-content-center">
                     <AboutSection />
                 </div>
                 {/* Post section (to be implemented later) */}
-                <div className="sm:w-8 h-3rem">
+                <div className="sm:w-9 h-3rem">
                     <div className='bg-primary w-full h-3'><p>Posts</p></div>
                     {/* Placeholder for posts */}
                 </div>
