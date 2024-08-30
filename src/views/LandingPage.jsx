@@ -25,7 +25,7 @@ const LandingPage = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="w-8 md:w-7 lg:w-5 mt-2 md:mt-0">
+                    <div className="w-8 md:w-7 lg:w-5 xl:w-3 mt-2 md:mt-0">
                         <img src={image}  alt="Gardening" className="w-full rounded-lg shadow-lg" />
                     </div>
                 </div>
