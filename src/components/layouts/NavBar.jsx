@@ -134,7 +134,7 @@ const NavBar = () => {
                 >
                   <button
                     onClick={() => handleNavigation(item.path, item.disabled)}
-                    className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                    className={`py-2 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
                       item.disabled
                         ? 'text-grey'
                         : 'text-primary hover:bg-primary hover:text-tint-5'
@@ -175,7 +175,7 @@ const NavBar = () => {
                 >
                   <button
                     onClick={() => handleNavigation(item.path, item.disabled)}
-                    className={` py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                    className={` py-2 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
                       item.disabled
                         ? 'text-grey'
                         : 'text-primary hover:bg-primary hover:text-tint-5'
@@ -310,7 +310,11 @@ const NavBar = () => {
                         onClick={() =>
                           handleNavigation(item.path, item.disabled)
                         }
-                        className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-primary hover:bg-primary hover:text-tint-5`}
+                        className={`py-2 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                          item.disabled
+                            ? 'text-grey'
+                            : 'text-primary hover:bg-primary hover:text-tint-5'
+                        }`}                        disabled={item.disabled}
                       >
                         {item.label}
                       </button>
@@ -347,7 +351,7 @@ const NavBar = () => {
                         onClick={() =>
                           handleNavigation(item.path, item.disabled)
                         }
-                        className={`py-3 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                        className={`py-2 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
                           item.disabled
                             ? 'text-grey'
                             : 'text-primary hover:bg-primary hover:text-tint-5'
