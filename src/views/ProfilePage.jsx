@@ -68,6 +68,7 @@ const ProfilePage = () => {
         username={profileData.username}
         phone_number={profileData.phone_number}
         isOwner={isOwner}
+        gender={profileData.gender}
       />
       <div className="flex flex-column sm:flex-row w-full md:w-10">
         {/* About section */}

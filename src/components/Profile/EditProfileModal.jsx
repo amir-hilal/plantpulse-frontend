@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
+import { useDispatch } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { login } from '../../features/auth/authSlice';
+import api from '../../services/api';
 
 const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -22,7 +28,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
         last_name: userProfile.last_name || '',
         phone_number: userProfile.phone_number || '',
         address: userProfile.address || '',
-        birthday: userProfile.birthday || '',
+        birthday: userProfile.birthday ? new Date(userProfile.birthday).toISOString().split('T')[0] : '',
         gender: userProfile.gender || '',
         about: userProfile.about || '',
         profile_photo_url: userProfile.profile_photo_url || '',
@@ -43,19 +49,36 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    try {
+      const response = await api.put(
+        `/users/${userProfile.username}`,
+        formData
+      );
+
+      if (response.status === 200) {
+        dispatch(login(response.data.user));
+        toast.success('Profile updated successfully');
+        onClose();
+      }
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.error || 'Failed to update profile');
+      } else {
+        toast.error('An error occurred. Please try again later.');
+      }
+    }
   };
-
   if (!isOpen) return null;
-
+  console.log(formData.gender)
   return (
     <div
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
+      <ToastContainer />
+
       <div className="relative bg-white border-round-xl p-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-x-auto md:overflow-hidden h-30rem flex justify-content-center align-items-center">
         <button
           onClick={onClose}
@@ -141,9 +164,9 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                   <option value="" disabled>
                     Gender
                   </option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
                 </select>
                 <IoIosArrowDown className="absolute dropdown-arrow-position pointer-events-none text-color" />
               </div>

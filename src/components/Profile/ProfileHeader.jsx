@@ -10,6 +10,7 @@ const ProfileHeader = ({
   last_name,
   phone_number,
   username,
+  gender,
   email,
   about,
   address,
@@ -81,6 +82,7 @@ const ProfileHeader = ({
             address,
             profile_photo_url,
             cover_photo_url,
+            gender
           }}
         />
       )}
