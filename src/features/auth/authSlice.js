@@ -23,19 +23,6 @@ export const initializeUser = createAsyncThunk(
   }
 );
 
-// Async thunk for logging out the user
-export const logoutUser = createAsyncThunk(
-  'auth/logoutUser',
-  async (_, { dispatch, rejectWithValue }) => {
-    try {
-      await api.post('/logout');
-      dispatch(logout());
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
-);
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -64,14 +51,6 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.userProfile = null;
         state.loading = false;
-      })
-      .addCase(logoutUser.fulfilled, (state) => {
-        state.isLoggedIn = false;
-        state.userProfile = null;
-        state.loading = false;
-      })
-      .addCase(logoutUser.rejected, (state, action) => {
-        console.error('Logout failed:', action.payload);
       });
   },
 });
