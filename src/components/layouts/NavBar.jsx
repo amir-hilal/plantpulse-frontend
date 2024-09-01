@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import emptyProfilePicture from '../../assets/images/empty-profile.png';
 import logo from '../../assets/images/Logo.png';
 import { logout } from '../../features/auth/authSlice';
 import { closeMenu, openMenu } from '../../features/ui/uiSlice';
-import routes from '../../routes'
+import routes from '../../routes';
 const NavBar = () => {
   const isMenuOpen = useSelector((state) => state.ui.isMenuOpen);
   const [isUtilitiesOpen, setIsUtilitiesOpen] = useState(false);
@@ -23,7 +22,7 @@ const NavBar = () => {
 
   const utilitiesItems = [
     { label: 'Flora', path: routes.flora },
-    { label: 'Calendar', path: routes.calendar , disabled: !isLoggedIn },
+    { label: 'Calendar', path: routes.calendar, disabled: !isLoggedIn },
     { label: 'Tutorials', path: routes.tutorials },
   ];
 
@@ -196,11 +195,7 @@ const NavBar = () => {
             <i className="pt-1 pi pi-bell text-white text-2xl mr-4 cursor-pointer"></i>
 
             <img
-              src={
-                userProfile.profile_photo_url
-                  ? userProfile.profile_photo_url
-                  : emptyProfilePicture
-              }
+              src={userProfile.profile_photo_url}
               alt="Profile"
               className="h-2rem h-2rem border-circle cursor-pointer"
               onClick={() => navigate(routes.profile(userProfile.username))}
@@ -249,11 +244,7 @@ const NavBar = () => {
               <div className="flex align-items-center justify-content-end">
                 <i className="pt-1 pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
                 <img
-                  src={
-                    userProfile.profile_photo_url
-                      ? userProfile.profile_photo_url
-                      : emptyProfilePicture
-                  }
+                  src={userProfile.profile_photo_url}
                   alt="Profile"
                   className="h-2rem h-2rem border-circle cursor-pointer"
                   onClick={() => {
@@ -314,7 +305,8 @@ const NavBar = () => {
                           item.disabled
                             ? 'text-grey'
                             : 'text-primary hover:bg-primary hover:text-tint-5'
-                        }`}                        disabled={item.disabled}
+                        }`}
+                        disabled={item.disabled}
                       >
                         {item.label}
                       </button>
@@ -378,7 +370,7 @@ const NavBar = () => {
                     toggleMenu();
                   }}
                   className="w-full bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2 pl-4 font-16 text-left cursor-pointer"
-                  >
+                >
                   Logout
                 </button>
               </>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
-import emptyProfilePicture from '../../assets/images/empty-profile.png';
 import EditProfileModal from './EditProfileModal';
 
 const ProfileHeader = ({
@@ -18,9 +17,7 @@ const ProfileHeader = ({
   isOwner,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  if (!profile_photo_url) {
-    profile_photo_url = emptyProfilePicture
-  }
+
   return (
     <div className="profile-header flex flex-column align-items-center w-full md:w-10">
       {/* Cover Photo */}
@@ -82,7 +79,7 @@ const ProfileHeader = ({
             address,
             profile_photo_url,
             cover_photo_url,
-            gender
+            gender,
           }}
         />
       )}

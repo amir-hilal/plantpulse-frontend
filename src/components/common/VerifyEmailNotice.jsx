@@ -22,7 +22,7 @@ const VerifyEmailNotice = () => {
   if (user && !user.email_verified_at) {
     return (
       <div className="bg-warning text-center py-1 px-3 border-round my-1 mx-3 flex justify-content-between align-items-center">
-        <p className='m-0'>Your email is not verified. Please check your email to verify your account.</p>
+        <p className='m-0 text-left'>Your email is not verified. Please check your email to verify your account.</p>
         <button
           onClick={handleResendVerification}
           className="bg-primary border-round border-solid border-primary hover:bg-primary-reverse cursor-pointer py-2 px-4"
