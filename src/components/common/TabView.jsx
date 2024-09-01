@@ -9,9 +9,9 @@ const TabView = ({ tabs }) => {
         {tabs.map((tab, index) => (
           <button
             key={index}
-            className={`tab-button p-2 ${
-              activeTab === index ? 'bg-primary text-tint-5' : 'bg-tint-5 text-primary'
-            } border-none border-round cursor-pointer w-full`}
+            className={`tab-button p-2 bg-white w-3 ${
+              activeTab === index ? 'border-bottom-2 text-primary border-primary font-bold' : ' text-primary'
+            } border-none cursor-pointer w-full`}
             onClick={() => setActiveTab(index)}
           >
             {tab.label}

@@ -14,15 +14,15 @@ const AboutSection = () => {
 
   return (
     <div
-      className="text-sm md:text-base flex flex-column align-items-center sm:align-items-start mt-2   md:mt-4  text-xs md:text-base"
+      className="text-sm md:text-base flex flex-column align-items-center sm:align-items-start mt-2     text-xs md:text-base"
       style={{ width: '100%', maxWidth: '300px' }}
     >
+      <h2 className="text-primary ml-1 md:ml-0">About</h2>
       {user.about && (
         <div className="flex align-items-center  ml-1 md:ml-0">
-          <p className='text-primary mr-2'>{user.about}</p>
+          <p className="text-primary mr-2 my-0">{user.about}</p>
         </div>
       )}
-      <h2 className="text-primary ml-1 md:ml-0">About</h2>
 
       {user.gender && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">

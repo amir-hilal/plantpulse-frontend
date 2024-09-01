@@ -6,6 +6,7 @@ import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
 import { logout } from '../features/auth/authSlice';
 import api from '../services/api';
+import TabView from '../components/common/TabView';
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -13,6 +14,7 @@ const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
 
   const user = useSelector((state) => state.auth.userProfile);
 
@@ -53,7 +55,44 @@ const ProfilePage = () => {
       </div>
     );
   }
-  console.log(profileData)
+
+  // Define tabs for the TabView component
+  const tabs = [
+    {
+      label: 'My Posts',
+      content: (
+        <div>
+          {isOwner && (
+            <div
+              className="bg-tint-5 border-round p-3 flex align-items-center cursor-pointer"
+              onClick={() => setIsModalOpen(true)} // Open modal on click
+            >
+              <img
+                src={user.profile_photo_url}
+                alt="Profile"
+                className="h-3rem w-3rem border-circle mr-3"
+              />
+              <p className="m-0 text-primary">Add new post...</p>
+            </div>
+          )}
+          {/* Placeholder for posts */}
+          <div className="mt-4">
+            {/* Your post items will go here */}
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: 'Friends',
+      content: (
+        <div>
+          {/* Placeholder for friends list */}
+          <p>Friends list will be shown here.</p>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="flex align-items-center flex-column">
       <ProfileHeader
@@ -74,13 +113,11 @@ const ProfilePage = () => {
         <div className="sm:w-auto flex justify-content-center">
           <AboutSection />
         </div>
-        {/* Post section to be implemented */}
-        <div className="w-full h-3rem">
-          <div className="bg-primary w-full h-3">
-            <p>Posts and friends</p>
-          </div>
+        <div className="w-full h-3rem mt-2">
+          <TabView tabs={tabs} />
         </div>
       </div>
+      {/* Modal for creating a new post will go here */}
     </div>
   );
 };
