@@ -11,8 +11,8 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     username: '',
     email: '',
     password: '',
@@ -39,8 +39,8 @@ const RegisterPage = () => {
 
     try {
       const response = await api.post('/register', {
-        firstname: formData.firstName,
-        lastname: formData.lastName,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
         username: formData.username,
         email: formData.email,
         password: formData.password,
@@ -80,9 +80,9 @@ const RegisterPage = () => {
           <div className=" field col-12 md:col-6 flex p-0 md:pr-1">
             <input
               type="text"
-              name="firstName"
+              name="first_name"
               placeholder="First Name"
-              value={formData.firstName}
+              value={formData.first_name}
               onChange={handleChange}
               required
               className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
@@ -92,9 +92,9 @@ const RegisterPage = () => {
           <div className="field col-12 md:col-6 flex p-0 md:pl-1">
             <input
               type="text"
-              name="lastName"
+              name="last_name"
               placeholder="Last Name"
-              value={formData.lastName}
+              value={formData.last_name}
               onChange={handleChange}
               required
               className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"

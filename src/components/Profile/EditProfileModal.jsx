@@ -97,7 +97,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
 
             <div className="formgrid grid ml-0 mr-0">
               <div className="field col-12 md:col-6 flex flex-column p-0 md:pr-1">
-                <label htmlFor="first_name">Firstname</label>
+                <label htmlFor="first_name">First Name</label>
                 <input
                   type="text"
                   name="first_name"
@@ -109,7 +109,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                 />
               </div>
               <div className="field col-12 md:col-6 flex flex-column p-0 md:pl-1">
-                <label htmlFor="last_name">Lastname</label>
+                <label htmlFor="last_name">Last Name</label>
                 <input
                   type="text"
                   name="last_name"
