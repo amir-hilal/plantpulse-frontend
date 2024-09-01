@@ -193,13 +193,16 @@ const NavBar = () => {
         {isLoggedIn ? (
           <>
             <i className="pt-1 pi pi-bell text-white text-2xl mr-4 cursor-pointer"></i>
-
-            <img
-              src={userProfile.profile_photo_url}
-              alt="Profile"
-              className="h-2rem h-2rem border-circle cursor-pointer"
-              onClick={() => navigate(routes.profile(userProfile.username))}
-            />
+            {userProfile.profile_photo_url ? (
+              <img
+                src={userProfile.profile_photo_url}
+                alt="Profile"
+                className="h-2rem h-2rem border-circle cursor-pointer"
+                onClick={() => navigate(routes.profile(userProfile.username))}
+              />
+            ) : (
+              <div className="h-2rem h-2rem border-circle bg-grey flex justify-content-center align-items-center"></div>
+            )}
           </>
         ) : (
           <>
@@ -243,15 +246,19 @@ const NavBar = () => {
             {isLoggedIn && (
               <div className="flex align-items-center justify-content-end">
                 <i className="pt-1 pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
-                <img
-                  src={userProfile.profile_photo_url}
-                  alt="Profile"
-                  className="h-2rem h-2rem border-circle cursor-pointer"
-                  onClick={() => {
-                    navigate(routes.profile(userProfile.username));
-                    toggleMenu();
-                  }}
-                />
+                {userProfile.profile_photo_url ? (
+                  <img
+                    src={userProfile.profile_photo_url}
+                    alt="Profile"
+                    className="h-2rem h-2rem border-circle cursor-pointer"
+                    onClick={() => {
+                      navigate(routes.profile(userProfile.username));
+                      toggleMenu();
+                    }}
+                  />
+                ) : (
+                  <div className="h-2rem h-2rem border-circle bg-grey flex justify-content-center align-items-center"></div>
+                )}
               </div>
             )}
           </div>
