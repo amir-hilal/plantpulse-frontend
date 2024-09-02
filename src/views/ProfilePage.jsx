@@ -1,15 +1,19 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import AddPostModal from '../components/common/AddPostModal';
+import PostCard from '../components/common/PostCard';
 import TabView from '../components/common/TabView';
 import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
-import PostCard from '../components/common/PostCard';
-import { fetchPostsByUsername, clearPosts } from '../features/community/postsSlice';
 import { logout } from '../features/auth/authSlice';
+import {
+  clearPosts,
+  fetchPostsByUsername,
+} from '../features/community/postsSlice';
 import api from '../services/api';
+import FriendsTab from '../components/common/FriendsTab';
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -21,7 +25,6 @@ const ProfilePage = () => {
   const posts = useSelector((state) => state.posts.posts);
   const postLoading = useSelector((state) => state.posts.loading);
   const noMorePosts = useSelector((state) => state.posts.noMorePosts);
-
   const user = useSelector((state) => state.auth.userProfile);
 
   useEffect(() => {
@@ -125,7 +128,7 @@ const ProfilePage = () => {
       label: 'Friends',
       content: (
         <div>
-          <p>Friends list will be shown here.</p>
+          <FriendsTab friends={profileData.friends || []} />
         </div>
       ),
     },
