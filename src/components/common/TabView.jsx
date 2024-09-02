@@ -18,7 +18,7 @@ const TabView = ({ tabs }) => {
           </button>
         ))}
       </div>
-      <div className="tab-content mt-4">
+      <div className="tab-content mt-2">
         {tabs[activeTab].content}
       </div>
     </div>
