@@ -151,7 +151,7 @@ const ProfilePage = () => {
         <div className="sm:w-auto flex justify-content-center">
           <AboutSection />
         </div>
-        <div className="w-full h-3rem mt-2">
+        <div className="w-full h-auto mt-2">
           <TabView tabs={tabs} />
         </div>
       </div>
