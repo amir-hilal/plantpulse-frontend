@@ -76,8 +76,7 @@ const ProfilePage = () => {
               <p className="m-0 text-primary">Add new post...</p>
             </div>
           )}
-          {/* Placeholder for posts */}
-          <div className="mt-4">{/* Your post items will go here */}</div>
+          <div className="mt-2">{/* Your post items will go here */}</div>
         </div>
       ),
     },
