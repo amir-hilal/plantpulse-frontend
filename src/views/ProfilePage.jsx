@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -6,6 +6,8 @@ import AddPostModal from '../components/common/AddPostModal';
 import TabView from '../components/common/TabView';
 import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
+import PostCard from '../components/common/PostCard';
+import { fetchPostsByUsername, clearPosts } from '../features/community/postsSlice';
 import { logout } from '../features/auth/authSlice';
 import api from '../services/api';
 
@@ -15,7 +17,10 @@ const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const posts = useSelector((state) => state.posts.posts);
+  const postLoading = useSelector((state) => state.posts.loading);
+  const noMorePosts = useSelector((state) => state.posts.noMorePosts);
 
   const user = useSelector((state) => state.auth.userProfile);
 
@@ -40,6 +45,30 @@ const ProfilePage = () => {
 
     fetchProfile();
   }, [username, user, dispatch]);
+
+  useEffect(() => {
+    if (isOwner) {
+      dispatch(clearPosts());
+      dispatch(fetchPostsByUsername({ username }));
+    }
+  }, [dispatch, username, isOwner]);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight ||
+      postLoading ||
+      noMorePosts
+    )
+      return;
+
+    dispatch(fetchPostsByUsername({ username, page: posts.length / 5 + 1 }));
+  }, [dispatch, username, posts.length, postLoading, noMorePosts]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   if (loading) {
     return (
@@ -76,7 +105,19 @@ const ProfilePage = () => {
               <p className="m-0 text-primary">Add new post...</p>
             </div>
           )}
-          <div className="mt-2">{/* Your post items will go here */}</div>
+          <div className="mt-2">
+            {posts.length > 0 ? (
+              posts.map((post) => <PostCard key={post.id} post={post} />)
+            ) : (
+              <p>No posts yet.</p>
+            )}
+          </div>
+          {postLoading && (
+            <div className="flex justify-content-center align-items-center my-4">
+              <Loading type="spin" color="#019444" height={30} width={30} />
+            </div>
+          )}
+          {noMorePosts && <p className="text-center">No more posts</p>}
         </div>
       ),
     },
@@ -84,7 +125,6 @@ const ProfilePage = () => {
       label: 'Friends',
       content: (
         <div>
-          {/* Placeholder for friends list */}
           <p>Friends list will be shown here.</p>
         </div>
       ),
