@@ -1,14 +1,25 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
-export const fetchPosts = createAsyncThunk(
-  'posts/fetchPosts',
+// Fetch posts by username
+export const fetchPostsByUsername = createAsyncThunk(
+  'posts/fetchPostsByUsername',
   async ({ username, page = 1 }, { rejectWithValue }) => {
     try {
-      const endpoint = username ? `/users/${username}/posts` : '/posts';
-      const response = await api.get(endpoint, {
-        params: { page },
-      });
+      const response = await api.get(`/posts/${username}?page=${page}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Fetch all posts (for a general feed)
+export const fetchAllPosts = createAsyncThunk(
+  'posts/fetchAllPosts',
+  async ({ page = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/posts?page=${page}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -22,31 +33,46 @@ const postsSlice = createSlice({
     posts: [],
     loading: false,
     error: null,
-    hasMore: true, // To track if there are more posts to load
+    noMorePosts: false,
   },
   reducers: {
-    resetPosts(state) {
+    clearPosts: (state) => {
       state.posts = [];
-      state.hasMore = true;
+      state.noMorePosts = false;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPosts.pending, (state) => {
+      .addCase(fetchPostsByUsername.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-      .addCase(fetchPosts.fulfilled, (state, action) => {
+      .addCase(fetchPostsByUsername.fulfilled, (state, action) => {
         state.loading = false;
         state.posts = [...state.posts, ...action.payload.data];
-        state.hasMore = action.payload.next_page_url !== null;
+        if (action.payload.data.length < 5) {
+          state.noMorePosts = true;
+        }
       })
-      .addCase(fetchPosts.rejected, (state, action) => {
+      .addCase(fetchPostsByUsername.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload || 'Error fetching posts';
+      })
+      .addCase(fetchAllPosts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAllPosts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.posts = [...state.posts, ...action.payload.data];
+        if (action.payload.data.length < 5) {
+          state.noMorePosts = true;
+        }
+      })
+      .addCase(fetchAllPosts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error fetching posts';
       });
   },
 });
 
-export const { resetPosts } = postsSlice.actions;
+export const { clearPosts } = postsSlice.actions;
 export default postsSlice.reducer;
