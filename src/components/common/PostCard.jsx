@@ -44,7 +44,7 @@ const PostCard = ({ post }) => {
             onClick={togglePopover}
           />
           {showPopover && (
-            <div className="absolute right-0 mt-2 bg-tint-5  border-round shadow-2 p-2 z-50 w-8rem">
+            <div className="absolute right-0 mt-2 bg-tint-5  border-round shadow-2 p-2  w-8rem">
               <button
                 className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-light-grey text-center"
                 onClick={handleCopyLink}

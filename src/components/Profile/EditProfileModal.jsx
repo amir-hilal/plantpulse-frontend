@@ -112,7 +112,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
+      className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center z-50"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
       <div className="relative bg-white border-round-xl p-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-x-auto md:overflow-hidden h-30rem flex justify-content-center align-items-center">
@@ -125,7 +125,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
 
         <form onSubmit={handleSubmit} className="flex flex-column mt-8 md:mt-0">
           <div className="flex flex-column sm:flex-row align-items-center mt-8 md:mt-0">
-            <div className="relative mr-0 mb-3 mt-8 sm:mt-0 sm:mr-5 sm:mb-0">
+            <div className="relative mr-0 mb-3 mt-8 sm:mt-0 sm:mr-5 sm:mb-0 flex flex-column">
               <img
                 src={formData.profile_photo_url}
                 alt="Profile"
@@ -136,6 +136,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                 accept="image/*"
                 className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer "
                 onChange={handleImageChange}
+                disabled={loading}
               />
               <button
                 type="button"

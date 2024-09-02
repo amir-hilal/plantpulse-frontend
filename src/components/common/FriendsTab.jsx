@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 
-const FriendsTab = ({ friends }) => {
+const FriendsTab = ({ friends, onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    const query = e.target.value;
+    setSearchQuery(query);
+    onSearch(query);
   };
 
   const filteredFriends = friends.filter((friend) =>
@@ -16,21 +18,21 @@ const FriendsTab = ({ friends }) => {
     <div className="w-full">
       <div className="flex align-items-center justify-content-between mb-3">
         {/* Search Bar */}
-        <div className="p-input-icon-left w-7 relative">
+        <div className="p-input-icon-left col-7 relative">
           <i className=" absolute pi pi-search ml-2 mt-2 text-grey text-sm"></i>
           <input
             type="text"
             value={searchQuery}
             onChange={handleSearchChange}
             placeholder="Search for your friends"
-            className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
+            className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round appearance-none outline-none focus:border-primary z-1"
           />
         </div>
 
         {/* Find New Friends Button */}
-        <button className="bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0">
-          <FaUsers className="mr-2" />
-          Find New Friends
+        <button className="col-3 text-sm bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0">
+          <FaUsers className=" w-2rem mr-2 " />
+          Connect
         </button>
       </div>
 
