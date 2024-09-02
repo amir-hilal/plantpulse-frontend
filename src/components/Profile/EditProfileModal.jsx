@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
+import Loading from 'react-loading';
 import { useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,6 +21,9 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
     profile_photo_url: '',
   });
 
+  const [imageFile, setImageFile] = useState(null); // For storing the selected image file
+  const [loading, setLoading] = useState(false); // For tracking loading state
+
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add('overflow-hidden');
@@ -28,7 +32,9 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
         last_name: userProfile.last_name || '',
         phone_number: userProfile.phone_number || '',
         address: userProfile.address || '',
-        birthday: userProfile.birthday ? new Date(userProfile.birthday).toISOString().split('T')[0] : '',
+        birthday: userProfile.birthday
+          ? new Date(userProfile.birthday).toISOString().split('T')[0]
+          : '',
         gender: userProfile.gender || '',
         about: userProfile.about || '',
         profile_photo_url: userProfile.profile_photo_url || '',
@@ -49,13 +55,43 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
     });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({
+        ...formData,
+        profile_photo_url: URL.createObjectURL(file), // Preview the image
+      });
+      setImageFile(file); // Store the file to upload later
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      const response = await api.put(
-        `/users/${userProfile.username}`,
-        formData
-      );
+      let profilePhotoUrl = formData.profile_photo_url;
+      if (imageFile) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', imageFile);
+        const uploadResponse = await api.post(
+          '/upload/profile-photo',
+          uploadFormData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        console.log(uploadResponse.data.url)
+        profilePhotoUrl = uploadResponse.data.url; // URL returned by the upload endpoint
+      }
+      console.log('now we will update profile')
+      const response = await api.put(`/users/${userProfile.username}`, {
+        ...formData,
+        profile_photo_url: profilePhotoUrl,
+      });
 
       if (response.status === 200) {
         dispatch(login(response.data.user));
@@ -68,10 +104,13 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
       } else {
         toast.error('An error occurred. Please try again later.');
       }
+    } finally {
+      setLoading(false);
     }
   };
+
   if (!isOpen) return null;
-  console.log(formData.gender)
+
   return (
     <div
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
@@ -89,11 +128,25 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
 
         <form onSubmit={handleSubmit} className="flex flex-column mt-8 md:mt-0">
           <div className="flex flex-column sm:flex-row align-items-center mt-8 md:mt-0">
-            <img
-              src={formData.profile_photo_url}
-              alt="Profile"
-              className="h-8rem w-8rem border-circle shadow-2 mr-0 mb-3 mt-8 sm:mt-0 sm:mr-5 sm:mb-0"
-            />
+            <div className="relative mr-0 mb-3 mt-8 sm:mt-0 sm:mr-5 sm:mb-0">
+              <img
+                src={formData.profile_photo_url}
+                alt="Profile"
+                className="h-8rem w-8rem border-circle shadow-2 "
+              />
+              <input
+                type="file"
+                accept="image/*"
+                className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer "
+                onChange={handleImageChange}
+              />
+              <button
+                type="button"
+                className="mt-2 w-full border-none bg-primary text-white border-round py-1 cursor-pointer"
+              >
+                {loading ? 'Uploading...' : 'Change Image'}
+              </button>
+            </div>
 
             <div className="formgrid grid ml-0 mr-0">
               <div className="field col-12 md:col-6 flex flex-column p-0 md:pr-1">
@@ -105,6 +158,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                   value={formData.first_name}
                   onChange={handleChange}
                   required
+                  disabled={loading}
                   className="bg-tint-5 text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-auto"
                 />
               </div>
@@ -117,6 +171,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                   value={formData.last_name}
                   onChange={handleChange}
                   required
+                  disabled={loading}
                   className="bg-tint-5 text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-auto"
                 />
               </div>
@@ -128,6 +183,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                   placeholder="Phone"
                   value={formData.phone_number}
                   onChange={handleChange}
+                  disabled={loading}
                   className="bg-tint-5 text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-auto"
                 />
               </div>
@@ -139,6 +195,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                   placeholder="Address"
                   value={formData.address}
                   onChange={handleChange}
+                  disabled={loading}
                   className="bg-tint-5 text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-auto"
                 />
               </div>
@@ -150,6 +207,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                   placeholder="Birthday"
                   value={formData.birthday}
                   onChange={handleChange}
+                  disabled={loading}
                   className="bg-tint-5 text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-auto"
                 />
               </div>
@@ -159,6 +217,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
+                  disabled={loading}
                   className="bg-tint-5 text-xs md:text-base text-color surface-overlay p-2 h-full border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-auto"
                 >
                   <option value="" disabled>
@@ -179,6 +238,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
                   rows="4"
                   value={formData.about}
                   onChange={handleChange}
+                  disabled={loading}
                   className="bg-tint-5 text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-auto"
                 ></textarea>
               </div>
@@ -187,9 +247,14 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
           <div className="flex justify-content-end mt-4">
             <button
               type="submit"
-              className="w-10rem border-none bg-primary text-white border-round py-2 cursor-pointer"
+              disabled={loading}
+              className="w-10rem border-none bg-primary text-white border-round py-2 cursor-pointer flex justify-content-center align-items-center"
             >
-              Save
+              {loading ? (
+                <Loading type="spin" color="#fff" height={20} width={20} />
+              ) : (
+                'Save'
+              )}
             </button>
           </div>
         </form>
