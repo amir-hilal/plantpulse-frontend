@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
@@ -72,7 +72,6 @@ const RegisterPage = () => {
         onClick={() => navigate('/')}
       />
       <div className=" flex flex-column align-items-center bg-tint-5 border-round-xl w-8">
-        <ToastContainer />
         <div className="flex flex-column align-items-center w-10">
           <h2 className="text-center text-secondary">Create New Account</h2>
         </div>

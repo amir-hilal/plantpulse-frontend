@@ -5,7 +5,7 @@ const TabView = ({ tabs }) => {
 
   return (
     <div className="tabview-container">
-      <div className="tab-buttons flex">
+      <div className="tab-buttons flex border-bottom-1 border-400">
         {tabs.map((tab, index) => (
           <button
             key={index}

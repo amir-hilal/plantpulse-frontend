@@ -3,7 +3,7 @@ import { FaTimes } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
 import Loading from 'react-loading';
 import { useDispatch } from 'react-redux';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { login } from '../../features/auth/authSlice';
 import api from '../../services/api';
@@ -21,8 +21,8 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
     profile_photo_url: '',
   });
 
-  const [imageFile, setImageFile] = useState(null); // For storing the selected image file
-  const [loading, setLoading] = useState(false); // For tracking loading state
+  const [imageFile, setImageFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -84,10 +84,9 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
             },
           }
         );
-        console.log(uploadResponse.data.url)
-        profilePhotoUrl = uploadResponse.data.url; // URL returned by the upload endpoint
+        profilePhotoUrl = uploadResponse.data.url;
       }
-      console.log('now we will update profile')
+      console.log('now we will update profile');
       const response = await api.put(`/users/${userProfile.username}`, {
         ...formData,
         profile_photo_url: profilePhotoUrl,
@@ -116,8 +115,6 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
-      <ToastContainer />
-
       <div className="relative bg-white border-round-xl p-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-x-auto md:overflow-hidden h-30rem flex justify-content-center align-items-center">
         <button
           onClick={onClose}

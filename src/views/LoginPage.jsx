@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
@@ -58,7 +58,6 @@ const LoginPage = () => {
         onClick={() => navigate('/')}
       />
       <div className=" flex flex-column align-items-center bg-tint-5 border-round-xl w-6 p-5">
-        <ToastContainer />
         <div className="flex flex-column align-items-center w-10">
           <h2 className="text-center text-secondary">Log in to PlantPulse</h2>
         </div>
@@ -93,7 +92,10 @@ const LoginPage = () => {
               Forgot Password?
             </Link>
           </div>
-          <button type="submit" className="p-button  text-xs md:text-base w-full flex align-items-center justify-content-center cursor-pointer">
+          <button
+            type="submit"
+            className="p-button  text-xs md:text-base w-full flex align-items-center justify-content-center cursor-pointer"
+          >
             {isLoading ? (
               <Loading type="spin" color="#fff" height={15} width={15} />
             ) : (
