@@ -27,7 +27,7 @@ const NavBar = () => {
   ];
 
   const communityItems = [
-    { label: 'Feed', path: routes.community_feed, disabled: !isLoggedIn },
+    { label: 'Posts', path: routes.community_posts, disabled: !isLoggedIn },
     { label: 'Chats', path: routes.community_chats, disabled: !isLoggedIn },
   ];
 

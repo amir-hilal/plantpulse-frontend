@@ -6,7 +6,7 @@ const routes = {
   tutorials: '/tutorials',
   flora: '/flora',
   calendar: '/calendar',
-  community_feed: '/community/feed',
+  community_posts: '/community/posts',
   community_chats: '/community/chats',
   profile: (username = ':username') => `/profile/${username}`,
   notFound: '*', // Fallback route for 404
