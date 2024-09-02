@@ -40,7 +40,11 @@ const AddPostModal = ({ isOpen, onClose }) => {
     formData.append('content', content);
 
     try {
-      const response = await api.post('/posts', formData);
+      const response = await api.post('/posts', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (response.status === 201) {
         toast.success('Post created successfully');
         onClose();
@@ -94,7 +98,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
                 <input
                   id="file-upload"
                   type="file"
-                  accept="image/jpeg, image/png, image/jpg" // Restrict file types
+                  accept="image/*"
                   onChange={handleFileChange}
                   className="hidden"
                 />
@@ -110,7 +114,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
                 )}
               </label>
               <small className="text-center mt-2">
-                Supported formats: JPEG, PNG, JPG
+                Supported formats: JPEG, PNG, JPG, GIF
               </small>
             </div>
           </div>
@@ -127,11 +131,17 @@ const AddPostModal = ({ isOpen, onClose }) => {
           <button
             type="submit"
             className={` text-white border-none border-round py-2 mt-2 w-full flex justify-content-center align-items-center ${
-              !title || !content || loading ? 'bg-green-400' : 'bg-primary cursor-pointer'
+              !title || !content || loading
+                ? 'bg-green-400'
+                : 'bg-primary cursor-pointer'
             } `}
-            disabled={!title || !content || loading} // Disable button if title or content is empty or loading is true
+            disabled={!title || !content || loading}
           >
-            {loading ? <Loading className="animate-spin mr-2" /> : 'Post'}
+            {loading ? (
+              <Loading type="spin" color="#fff" height={20} width={20} />
+            ) : (
+              'Post'
+            )}
           </button>
         </form>
       </div>
