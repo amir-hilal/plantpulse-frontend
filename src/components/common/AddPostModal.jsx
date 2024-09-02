@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import Loading from 'react-loading';
 import { toast } from 'react-toastify';
@@ -7,20 +7,9 @@ import api from '../../services/api';
 const AddPostModal = ({ isOpen, onClose }) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
-  const [content, setContent] = useState('');
-  const [loading, setLoading] = useState(false); 
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
-
-    return () => {
-      document.body.classList.remove('overflow-hidden');
-    };
-  }, [isOpen]);
+  const [title, setTitle] = useState(''); // State for the title
+  const [content, setContent] = useState(''); // State for the content
+  const [loading, setLoading] = useState(false); // Loading state
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -29,6 +18,10 @@ const AddPostModal = ({ isOpen, onClose }) => {
       const previewURL = URL.createObjectURL(selectedFile);
       setFilePreview(previewURL);
     }
+  };
+
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
   };
 
   const handleContentChange = (e) => {
@@ -43,6 +36,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
     if (file) {
       formData.append('file', file);
     }
+    formData.append('title', title);
     formData.append('content', content);
 
     try {
@@ -77,53 +71,67 @@ const AddPostModal = ({ isOpen, onClose }) => {
         >
           <FaTimes className="text-2xl text-secondary" />
         </button>
-        <h2 className="text-center">Add new Post</h2>
-        <form onSubmit={handleSubmit} className="flex flex-column mt-4">
-          <div className="flex flex-column align-items-center">
-            <label
-              htmlFor="file-upload"
-              className=" text-center cursor-pointer border-dotted border-2 border-primary"
-              style={{ padding: filePreview ? '1rem' : '7rem' }} // Conditional padding
-            >
-              <input
-                id="file-upload"
-                type="file"
-                accept="image/jpeg, image/png, image/jpg" // Restrict file types
-                onChange={handleFileChange}
-                className="hidden"
-                required
-              />
-              {filePreview ? (
-                <img
-                  src={filePreview}
-                  alt="Preview"
-                  className="border-round"
-                  style={{ maxHeight: '200px', maxWidth: '100%' }} // Limit height and width
-                />
-              ) : (
-                'Drag & drop files or Browse'
-              )}
-            </label>
-            <small className="text-center mt-2">
-              Supported formats: JPEG, PNG, JPG
-            </small>
+        <h2 className="text-center m-0">Add New Post</h2>
+        <form onSubmit={handleSubmit} className="flex flex-column mt-1">
+          <div className="flex flex-column mb-4">
+            <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={handleTitleChange}
+              className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              placeholder="Enter title"
+              required
+            />
           </div>
-          <textarea
-            placeholder="What's on your mind..."
-            value={content}
-            onChange={handleContentChange}
-            className="mt-4 bg-tint-5 text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary h-6rem"
-            required
-          />
+          <div className="flex flex-column mb-1">
+            <div className="flex flex-column align-items-center">
+              <label
+                htmlFor="file-upload"
+                className="text-center cursor-pointer border-dotted border-2 border-primary"
+                style={{ padding: filePreview ? '1rem' : '7rem' }} // Conditional padding
+              >
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept="image/jpeg, image/png, image/jpg" // Restrict file types
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                {filePreview ? (
+                  <img
+                    src={filePreview}
+                    alt="Preview"
+                    className="border-round"
+                    style={{ maxHeight: '200px', maxWidth: '100%' }} // Limit height and width
+                  />
+                ) : (
+                  'Drag & drop files or Browse'
+                )}
+              </label>
+              <small className="text-center mt-2">
+                Supported formats: JPEG, PNG, JPG
+              </small>
+            </div>
+          </div>
+          <div className="flex flex-column">
+            <textarea
+              id="content"
+              placeholder="What's on your mind..."
+              value={content}
+              onChange={handleContentChange}
+              className="mt-2 bg-tint-5 text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary h-6rem"
+              required
+            />
+          </div>
           <button
             type="submit"
-            className="bg-primary text-white border-none border-round py-2 mt-4 w-full flex justify-content-center align-items-center"
+            className={` text-white border-none border-round py-2 mt-2 w-full flex justify-content-center align-items-center ${
+              !title || !content || loading ? 'bg-green-400' : 'bg-primary cursor-pointer'
+            } `}
+            disabled={!title || !content || loading} // Disable button if title or content is empty or loading is true
           >
-            {loading ? (
-              <Loading type="spin" color="#fff" height={20} width={20} />
-            ) : (
-              'Post'
-            )}
+            {loading ? <Loading className="animate-spin mr-2" /> : 'Post'}
           </button>
         </form>
       </div>

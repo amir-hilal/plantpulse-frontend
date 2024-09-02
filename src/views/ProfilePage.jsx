@@ -57,7 +57,6 @@ const ProfilePage = () => {
     );
   }
 
-  // Define tabs for the TabView component
   const posts_tab_header = isOwner ? 'My Posts' : 'Posts';
   const tabs = [
     {
@@ -67,7 +66,7 @@ const ProfilePage = () => {
           {isOwner && (
             <div
               className="border-round p-3 flex align-items-center cursor-pointer"
-              onClick={() => setIsModalOpen(true)} // Open modal on click
+              onClick={() => setIsModalOpen(true)}
             >
               <img
                 src={user.profile_photo_url}
