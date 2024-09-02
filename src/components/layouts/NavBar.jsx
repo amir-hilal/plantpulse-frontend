@@ -197,11 +197,11 @@ const NavBar = () => {
               <img
                 src={userProfile.profile_photo_url}
                 alt="Profile"
-                className="h-2rem h-2rem border-circle cursor-pointer"
+                className="h-2rem w-2rem border-circle cursor-pointer"
                 onClick={() => navigate(routes.profile(userProfile.username))}
               />
             ) : (
-              <div className="h-2rem h-2rem border-circle bg-grey flex justify-content-center align-items-center"></div>
+              <div className="h-2rem w-2rem border-circle bg-grey flex justify-content-center align-items-center"></div>
             )}
           </>
         ) : (
@@ -250,14 +250,14 @@ const NavBar = () => {
                   <img
                     src={userProfile.profile_photo_url}
                     alt="Profile"
-                    className="h-2rem h-2rem border-circle cursor-pointer"
+                    className="h-2rem w-2rem border-circle cursor-pointer"
                     onClick={() => {
                       navigate(routes.profile(userProfile.username));
                       toggleMenu();
                     }}
                   />
                 ) : (
-                  <div className="h-2rem h-2rem border-circle bg-grey flex justify-content-center align-items-center"></div>
+                  <div className="h-2rem w-2rem border-circle bg-grey flex justify-content-center align-items-center"></div>
                 )}
               </div>
             )}
