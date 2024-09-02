@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import AddPostModal from '../components/common/AddPostModal';
+import TabView from '../components/common/TabView';
 import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
 import { logout } from '../features/auth/authSlice';
 import api from '../services/api';
-import TabView from '../components/common/TabView';
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -57,7 +58,7 @@ const ProfilePage = () => {
   }
 
   // Define tabs for the TabView component
-  const posts_tab_header = isOwner? 'My Posts': 'Posts'
+  const posts_tab_header = isOwner ? 'My Posts' : 'Posts';
   const tabs = [
     {
       label: posts_tab_header,
@@ -77,9 +78,7 @@ const ProfilePage = () => {
             </div>
           )}
           {/* Placeholder for posts */}
-          <div className="mt-4">
-            {/* Your post items will go here */}
-          </div>
+          <div className="mt-4">{/* Your post items will go here */}</div>
         </div>
       ),
     },
@@ -118,7 +117,10 @@ const ProfilePage = () => {
           <TabView tabs={tabs} />
         </div>
       </div>
-      {/* Modal for creating a new post will go here */}
+      <AddPostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
