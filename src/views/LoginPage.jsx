@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
 import api from '../services/api';
+import { ToastContainer } from 'react-toastify';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const LoginPage = () => {
 
     try {
       const response = await api.post('/login', {
-        email: formData.emailOrUsername,
+        email_or_username: formData.emailOrUsername,
         password: formData.password,
       });
       if (response.status === 200) {
@@ -110,6 +111,7 @@ const LoginPage = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

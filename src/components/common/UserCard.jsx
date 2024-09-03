@@ -11,14 +11,14 @@ const UserCard = ({ user }) => {
           className="h-3rem w-3rem border-circle mr-3"
         />
         <div className="flex-1">
-          <h3 className="m-0 text-primary">{user.name}</h3>
-          <p className="m-0 text-secondary">{user.username}</p>
+          <h3 className="m-0 text-base text-primary">{user.first_name} {user.last_name}</h3>
+          <p className="m-0 text-xs text-secondary">{user.username}</p>
         </div>
+        <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+          <FaUserPlus className="mr-2" />
+          Connect
+        </button>
       </div>
-      <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer w-full justify-content-center">
-        <FaUserPlus className="mr-2" />
-        Connect
-      </button>
     </div>
   );
 };

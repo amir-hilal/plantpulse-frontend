@@ -1,17 +1,25 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers, searchUsers, clearUsers } from '../features/users/usersSlice';
 import UserCard from '../components/common/UserCard';
-import { debounce } from 'lodash';
+import {
+  clearUsers,
+  fetchUsers,
+  searchUsers,
+} from '../features/users/usersSlice';
 
 const ConnectPage = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.users);
   const loading = useSelector((state) => state.users.loading);
   const noMoreUsers = useSelector((state) => state.users.noMoreUsers);
-  const nextPageUrlFriends = useSelector((state) => state.users.nextPageUrlFriends);
-  const nextPageUrlNonFriends = useSelector((state) => state.users.nextPageUrlNonFriends);
+  const nextPageUrlFriends = useSelector(
+    (state) => state.users.nextPageUrlFriends
+  );
+  const nextPageUrlNonFriends = useSelector(
+    (state) => state.users.nextPageUrlNonFriends
+  );
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -43,7 +51,14 @@ const ConnectPage = () => {
     if (nextPageUrlFriends || nextPageUrlNonFriends) {
       dispatch(fetchUsers({ page: users.length / 10 + 1 }));
     }
-  }, [dispatch, users.length, loading, noMoreUsers, nextPageUrlFriends, nextPageUrlNonFriends]);
+  }, [
+    dispatch,
+    users.length,
+    loading,
+    noMoreUsers,
+    nextPageUrlFriends,
+    nextPageUrlNonFriends,
+  ]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -55,28 +70,30 @@ const ConnectPage = () => {
   };
 
   return (
-    <div className="connect-page">
-      <div className="search-bar">
+    <div className="flex flex-column align-items-center">
+      <div className="p-input-icon-left col-7 relative">
+        <i className="absolute pi pi-search ml-2 mt-2 text-grey text-sm"></i>
         <input
           type="text"
-          placeholder="Search users..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="search-input bg-tint-5"
+          placeholder="Search for users"
+          className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
         />
-        <button className="search-button bg-primary text-white">
-          Search
-        </button>
       </div>
-      <div className="user-grid">
+      <div className="grid w-11 md:w-10">
         {users.length > 0 ? (
-          users.map((user) => <UserCard key={user.id} user={user} />)
+          users.map((user) => (
+            <div key={user.id} className="col-12 md:col-6">
+              <UserCard user={user} />
+            </div>
+          ))
         ) : (
-          <p>No users found...</p>
+          <div>{!loading && <p>No users found...</p>}</div>
         )}
       </div>
       {loading && (
-        <div className="loading">
+        <div className="loading h-20rem flex align-items-center justify-content-center">
           <Loading type="spin" color="#019444" height={50} width={50} />
         </div>
       )}

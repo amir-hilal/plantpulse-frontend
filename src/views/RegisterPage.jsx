@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
 import api from '../services/api';
+import { ToastContainer } from 'react-toastify';
+
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -161,6 +163,7 @@ const RegisterPage = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

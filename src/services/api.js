@@ -27,6 +27,7 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
     (response) => {
+        console.log(response)
         return response;
     },
     (error) => {
