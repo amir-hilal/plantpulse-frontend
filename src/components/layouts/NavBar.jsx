@@ -29,6 +29,7 @@ const NavBar = () => {
   const communityItems = [
     { label: 'Posts', path: routes.community_posts, disabled: !isLoggedIn },
     { label: 'Chats', path: routes.community_chats, disabled: !isLoggedIn },
+    { label: 'Connect', path: routes.community_connect, disabled: !isLoggedIn },
   ];
 
   const toggleMenu = () => {
