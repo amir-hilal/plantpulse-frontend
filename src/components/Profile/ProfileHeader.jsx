@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import EditProfileModal from './EditProfileModal';
+import { useDispatch } from 'react-redux';
+import {
+  sendFriendRequest,
+  acceptFriendRequest,
+  declineFriendRequest,
+  removeFriend,
+} from '../../features/community/friendsSlice';
 
 const ProfileHeader = ({
+  user_id,
   profile_photo_url,
   cover_photo_url,
   first_name,
@@ -15,8 +23,78 @@ const ProfileHeader = ({
   address,
   birthday,
   isOwner,
+  friendship_status
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleSendRequest = () => {
+    dispatch(sendFriendRequest(user_id));
+  };
+
+  const handleAcceptRequest = () => {
+    dispatch(acceptFriendRequest(user_id));
+  };
+
+  const handleDeclineRequest = () => {
+    dispatch(declineFriendRequest(user_id));
+  };
+
+  const handleRemoveFriend = () => {
+    dispatch(removeFriend(user_id));
+  };
+
+  const renderActionButtons = () => {
+    switch (friendship_status) {
+      case 'connected':
+        return (
+          <div className="flex">
+            <button
+              className="sm:w-9rem py-2 sm:mr-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+              onClick={handleRemoveFriend}
+            >
+              Remove
+            </button>
+            <button className="sm:w-9rem py-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center ml-2">
+              Message
+            </button>
+          </div>
+        );
+      case 'request_sent':
+        return (
+          <button className="sm:w-9rem py-2 border-round border-solid border-primary bg-tint-5 text-primary cursor-pointer flex justify-content-center align-items-center">
+            Request Sent
+          </button>
+        );
+      case 'request_received':
+        return (
+          <div className="flex">
+            <button
+              className="sm:w-9rem py-2 sm:mr-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+              onClick={handleAcceptRequest}
+            >
+              Accept
+            </button>
+            <button
+              className="sm:w-9rem py-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center ml-2"
+              onClick={handleDeclineRequest}
+            >
+              Decline
+            </button>
+          </div>
+        );
+      case 'not_connected':
+      default:
+        return (
+          <button
+            className="sm:w-9rem py-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+            onClick={handleSendRequest}
+          >
+            Connect
+          </button>
+        );
+    }
+  };
 
   return (
     <div className="profile-header flex flex-column align-items-center w-full md:w-10">
@@ -28,10 +106,12 @@ const ProfileHeader = ({
           backgroundSize: 'cover',
         }}
       >
-        <button className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-content-center align-items-center">
-          <span className="hidden sm:block">Edit Cover Photo</span>
-          <FaEdit className="block sm:hidden text-xl" />
-        </button>
+        {isOwner && (
+          <button className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-content-center align-items-center">
+            <span className="hidden sm:block">Edit Cover Photo</span>
+            <FaEdit className="block sm:hidden text-xl" />
+          </button>
+        )}
       </div>
 
       {/* Profile Picture and Basic Info */}
@@ -52,13 +132,17 @@ const ProfileHeader = ({
             </p>
           </div>
           <div className="ml-2 ml-auto">
-            <button
-              className="sm:w-9rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <span className="hidden sm:block">Edit Profile</span>
-              <FaEdit className="block sm:hidden text-xl" />
-            </button>
+            {isOwner ? (
+              <button
+                className="sm:w-9rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <span className="hidden sm:block">Edit Profile</span>
+                <FaEdit className="block sm:hidden text-xl" />
+              </button>
+            ) : (
+              renderActionButtons()
+            )}
           </div>
         </div>
       </div>

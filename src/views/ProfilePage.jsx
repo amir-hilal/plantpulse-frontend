@@ -172,6 +172,8 @@ const ProfilePage = () => {
         phone_number={profileData.phone_number}
         isOwner={isOwner}
         gender={profileData.gender}
+        friendship_status={profileData.friendship_status}
+        user_id = {profileData.id}
       />
       <div className="flex flex-column sm:flex-row w-full md:w-10">
         <div className="sm:w-auto flex justify-content-center">
@@ -181,9 +183,7 @@ const ProfilePage = () => {
           <TabView tabs={tabs} />
         </div>
       </div>
-      {!isOwner && (
-        <UserCard user={profileData} /> 
-      )}
+
       <AddPostModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
