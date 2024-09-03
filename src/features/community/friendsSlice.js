@@ -1,5 +1,3 @@
-// src/features/friends/friendsSlice.js
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
@@ -13,11 +11,51 @@ export const fetchFriends = createAsyncThunk('friends/fetchFriends', async (_, {
     }
 });
 
-// Search friends for the logged-in user
-export const searchFriends = createAsyncThunk('friends/searchFriends', async (searchTerm, { rejectWithValue }) => {
+// Fetch friend requests for the logged-in user
+export const fetchFriendRequests = createAsyncThunk('friends/fetchFriendRequests', async (_, { rejectWithValue }) => {
     try {
-        const response = await api.get(`/friends/search?query=${searchTerm}`);
-        return response.data.friends;
+        const response = await api.get('/friend-requests');
+        return response.data.requests;
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+});
+
+// Handle sending a friend request
+export const sendFriendRequest = createAsyncThunk('friends/sendFriendRequest', async (friendId, { rejectWithValue }) => {
+    try {
+        const response = await api.post('/friends/request', { friend_id: friendId });
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+});
+
+// Handle accepting a friend request
+export const acceptFriendRequest = createAsyncThunk('friends/acceptFriendRequest', async (requestId, { rejectWithValue }) => {
+    try {
+        const response = await api.post(`/friends/accept/${requestId}`);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+});
+
+// Handle declining a friend request
+export const declineFriendRequest = createAsyncThunk('friends/declineFriendRequest', async (requestId, { rejectWithValue }) => {
+    try {
+        const response = await api.post(`/friends/decline/${requestId}`);
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+});
+
+// Handle removing a friend
+export const removeFriend = createAsyncThunk('friends/removeFriend', async (friendId, { rejectWithValue }) => {
+    try {
+        const response = await api.delete(`/friends/remove/${friendId}`);
+        return response.data;
     } catch (error) {
         return rejectWithValue(error.response.data);
     }
@@ -27,15 +65,11 @@ const friendsSlice = createSlice({
     name: 'friends',
     initialState: {
         friends: [],
+        friendRequests: [],
         loading: false,
         error: null,
-        searchResults: [],
     },
-    reducers: {
-        clearSearchResults: (state) => {
-            state.searchResults = [];
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchFriends.pending, (state) => {
@@ -50,21 +84,63 @@ const friendsSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            .addCase(searchFriends.pending, (state) => {
+            .addCase(fetchFriendRequests.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(searchFriends.fulfilled, (state, action) => {
+            .addCase(fetchFriendRequests.fulfilled, (state, action) => {
                 state.loading = false;
-                state.searchResults = action.payload;
+                state.friendRequests = action.payload;
             })
-            .addCase(searchFriends.rejected, (state, action) => {
+            .addCase(fetchFriendRequests.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(sendFriendRequest.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(sendFriendRequest.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(sendFriendRequest.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(acceptFriendRequest.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(acceptFriendRequest.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(acceptFriendRequest.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(declineFriendRequest.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(declineFriendRequest.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(declineFriendRequest.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(removeFriend.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(removeFriend.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(removeFriend.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
-
-export const { clearSearchResults } = friendsSlice.actions;
 
 export default friendsSlice.reducer;

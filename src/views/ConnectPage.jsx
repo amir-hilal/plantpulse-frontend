@@ -1,115 +1,124 @@
+// src/views/ConnectPage.jsx
+
+import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
+import { FaUsers } from 'react-icons/fa';
 import Loading from 'react-loading';
-import api from '../services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  clearUsers,
+  fetchUsers,
+  searchUsers,
+} from '../features/users/usersSlice';
 
 const ConnectPage = () => {
-  const [friends, setFriends] = useState([]);
-  const [nonFriends, setNonFriends] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [nextPageUrlFriends, setNextPageUrlFriends] = useState(null);
-  const [nextPageUrlNonFriends, setNextPageUrlNonFriends] = useState(null);
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
+  const users = useSelector((state) => state.users.users);
+  const loading = useSelector((state) => state.users.loading);
+  const noMoreUsers = useSelector((state) => state.users.noMoreUsers);
 
-  const fetchUsers = useCallback(
-    async (url, isFriend = true) => {
-      try {
-        const response = await api.get(url, {
-          params: { search: searchQuery },
-        });
-        if (isFriend) {
-          setFriends((prev) => [...prev, ...response.data.friends]);
-          setNextPageUrlFriends(response.data.nextPageUrlFriends);
-        } else {
-          setNonFriends((prev) => [...prev, ...response.data.nonFriends]);
-          setNextPageUrlNonFriends(response.data.nextPageUrlNonFriends);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
+  // Debounced function to handle search
+  const debouncedSearch = useCallback(
+    debounce((query) => {
+      if (query.trim()) {
+        dispatch(clearUsers());
+        dispatch(searchUsers(query));
       }
-    },
-    [searchQuery] // Add searchQuery as a dependency
-  );
+    }, 1000),
+    [dispatch]
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    const initialUrl = '/users';
-    fetchUsers(initialUrl, true);  // Fetch friends first
-    fetchUsers(initialUrl, false); // Fetch non-friends next
-  }, [fetchUsers]);
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    if (query.trim()) {
+      debouncedSearch(query);
+    } else {
+      dispatch(clearUsers());
+      dispatch(fetchUsers({ page: 1 })); // Load initial users if search is cleared
+    }
+  };
 
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
         document.documentElement.offsetHeight ||
-      loading
+      loading ||
+      noMoreUsers ||
+      searchQuery.trim()
     )
       return;
 
-    if (nextPageUrlFriends) fetchUsers(nextPageUrlFriends, true);
-    if (nextPageUrlNonFriends) fetchUsers(nextPageUrlNonFriends, false);
-  }, [fetchUsers, loading, nextPageUrlFriends, nextPageUrlNonFriends]);
+    dispatch(fetchUsers({ page: users.length / 10 + 1 }));
+  }, [dispatch, loading, noMoreUsers, searchQuery, users.length]);
 
   useEffect(() => {
+    dispatch(fetchUsers({ page: 1 }));
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  }, [dispatch, handleScroll]);
 
   return (
-    <div className="connect-page">
-      <div className="search-bar flex justify-content-between mb-4">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder="Search users..."
-          className="w-full p-2 bg-tint-5 border-round"
-        />
+    <div className="p-4">
+      <div className="flex align-items-center justify-content-between mb-3">
+        {/* Search Bar */}
+        <div className="p-input-icon-left col-7 relative">
+          <i className="absolute pi pi-search ml-2 mt-2 text-grey text-sm"></i>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Search for users"
+            className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
+          />
+        </div>
+
+        {/* Find New Friends Button */}
+        <button className="col-3 text-sm bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0">
+          <FaUsers className="w-2rem mr-2" />
+          Find New Friends
+        </button>
       </div>
 
-      <div className="users-grid grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-        {friends.map((user) => (
-          <div key={user.id} className="user-card border-round shadow-1 p-3">
-            <img
-              src={user.profile_photo_url}
-              alt={user.username}
-              className="h-5rem w-5rem border-circle"
-            />
-            <div className="user-info ml-3">
-              <h3 className="m-0">{user.name}</h3>
-              <p className="m-0 text-secondary">{user.username}</p>
-              <button className="bg-tint-5 text-primary border-round p-2 cursor-pointer mt-2">
-                Send Message
-              </button>
-            </div>
-          </div>
-        ))}
-        {nonFriends.map((user) => (
-          <div key={user.id} className="user-card border-round shadow-1 p-3">
-            <img
-              src={user.profile_photo_url}
-              alt={user.username}
-              className="h-5rem w-5rem border-circle"
-            />
-            <div className="user-info ml-3">
-              <h3 className="m-0">{user.name}</h3>
-              <p className="m-0 text-secondary">{user.username}</p>
-              <button className="bg-tint-5 text-primary border-round p-2 cursor-pointer mt-2">
-                Send Message
-              </button>
-            </div>
-          </div>
-        ))}
+      {/* Users List */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {users.length > 0
+          ? users.map((user) => (
+              <div
+                key={user.id}
+                className="flex align-items-center border-round p-3 shadow-1 mb-2 bg-white"
+              >
+                <img
+                  src={user.profilePhoto}
+                  alt={user.name}
+                  className="h-3rem w-3rem border-circle mr-3"
+                />
+                <div className="flex-1">
+                  <h3 className="m-0 text-primary">{user.name}</h3>
+                  <p className="m-0 text-secondary">{user.username}</p>
+                </div>
+              </div>
+            ))
+          : !loading && (
+              <div className="text-center text-secondary mt-4">
+                No users to show...
+              </div>
+            )}
       </div>
 
+      {/* Loading Indicator */}
       {loading && (
         <div className="flex justify-content-center align-items-center my-4">
           <Loading type="spin" color="#019444" height={30} width={30} />
         </div>
+      )}
+
+      {/* No More Users Indicator */}
+      {noMoreUsers && !loading && (
+        <div className="text-center mt-4 text-secondary">No more users</div>
       )}
     </div>
   );
