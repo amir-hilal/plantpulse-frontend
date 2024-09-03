@@ -9,11 +9,7 @@ import TabView from '../components/common/TabView';
 import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
 import { logout } from '../features/auth/authSlice';
-import {
-  clearSearchResults,
-  fetchFriends,
-  searchFriends,
-} from '../features/community/friendsSlice';
+import { fetchFriends } from '../features/community/friendsSlice';
 import {
   clearPosts,
   fetchPostsByUsername,
@@ -31,7 +27,6 @@ const ProfilePage = () => {
   const postLoading = useSelector((state) => state.posts.loading);
   const noMorePosts = useSelector((state) => state.posts.noMorePosts);
   const friends = useSelector((state) => state.friends.friends);
-  const searchResults = useSelector((state) => state.friends.searchResults);
   const user = useSelector((state) => state.auth.userProfile);
 
   useEffect(() => {
@@ -63,14 +58,6 @@ const ProfilePage = () => {
       dispatch(fetchFriends());
     }
   }, [dispatch, username, isOwner]);
-
-  const handleSearch = (searchTerm) => {
-    if (searchTerm.trim() === '') {
-      dispatch(clearSearchResults());
-    } else {
-      dispatch(searchFriends(searchTerm));
-    }
-  };
 
   const handleScroll = useCallback(() => {
     if (
@@ -142,12 +129,7 @@ const ProfilePage = () => {
     },
     {
       label: 'Friends',
-      content: (
-        <FriendsTab
-          friends={searchResults.length > 0 ? searchResults : friends}
-          onSearch={handleSearch}
-        />
-      ),
+      content: <FriendsTab friends={friends} />,
     },
   ];
 
@@ -171,7 +153,7 @@ const ProfilePage = () => {
         <div className="sm:w-auto flex justify-content-center">
           <AboutSection />
         </div>
-        <div className="w-full h-auto mt-2 ">
+        <div className="w-full h-auto mt-2">
           <TabView tabs={tabs} />
         </div>
       </div>
