@@ -8,6 +8,7 @@ const routes = {
   calendar: '/calendar',
   community_posts: '/community/posts',
   community_chats: '/community/chats',
+  community_connect: '/community/connect',
   profile: (username = ':username') => `/profile/${username}`,
   notFound: '*', // Fallback route for 404
 };

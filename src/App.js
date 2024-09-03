@@ -11,6 +11,7 @@ import LoginPage from './views/LoginPage';
 import MyGardenPage from './views/MyGardenPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
+import ConnectPage from './views/ConnectPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +70,14 @@ function App() {
                   element={
                     <Guard authRequired={true} redirectPath={routes.home}>
                       <MyGardenPage />
+                    </Guard>
+                  }
+                />
+                 <Route
+                  path={routes.community_connect}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <ConnectPage />
                     </Guard>
                   }
                 />
