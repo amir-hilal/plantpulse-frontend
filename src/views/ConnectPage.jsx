@@ -14,12 +14,7 @@ const ConnectPage = () => {
   const users = useSelector((state) => state.users.users);
   const loading = useSelector((state) => state.users.loading);
   const noMoreUsers = useSelector((state) => state.users.noMoreUsers);
-  const nextPageUrlFriends = useSelector(
-    (state) => state.users.nextPageUrlFriends
-  );
-  const nextPageUrlNonFriends = useSelector(
-    (state) => state.users.nextPageUrlNonFriends
-  );
+  const nextPageUrl = useSelector((state) => state.users.nextPageUrl);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -28,6 +23,7 @@ const ConnectPage = () => {
       dispatch(fetchUsers({ page: 1 }));
     } else {
       const debouncedSearch = debounce(() => {
+        dispatch(clearUsers());
         dispatch(searchUsers(searchQuery));
       }, 1000);
       debouncedSearch();
@@ -39,26 +35,19 @@ const ConnectPage = () => {
   }, [dispatch, searchQuery]);
 
   const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight ||
-      loading ||
-      noMoreUsers
-    )
-      return;
+    const scrollOffset = 200;
 
-    // Check if there are still more users to load
-    if (nextPageUrlFriends || nextPageUrlNonFriends) {
-      dispatch(fetchUsers({ page: users.length / 10 + 1 }));
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - scrollOffset &&
+      !loading &&
+      !noMoreUsers &&
+      nextPageUrl
+    ) {
+      const nextPage = Math.ceil(users.length / 20) + 1;
+      dispatch(fetchUsers({ page: nextPage }));
     }
-  }, [
-    dispatch,
-    users.length,
-    loading,
-    noMoreUsers,
-    nextPageUrlFriends,
-    nextPageUrlNonFriends,
-  ]);
+  }, [dispatch, users.length, loading, noMoreUsers, nextPageUrl]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -78,7 +67,7 @@ const ConnectPage = () => {
           value={searchQuery}
           onChange={handleSearchChange}
           placeholder="Search for users"
-          className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
+          className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
         />
       </div>
       <div className="grid w-11 md:w-10">

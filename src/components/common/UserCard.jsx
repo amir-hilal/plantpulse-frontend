@@ -2,6 +2,43 @@ import React from 'react';
 import { FaUserPlus } from 'react-icons/fa';
 
 const UserCard = ({ user }) => {
+  const { relationship_status } = user;
+  const renderButton = () => {
+    switch (relationship_status) {
+      case 'connected':
+        return (
+          <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+            Message
+          </button>
+        );
+      case 'request_sent':
+        return (
+          <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+            Request Sent
+          </button>
+        );
+      case 'request_received':
+        return (
+          <>
+            <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+              Accept
+            </button>
+            <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+              Decline
+            </button>
+          </>
+        );
+      case 'not_connected':
+      default:
+        return (
+          <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+            <FaUserPlus className="mr-2" />
+            Connect
+          </button>
+        );
+    }
+  };
+
   return (
     <div className="user-card border-round p-3 shadow-1 mb-4 bg-white">
       <div className="flex align-items-center mb-2">
@@ -11,13 +48,12 @@ const UserCard = ({ user }) => {
           className="h-3rem w-3rem border-circle mr-3"
         />
         <div className="flex-1">
-          <h3 className="m-0 text-base text-primary">{user.first_name} {user.last_name}</h3>
+          <h3 className="m-0 text-base text-primary">
+            {user.first_name} {user.last_name}
+          </h3>
           <p className="m-0 text-xs text-secondary">{user.username}</p>
         </div>
-        <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
-          <FaUserPlus className="mr-2" />
-          Connect
-        </button>
+        {renderButton()}
       </div>
     </div>
   );

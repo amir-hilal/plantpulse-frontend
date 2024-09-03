@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
 // Fetch all users with pagination
@@ -34,15 +34,13 @@ const usersSlice = createSlice({
     loading: false,
     error: null,
     noMoreUsers: false,
-    nextPageUrlFriends: null,
-    nextPageUrlNonFriends: null,
+    nextPageUrl: null,
   },
   reducers: {
     clearUsers: (state) => {
       state.users = [];
       state.noMoreUsers = false;
-      state.nextPageUrlFriends = null;
-      state.nextPageUrlNonFriends = null;
+      state.nextPageUrl = null;
     },
   },
   extraReducers: (builder) => {
@@ -53,14 +51,21 @@ const usersSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
-        const { friends, nonFriends, nextPageUrlFriends, nextPageUrlNonFriends } = action.payload;
-        if (!friends.length && !nonFriends.length) {
+        const { users, nextPageUrl } = action.payload;
+
+        // Avoid duplicates by filtering out users already in the list
+        const newUsers = users.filter(
+          (newUser) =>
+            !state.users.some((existingUser) => existingUser.id === newUser.id)
+        );
+
+        if (!newUsers.length) {
           state.noMoreUsers = true;
         } else {
-          state.users = [...state.users, ...friends, ...nonFriends];
-          state.nextPageUrlFriends = nextPageUrlFriends;
-          state.nextPageUrlNonFriends = nextPageUrlNonFriends;
+          state.users = [...state.users, ...newUsers];
         }
+
+        state.nextPageUrl = nextPageUrl;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
@@ -72,8 +77,8 @@ const usersSlice = createSlice({
       })
       .addCase(searchUsers.fulfilled, (state, action) => {
         state.loading = false;
-        const { friends, nonFriends } = action.payload;
-        state.users = [...friends, ...nonFriends];
+        const { users } = action.payload;
+        state.users = users; // Replace users instead of appending
         state.noMoreUsers = true; // Since it's a search, assume no pagination
       })
       .addCase(searchUsers.rejected, (state, action) => {
