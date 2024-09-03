@@ -5,8 +5,8 @@ import routes from '../../routes';
 
 const Guard = ({ children, authRequired, redirectPath }) => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
-  if (authRequired && !isLoggedIn) {
+  const token = localStorage.getItem('token');
+  if (authRequired && !token && !isLoggedIn) {
     return <Navigate to={routes.login} />;
   }
 

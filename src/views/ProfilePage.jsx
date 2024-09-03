@@ -133,6 +133,13 @@ const ProfilePage = () => {
     },
   ];
 
+  if (isOwner) {
+    tabs.push({
+      label: 'Friend Requests',
+      content: <p>Friend requests content goes here</p>,
+    });
+  }
+
   return (
     <div className="flex align-items-center flex-column">
       <ProfileHeader

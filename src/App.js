@@ -58,7 +58,7 @@ function App() {
               <Routes>
                 <Route path={routes.home} element={<LandingPage />} />
                 <Route
-                  path={routes.profile()}
+                  path={routes.profile(':username')}
                   element={
                     <Guard authRequired={true} redirectPath={routes.home}>
                       <ProfilePage />

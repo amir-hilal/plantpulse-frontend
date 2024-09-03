@@ -1,29 +1,68 @@
 import React from 'react';
 import { FaUserPlus } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import {
+  acceptFriendRequest,
+  declineFriendRequest,
+  removeFriend,
+  sendFriendRequest,
+} from '../../features/community/friendsSlice';
 
 const UserCard = ({ user }) => {
   const { relationship_status } = user;
+  const dispatch = useDispatch();
+
+  const handleSendRequest = () => {
+    dispatch(sendFriendRequest(user.id));
+  };
+
+  const handleAcceptRequest = () => {
+    dispatch(acceptFriendRequest(user.id));
+  };
+
+  const handleDeclineRequest = () => {
+    dispatch(declineFriendRequest(user.id));
+  };
+
+  const handleRemoveFriend = () => {
+    dispatch(removeFriend(user.id));
+  };
+
   const renderButton = () => {
     switch (relationship_status) {
       case 'connected':
         return (
-          <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
-            Message
-          </button>
+          <div className="flex">
+            <button
+              className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center"
+              onClick={handleRemoveFriend}
+            >
+              Remove
+            </button>
+            <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center ml-2">
+              Message
+            </button>
+          </div>
         );
       case 'request_sent':
         return (
-          <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+          <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center">
             Request Sent
           </button>
         );
       case 'request_received':
         return (
           <>
-            <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+            <button
+              className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center"
+              onClick={handleAcceptRequest}
+            >
               Accept
             </button>
-            <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+            <button
+              className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center ml-2"
+              onClick={handleDeclineRequest}
+            >
               Decline
             </button>
           </>
@@ -31,7 +70,10 @@ const UserCard = ({ user }) => {
       case 'not_connected':
       default:
         return (
-          <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer  justify-content-center">
+          <button
+            className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center"
+            onClick={handleSendRequest}
+          >
             <FaUserPlus className="mr-2" />
             Connect
           </button>
@@ -43,7 +85,7 @@ const UserCard = ({ user }) => {
     <div className="user-card border-round p-3 shadow-1 mb-4 bg-white">
       <div className="flex align-items-center mb-2">
         <img
-          src={user.profile_photo_url || '/default-profile.png'}
+          src={user.profile_photo_url}
           alt={user.name}
           className="h-3rem w-3rem border-circle mr-3"
         />
