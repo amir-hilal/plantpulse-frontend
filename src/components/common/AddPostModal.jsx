@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import Loading from 'react-loading';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import api from '../../services/api';
+import { addNewPost } from '../../features/community/postsSlice';
 
 const AddPostModal = ({ isOpen, onClose }) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
-  const [title, setTitle] = useState(''); // State for the title
-  const [content, setContent] = useState(''); // State for the content
-  const [loading, setLoading] = useState(false); // Loading state
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -47,8 +50,12 @@ const AddPostModal = ({ isOpen, onClose }) => {
       });
       if (response.status === 201) {
         toast.success('Post created successfully');
+        dispatch(addNewPost(response.data.post));
+        setTitle('');
+        setContent('');
+        setFile(null);
+        setFilePreview(null);
         onClose();
-        // Handle post creation success, possibly refetch posts or update state
       }
     } catch (error) {
       if (!error.response) {

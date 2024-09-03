@@ -30,6 +30,7 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log(error)
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('token');
     }

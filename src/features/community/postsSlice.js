@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
 // Fetch posts by username
@@ -40,6 +40,9 @@ const postsSlice = createSlice({
       state.posts = [];
       state.noMorePosts = false;
     },
+    addNewPost: (state, action) => {
+      state.posts = [action.payload, ...state.posts];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -74,5 +77,5 @@ const postsSlice = createSlice({
   },
 });
 
-export const { clearPosts } = postsSlice.actions;
+export const { clearPosts, addNewPost } = postsSlice.actions;
 export default postsSlice.reducer;

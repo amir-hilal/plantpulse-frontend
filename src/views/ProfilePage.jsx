@@ -6,19 +6,19 @@ import AddPostModal from '../components/common/AddPostModal';
 import FriendsTab from '../components/common/FriendsTab';
 import PostCard from '../components/common/PostCard';
 import TabView from '../components/common/TabView';
+import UserCard from '../components/common/UserCard';
 import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
 import { logout } from '../features/auth/authSlice';
 import {
-  fetchFriends,
   fetchFriendRequests,
+  fetchFriends,
 } from '../features/community/friendsSlice';
 import {
   clearPosts,
   fetchPostsByUsername,
 } from '../features/community/postsSlice';
 import api from '../services/api';
-import UserCard from '../components/common/UserCard';
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -28,6 +28,7 @@ const ProfilePage = () => {
   const [isOwner, setIsOwner] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const posts = useSelector((state) => state.posts.posts);
+  const postsLoading = useSelector((state) => state.posts.loading);
   const postLoading = useSelector((state) => state.posts.loading);
   const noMorePosts = useSelector((state) => state.posts.noMorePosts);
   const friends = useSelector((state) => state.friends.friends);
@@ -119,18 +120,18 @@ const ProfilePage = () => {
             </div>
           )}
           <div className="mt-2">
-            {posts.length > 0 ? (
-              posts.map((post) => <PostCard key={post.id} post={post} />)
-            ) : (
-              <p>No posts yet.</p>
-            )}
+            {posts.length > 0
+              ? posts.map((post) => <PostCard key={post.id} post={post} />)
+              : !postsLoading && <p>No posts yet.</p>}
           </div>
           {postLoading && (
             <div className="flex justify-content-center align-items-center my-4">
               <Loading type="spin" color="#019444" height={30} width={30} />
             </div>
           )}
-          {noMorePosts && <p className="text-center">No more posts</p>}
+          {noMorePosts && !loading && (
+            <p className="text-center">No more posts</p>
+          )}
         </div>
       ),
     },
@@ -147,7 +148,11 @@ const ProfilePage = () => {
         <div>
           {friendRequests.length > 0 ? (
             friendRequests.map((request) => (
-              <UserCard key={request.id} user={request.user} status={ request.status} />
+              <UserCard
+                key={request.id}
+                user={request.user}
+                status={request.status}
+              />
             ))
           ) : (
             <p>No friend requests.</p>
@@ -173,7 +178,7 @@ const ProfilePage = () => {
         isOwner={isOwner}
         gender={profileData.gender}
         friendship_status={profileData.friendship_status}
-        user_id = {profileData.id}
+        user_id={profileData.id}
       />
       <div className="flex flex-column sm:flex-row w-full md:w-10">
         <div className="sm:w-auto flex justify-content-center">
