@@ -8,8 +8,12 @@ import PostCard from '../components/common/PostCard';
 import TabView from '../components/common/TabView';
 import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
+import UserCard from '../components/common/UserCard';
 import { logout } from '../features/auth/authSlice';
-import { fetchFriends } from '../features/community/friendsSlice';
+import {
+  fetchFriends,
+  fetchFriendRequests,
+} from '../features/community/friendsSlice';
 import {
   clearPosts,
   fetchPostsByUsername,
@@ -27,6 +31,7 @@ const ProfilePage = () => {
   const postLoading = useSelector((state) => state.posts.loading);
   const noMorePosts = useSelector((state) => state.posts.noMorePosts);
   const friends = useSelector((state) => state.friends.friends);
+  const friendRequests = useSelector((state) => state.friends.friendRequests);
   const user = useSelector((state) => state.auth.userProfile);
 
   useEffect(() => {
@@ -34,6 +39,7 @@ const ProfilePage = () => {
       try {
         const response = await api.get(`/users/${username}`);
         setProfileData(response.data);
+
         if (user && response.data.username === user.username) {
           setIsOwner(true);
         }
@@ -56,6 +62,7 @@ const ProfilePage = () => {
       dispatch(clearPosts());
       dispatch(fetchPostsByUsername({ username }));
       dispatch(fetchFriends());
+      dispatch(fetchFriendRequests()); // Fetch friend requests
     }
   }, [dispatch, username, isOwner]);
 
@@ -136,7 +143,17 @@ const ProfilePage = () => {
   if (isOwner) {
     tabs.push({
       label: 'Friend Requests',
-      content: <p>Friend requests content goes here</p>,
+      content: (
+        <div>
+          {friendRequests.length > 0 ? (
+            friendRequests.map((request) => (
+              <UserCard key={request.id} user={request.user} />
+            ))
+          ) : (
+            <p>No friend requests.</p>
+          )}
+        </div>
+      ),
     });
   }
 
@@ -164,6 +181,9 @@ const ProfilePage = () => {
           <TabView tabs={tabs} />
         </div>
       </div>
+      {!isOwner && (
+        <UserCard user={profileData} /> 
+      )}
       <AddPostModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
