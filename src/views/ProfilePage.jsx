@@ -8,7 +8,6 @@ import PostCard from '../components/common/PostCard';
 import TabView from '../components/common/TabView';
 import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
-import UserCard from '../components/common/UserCard';
 import { logout } from '../features/auth/authSlice';
 import {
   fetchFriends,
@@ -19,6 +18,7 @@ import {
   fetchPostsByUsername,
 } from '../features/community/postsSlice';
 import api from '../services/api';
+import UserCard from '../components/common/UserCard';
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -147,7 +147,7 @@ const ProfilePage = () => {
         <div>
           {friendRequests.length > 0 ? (
             friendRequests.map((request) => (
-              <UserCard key={request.id} user={request.user} />
+              <UserCard key={request.id} user={request.user} status={ request.status} />
             ))
           ) : (
             <p>No friend requests.</p>

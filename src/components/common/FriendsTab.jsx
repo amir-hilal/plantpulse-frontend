@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const FriendsTab = ({ friends, onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
-
+  const navigate = useNavigate();
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -11,7 +12,7 @@ const FriendsTab = ({ friends, onSearch }) => {
   };
 
   const filteredFriends = friends.filter((friend) =>
-    friend.name.toLowerCase().includes(searchQuery.toLowerCase())
+    friend.user.first_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -30,7 +31,10 @@ const FriendsTab = ({ friends, onSearch }) => {
         </div>
 
         {/* Find New Friends Button */}
-        <button className="col-3 text-sm bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0">
+        <button
+          onClick={()=>navigate('/community/connect')}
+          className="col-3 text-sm bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
+        >
           <FaUsers className=" w-2rem mr-2 " />
           Connect
         </button>
@@ -45,13 +49,13 @@ const FriendsTab = ({ friends, onSearch }) => {
               className="flex align-items-center border-round p-3 shadow-1 mb-2 bg-white"
             >
               <img
-                src={friend.profilePhoto}
-                alt={friend.name}
+                src={friend.user.profile_photo_url}
+                alt={friend.user.first_name}
                 className="h-3rem w-3rem border-circle mr-3"
               />
               <div className="flex-1">
-                <h3 className="m-0 text-primary">{friend.name}</h3>
-                <p className="m-0 text-secondary">{friend.username}</p>
+                <h3 className="m-0 text-primary">{friend.user.first_name} { friend.user.last_name}</h3>
+                <p className="m-0 text-secondary">{friend.user.username}</p>
               </div>
               <button className="bg-tint-5 text-primary border-round p-2 cursor-pointer">
                 Send Message

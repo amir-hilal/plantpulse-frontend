@@ -35,7 +35,7 @@ export const sendFriendRequest = createAsyncThunk('friends/sendFriendRequest', a
 export const acceptFriendRequest = createAsyncThunk('friends/acceptFriendRequest', async (requestId, { rejectWithValue }) => {
     try {
         const response = await api.post(`/friends/accept/${requestId}`);
-        return response.data;
+        return { ...response.data, requestId };
     } catch (error) {
         return rejectWithValue(error.response.data);
     }
@@ -45,7 +45,7 @@ export const acceptFriendRequest = createAsyncThunk('friends/acceptFriendRequest
 export const declineFriendRequest = createAsyncThunk('friends/declineFriendRequest', async (requestId, { rejectWithValue }) => {
     try {
         const response = await api.post(`/friends/decline/${requestId}`);
-        return response.data;
+        return { response,requestId };
     } catch (error) {
         return rejectWithValue(error.response.data);
     }
@@ -55,7 +55,7 @@ export const declineFriendRequest = createAsyncThunk('friends/declineFriendReque
 export const removeFriend = createAsyncThunk('friends/removeFriend', async (friendId, { rejectWithValue }) => {
     try {
         const response = await api.delete(`/friends/remove/${friendId}`);
-        return response.data;
+        return { response,friendId };
     } catch (error) {
         return rejectWithValue(error.response.data);
     }
@@ -111,8 +111,14 @@ const friendsSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(acceptFriendRequest.fulfilled, (state) => {
+            .addCase(acceptFriendRequest.fulfilled, (state, action) => {
                 state.loading = false;
+                // Move the accepted friend request from friendRequests to friends
+                const acceptedRequest = state.friendRequests.find(request => request.id === action.payload.requestId);
+                if (acceptedRequest) {
+                    state.friends.push(acceptedRequest);
+                    state.friendRequests = state.friendRequests.filter(request => request.id !== action.payload.requestId);
+                }
             })
             .addCase(acceptFriendRequest.rejected, (state, action) => {
                 state.loading = false;
@@ -122,8 +128,10 @@ const friendsSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(declineFriendRequest.fulfilled, (state) => {
+            .addCase(declineFriendRequest.fulfilled, (state, action) => {
                 state.loading = false;
+                // Remove the declined friend request from friendRequests
+                state.friendRequests = state.friendRequests.filter(request => request.id !== action.payload.requestId);
             })
             .addCase(declineFriendRequest.rejected, (state, action) => {
                 state.loading = false;
@@ -133,8 +141,10 @@ const friendsSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(removeFriend.fulfilled, (state) => {
+            .addCase(removeFriend.fulfilled, (state, action) => {
                 state.loading = false;
+                // Remove the friend from friends
+                state.friends = state.friends.filter(friend => friend.id !== action.payload.friendId);
             })
             .addCase(removeFriend.rejected, (state, action) => {
                 state.loading = false;

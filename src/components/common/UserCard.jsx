@@ -8,8 +8,9 @@ import {
   sendFriendRequest,
 } from '../../features/community/friendsSlice';
 
-const UserCard = ({ user }) => {
-  const { relationship_status } = user;
+const UserCard = ({ user, status }) => {
+  console.log(status);
+  // const { relationship_status } = user;
   const dispatch = useDispatch();
 
   const handleSendRequest = () => {
@@ -29,8 +30,8 @@ const UserCard = ({ user }) => {
   };
 
   const renderButton = () => {
-    switch (relationship_status) {
-      case 'connected':
+    switch (status) {
+      case 'accepted':
         return (
           <div className="flex">
             <button
@@ -50,7 +51,7 @@ const UserCard = ({ user }) => {
             Request Sent
           </button>
         );
-      case 'request_received':
+      case 'pending':
         return (
           <>
             <button
