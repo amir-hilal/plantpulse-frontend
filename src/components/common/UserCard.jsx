@@ -8,12 +8,14 @@ import {
   sendFriendRequest,
 } from '../../features/community/friendsSlice';
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, status }) => {
+  let condition = '';
   console.log(user);
   // const { relationship_status } = user;
   const dispatch = useDispatch();
 
   const handleSendRequest = () => {
+    condition = 'request_sent'
     dispatch(sendFriendRequest(user.id));
   };
 
@@ -28,9 +30,17 @@ const UserCard = ({ user }) => {
   const handleRemoveFriend = () => {
     dispatch(removeFriend(user.id));
   };
+  switch (status) {
+    case 'pending':
+      condition = 'request_received';
+      break;
 
+    default:
+      condition = user.relationship_status;
+      break;
+  }
   const renderButton = () => {
-    switch (user.relationship_status) {
+    switch (condition) {
       case 'connected':
         return (
           <div className="flex">

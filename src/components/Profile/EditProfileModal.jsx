@@ -86,7 +86,6 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
         );
         profilePhotoUrl = uploadResponse.data.url;
       }
-      console.log('now we will update profile');
       const response = await api.put(`/users/${userProfile.username}`, {
         ...formData,
         profile_photo_url: profilePhotoUrl,

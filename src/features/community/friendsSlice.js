@@ -132,10 +132,12 @@ const friendsSlice = createSlice({
       })
       .addCase(acceptFriendRequest.fulfilled, (state, action) => {
         state.loading = false;
-        const acceptedFriend = action.payload.friend;
+        const acceptedFriendId = action.payload.friend.id;
+        const acceptedFriend = action.payload.friend.user;
+        acceptedFriend.relationship_status = "connected"
         state.friends.push(acceptedFriend);
         state.friendRequests = state.friendRequests.filter(
-          (request) => request.id !== acceptedFriend.id
+          (request) => request.id !== acceptedFriendId
         );
       })
       .addCase(acceptFriendRequest.rejected, (state, action) => {

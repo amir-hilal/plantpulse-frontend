@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import UserCard from './UserCard';
 
 const FriendsTab = ({ friends, onSearch, isOwner }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,11 +11,9 @@ const FriendsTab = ({ friends, onSearch, isOwner }) => {
     setSearchQuery(query);
     onSearch(query);
   };
-
   const filteredFriends = friends.filter((friend) =>
-    friend.user.first_name.toLowerCase().includes(searchQuery.toLowerCase())
+    friend.first_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
   return (
     <div className="w-full">
       <div
@@ -52,22 +51,8 @@ const FriendsTab = ({ friends, onSearch, isOwner }) => {
           filteredFriends.map((friend) => (
             <div
               key={friend.id}
-              className="flex align-items-center border-round p-3 shadow-1 mb-2 bg-white"
             >
-              <img
-                src={friend.user.profile_photo_url}
-                alt={friend.user.first_name}
-                className="h-3rem w-3rem border-circle mr-3"
-              />
-              <div className="flex-1">
-                <h3 className="m-0 text-primary">
-                  {friend.user.first_name} {friend.user.last_name}
-                </h3>
-                <p className="m-0 text-secondary">{friend.user.username}</p>
-              </div>
-              <button className="bg-tint-5 text-primary border-round p-2 cursor-pointer">
-                Send Message
-              </button>
+              <UserCard user={friend}></UserCard>
             </div>
           ))
         ) : (
