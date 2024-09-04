@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaUserPlus } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify'; // Assuming you are using react-toastify for notifications
 import {
   acceptFriendRequest,
   declineFriendRequest,
@@ -8,39 +9,61 @@ import {
   sendFriendRequest,
 } from '../../features/community/friendsSlice';
 
-const UserCard = ({ user, status }) => {
-  let condition = '';
-  console.log(user);
-  // const { relationship_status } = user;
+const UserCard = ({ user }) => {
+  const [currentStatus, setCurrentStatus] = useState(user.relationship_status); // Use relationship_status directly from the user prop
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    // Update currentStatus when user.relationship_status changes
+    setCurrentStatus(user.relationship_status);
+  }, [user.relationship_status]);
+
   const handleSendRequest = () => {
-    condition = 'request_sent'
-    dispatch(sendFriendRequest(user.id));
+    dispatch(sendFriendRequest(user.id))
+      .then(() => {
+        toast.success('Friend request sent successfully');
+        setCurrentStatus('request_sent'); // Update status on successful request
+      })
+      .catch(() => {
+        toast.error('Failed to send friend request. Please try again.');
+      });
   };
 
   const handleAcceptRequest = () => {
-    dispatch(acceptFriendRequest(user.id));
+    dispatch(acceptFriendRequest(user.id))
+      .then(() => {
+        toast.success('Friend request accepted');
+        setCurrentStatus('connected');
+      })
+      .catch(() => {
+        toast.error('Failed to accept friend request. Please try again.');
+      });
   };
 
   const handleDeclineRequest = () => {
-    dispatch(declineFriendRequest(user.id));
+    dispatch(declineFriendRequest(user.id))
+      .then(() => {
+        toast.success('Friend request declined');
+        setCurrentStatus('not_connected');
+      })
+      .catch(() => {
+        toast.error('Failed to decline friend request. Please try again.');
+      });
   };
 
   const handleRemoveFriend = () => {
-    dispatch(removeFriend(user.id));
+    dispatch(removeFriend(user.id))
+      .then(() => {
+        toast.success('Friend removed successfully');
+        setCurrentStatus('not_connected');
+      })
+      .catch(() => {
+        toast.error('Failed to remove friend. Please try again.');
+      });
   };
-  switch (status) {
-    case 'pending':
-      condition = 'request_received';
-      break;
 
-    default:
-      condition = user.relationship_status;
-      break;
-  }
   const renderButton = () => {
-    switch (condition) {
+    switch (currentStatus) {
       case 'connected':
         return (
           <div className="flex">
