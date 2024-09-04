@@ -78,7 +78,7 @@ const ConnectPage = () => {
             </div>
           ))
         ) : (
-          <div>{!loading && <p>No users found...</p>}</div>
+          <div>{(!loading && !users) && <p>No users found...</p>}</div>
         )}
       </div>
       {loading && (

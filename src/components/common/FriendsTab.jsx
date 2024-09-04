@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const FriendsTab = ({ friends, onSearch }) => {
+const FriendsTab = ({ friends, onSearch, isOwner }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const handleSearchChange = (e) => {
@@ -17,7 +17,11 @@ const FriendsTab = ({ friends, onSearch }) => {
 
   return (
     <div className="w-full">
-      <div className="flex align-items-center justify-content-between mb-3">
+      <div
+        className={`flex align-items-center  mb-3 ${
+          isOwner ? 'justify-content-between' : 'justify-content-center'
+        }`}
+      >
         {/* Search Bar */}
         <div className="p-input-icon-left col-7 relative">
           <i className=" absolute pi pi-search ml-2 mt-2 text-grey text-sm"></i>
@@ -25,19 +29,21 @@ const FriendsTab = ({ friends, onSearch }) => {
             type="text"
             value={searchQuery}
             onChange={handleSearchChange}
-            placeholder="Search for your friends"
+            placeholder="Search for friends"
             className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round appearance-none outline-none focus:border-primary z-1"
           />
         </div>
 
         {/* Find New Friends Button */}
-        <button
-          onClick={()=>navigate('/community/connect')}
-          className="col-3 text-sm bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
-        >
-          <FaUsers className=" w-2rem mr-2 " />
-          Connect
-        </button>
+        {isOwner && (
+          <button
+            onClick={() => navigate('/community/connect')}
+            className="col-3 text-sm bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
+          >
+            <FaUsers className=" w-2rem mr-2 " />
+            Connect
+          </button>
+        )}
       </div>
 
       {/* Friends List */}
@@ -54,7 +60,9 @@ const FriendsTab = ({ friends, onSearch }) => {
                 className="h-3rem w-3rem border-circle mr-3"
               />
               <div className="flex-1">
-                <h3 className="m-0 text-primary">{friend.user.first_name} { friend.user.last_name}</h3>
+                <h3 className="m-0 text-primary">
+                  {friend.user.first_name} {friend.user.last_name}
+                </h3>
                 <p className="m-0 text-secondary">{friend.user.username}</p>
               </div>
               <button className="bg-tint-5 text-primary border-round p-2 cursor-pointer">

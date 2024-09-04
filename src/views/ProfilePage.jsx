@@ -119,17 +119,17 @@ const ProfilePage = () => {
               <p className="m-0 text-primary">Add new post...</p>
             </div>
           )}
-          <div className="mt-2">
+          <div className="mt-2 text-center">
             {posts.length > 0
               ? posts.map((post) => <PostCard key={post.id} post={post} />)
-              : !postsLoading && <p>No posts yet.</p>}
+              : !postsLoading && !!posts && <p>No posts yet.</p>}
           </div>
           {postLoading && (
             <div className="flex justify-content-center align-items-center my-4">
               <Loading type="spin" color="#019444" height={30} width={30} />
             </div>
           )}
-          {noMorePosts && !loading && (
+          {noMorePosts && !loading && !posts && (
             <p className="text-center">No more posts</p>
           )}
         </div>
@@ -137,7 +137,7 @@ const ProfilePage = () => {
     },
     {
       label: 'Friends',
-      content: <FriendsTab friends={friends} />,
+      content: <FriendsTab friends={friends} isOwner={isOwner} />,
     },
   ];
 
@@ -155,7 +155,7 @@ const ProfilePage = () => {
               />
             ))
           ) : (
-            <p>No friend requests.</p>
+            <p className="text-center">No friend requests.</p>
           )}
         </div>
       ),
@@ -182,7 +182,7 @@ const ProfilePage = () => {
       />
       <div className="flex flex-column sm:flex-row w-full md:w-10">
         <div className="sm:w-auto flex justify-content-center">
-          <AboutSection />
+          <AboutSection isOwner={isOwner} />
         </div>
         <div className="w-full h-auto mt-2">
           <TabView tabs={tabs} />

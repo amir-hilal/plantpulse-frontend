@@ -9,7 +9,7 @@ const TabView = ({ tabs }) => {
         {tabs.map((tab, index) => (
           <button
             key={index}
-            className={`tab-button p-2 bg-white w-3 ${
+            className={`tab-button py-2 px-5 bg-white w-auto ${
               activeTab === index ? 'border-bottom-2 text-primary border-primary font-bold' : ' text-primary'
             } border-none cursor-pointer w-full`}
             onClick={() => setActiveTab(index)}
