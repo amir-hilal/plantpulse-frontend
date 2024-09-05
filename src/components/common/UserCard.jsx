@@ -92,7 +92,7 @@ const UserCard = ({ user, isOwner }) => {
         );
       case 'request_sent':
         return (
-          <button className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center">
+          <button className="flex flex-column text-dark-grey align-items-center bg-transparent border-none justify-content-center">
             <img src={ClockIcon} alt="Request Sent" className="icon" />
             <span className="font-8 mt-1"> Request Sent</span>
           </button>

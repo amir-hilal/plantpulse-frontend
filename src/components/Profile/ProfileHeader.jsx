@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
-import EditProfileModal from './EditProfileModal';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import AddFriendIcon from '../../assets/svg/Icons/Add user.svg';
+import CheckIcon from '../../assets/svg/Icons/Check.svg';
+import ClockIcon from '../../assets/svg/Icons/Clock.svg';
+import CloseIcon from '../../assets/svg/Icons/Close.svg';
+import RemoveIcon from '../../assets/svg/Icons/delete.svg';
+import MessageIcon from '../../assets/svg/Icons/Message square.svg';
+
 import {
-  sendFriendRequest,
   acceptFriendRequest,
   declineFriendRequest,
   removeFriend,
+  sendFriendRequest,
 } from '../../features/community/friendsSlice';
-
+import EditProfileModal from './EditProfileModal';
 const ProfileHeader = ({
   user_id,
   profile_photo_url,
@@ -23,63 +30,97 @@ const ProfileHeader = ({
   address,
   birthday,
   isOwner,
-  relationship_status
+  relationship_status,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
+  const [currentStatus, setCurrentStatus] = useState(relationship_status);
 
   const handleSendRequest = () => {
-    dispatch(sendFriendRequest(user_id));
+    dispatch(sendFriendRequest(user_id))
+      .then(() => {
+        toast.success('Friend request sent successfully');
+        setCurrentStatus('request_sent');
+      })
+      .catch(() => {
+        toast.error('Failed to send friend request. Please try again.');
+      });
   };
 
   const handleAcceptRequest = () => {
-    dispatch(acceptFriendRequest(user_id));
+    dispatch(acceptFriendRequest(user_id))
+      .then(() => {
+        toast.success('Friend request accepted');
+        setCurrentStatus('connected');
+      })
+      .catch(() => {
+        toast.error('Failed to accept friend request. Please try again.');
+      });
   };
 
   const handleDeclineRequest = () => {
-    dispatch(declineFriendRequest(user_id));
+    dispatch(declineFriendRequest(user_id))
+      .then(() => {
+        toast.success('Friend request declined');
+        setCurrentStatus('not_connected');
+      })
+      .catch(() => {
+        toast.error('Failed to decline friend request. Please try again.');
+      });
   };
 
   const handleRemoveFriend = () => {
-    dispatch(removeFriend(user_id));
+    dispatch(removeFriend(user_id))
+      .then(() => {
+        toast.success('Friend removed successfully');
+        setCurrentStatus('not_connected');
+      })
+      .catch(() => {
+        toast.error('Failed to remove friend. Please try again.');
+      });
   };
 
   const renderActionButtons = () => {
-    switch (relationship_status) {
+    switch (currentStatus) {
       case 'connected':
         return (
           <div className="flex">
             <button
-              className="sm:w-9rem py-2 sm:mr-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+              className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center"
               onClick={handleRemoveFriend}
             >
-              Remove
+              <img src={RemoveIcon} alt="Remove Friend" className="icon" />
+              <span className="font-8 mt-1">Remove</span>
             </button>
-            <button className="sm:w-9rem py-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center ml-2">
-              Message
+            <button className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center">
+              <img src={MessageIcon} alt="Message" className="icon" />
+              <span className="font-8 mt-1"> Message</span>
             </button>
           </div>
         );
       case 'request_sent':
         return (
-          <button className="sm:w-9rem py-2 border-round border-solid border-primary bg-tint-5 text-primary cursor-pointer flex justify-content-center align-items-center">
-            Request Sent
+          <button className="flex flex-column text-dark-grey align-items-center bg-transparent border-none justify-content-center">
+            <img src={ClockIcon} alt="Request Sent" className="icon" />
+            <span className="font-8 mt-1"> Request Sent</span>
           </button>
         );
       case 'request_received':
         return (
           <div className="flex">
             <button
-              className="sm:w-9rem py-2 sm:mr-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+              className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center"
               onClick={handleAcceptRequest}
             >
-              Accept
+              <img src={CheckIcon} alt="Accept" className="icon" />
+              <span className="font-8 mt-1"> Accept</span>
             </button>
             <button
-              className="sm:w-9rem py-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center ml-2"
+              className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center ml-2"
               onClick={handleDeclineRequest}
             >
-              Decline
+              <img src={CloseIcon} alt="Decline" className="icon" />
+              <span className="font-8 mt-1"> Decline</span>
             </button>
           </div>
         );
@@ -87,10 +128,11 @@ const ProfileHeader = ({
       default:
         return (
           <button
-            className="sm:w-9rem py-2 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+            className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center"
             onClick={handleSendRequest}
           >
-            Connect
+            <img src={AddFriendIcon} alt="Connect" className="icon" />
+            <span className="font-8 mt-1"> Connect</span>
           </button>
         );
     }
