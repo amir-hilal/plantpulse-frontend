@@ -7,6 +7,7 @@ import CommentCard from '../components/common/CommentCard';
 import {
   clearComments,
   fetchComments,
+  addComment,
 } from '../features/community/commentsSlice';
 import api from '../services/api';
 
@@ -67,14 +68,10 @@ const PostDetailsPage = () => {
     setCommentSubmitting(true);
 
     try {
-      const response = await api.post(`/posts/details/${id}/comments`, {
-        comment_text: newComment,
-      });
+      await dispatch(addComment({ postId: id, comment_text: newComment }));
 
-      // After successful comment submission, clear the input and fetch the comments again
+      // Clear the input after successful comment
       setNewComment('');
-      dispatch(clearComments());
-      dispatch(fetchComments({ postId: id, page: 1 }));
       toast.success('Comment added successfully');
     } catch (error) {
       toast.error('Failed to add comment');
