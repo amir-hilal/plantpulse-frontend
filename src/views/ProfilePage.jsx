@@ -13,6 +13,7 @@ import ProfileHeader from '../components/Profile/ProfileHeader';
 import {
   fetchFriendRequests,
   fetchFriends,
+  resetFriendsState,
 } from '../features/community/friendsSlice';
 import {
   clearPosts,
@@ -44,6 +45,8 @@ const ProfilePage = () => {
 
         if (user && response.data && response.data.username === user.username) {
           setIsOwner(true);
+        } else {
+          setIsOwner(false);
         }
       } catch (error) {
         navigate('/home');
@@ -51,18 +54,13 @@ const ProfilePage = () => {
         setLoading(false);
       }
     };
-
+    dispatch(clearPosts());
+    dispatch(resetFriendsState());
+    dispatch(fetchPostsByUsername({ username }));
+    dispatch(fetchFriends());
+    dispatch(fetchFriendRequests());
     fetchProfile();
   }, [username, user, dispatch, navigate]);
-
-  useEffect(() => {
-    if (isOwner) {
-      dispatch(clearPosts());
-      dispatch(fetchPostsByUsername({ username }));
-      dispatch(fetchFriends());
-      dispatch(fetchFriendRequests()); // Fetch friend requests
-    }
-  }, [dispatch, username, isOwner]);
 
   const handleScroll = useCallback(() => {
     if (
@@ -160,7 +158,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="flex align-items-center flex-column">
+    <div className="flex align-items-center flex-column" key={username}>
       <ProfileHeader
         profile_photo_url={profileData.profile_photo_url}
         cover_photo_url={profileData.cover_photo_url}
