@@ -5,9 +5,9 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import CommentCard from '../components/common/CommentCard';
 import {
+  addComment,
   clearComments,
   fetchComments,
-  addComment,
 } from '../features/community/commentsSlice';
 import api from '../services/api';
 
@@ -18,6 +18,7 @@ const PostDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState(''); // State to hold the new comment input
   const [commentSubmitting, setCommentSubmitting] = useState(false); // State to track comment submission
+  const user = useSelector((state) => state.auth.userProfile);
 
   const comments = useSelector((state) => state.comments.comments);
   const commentLoading = useSelector((state) => state.comments.loading);
@@ -36,10 +37,10 @@ const PostDetailsPage = () => {
       }
     };
 
-    fetchPostDetails();
 
     // Clear comments before fetching new ones
     dispatch(clearComments());
+    fetchPostDetails();
     dispatch(fetchComments({ postId: id, page: 1 }));
   }, [id, dispatch]);
 
@@ -139,22 +140,28 @@ const PostDetailsPage = () => {
         {/* Comment Input */}
         <div className="flex align-items-center mb-3">
           <img
-            src={post.user.profile_photo_url}
+            src={user.profile_photo_url}
             alt="Profile"
             className="w-3rem h-3rem border-circle mr-3"
           />
-          <form className="flex-1 flex" onSubmit={handleCommentSubmit}>
-            <input
-              type="text"
+          <form className="flex-1 flex relative" onSubmit={handleCommentSubmit}>
+            <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Leave a comment..."
-              className="flex-1 p-2 bg-tint-5 border-round"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
               disabled={commentSubmitting}
+              rows={1}
+              style={{ resize: 'none', overflow: 'hidden' }}
+              onInput={(e) => {
+                e.target.style.height = 'auto';
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
             />
+
             <button
               type="submit"
-              className="bg-primary text-white border-round p-2 ml-2"
+              className="bg-primary text-white border-round w-2rem p-1 px-2 pb-2 absolute right-0 m-1 hover:bg-primary-reverse border-none"
               disabled={commentSubmitting}
             >
               {commentSubmitting ? (
