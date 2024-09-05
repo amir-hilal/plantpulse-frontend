@@ -12,7 +12,7 @@ import ProfileHeader from '../components/Profile/ProfileHeader';
 
 import {
   fetchFriendRequests,
-  fetchFriends,
+  fetchFriendsByUsername,
   resetFriendsState,
 } from '../features/community/friendsSlice';
 import {
@@ -39,6 +39,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      setLoading(true)
       try {
         const response = await api.get(`/users/${username}`);
         setProfileData(response.data);
@@ -57,10 +58,10 @@ const ProfilePage = () => {
     dispatch(clearPosts());
     dispatch(resetFriendsState());
     dispatch(fetchPostsByUsername({ username }));
-    dispatch(fetchFriends());
-    dispatch(fetchFriendRequests());
+    dispatch(fetchFriendsByUsername({username}));
+    if(isOwner) dispatch(fetchFriendRequests());
     fetchProfile();
-  }, [username, user, dispatch, navigate]);
+  }, [username, user, dispatch, navigate,isOwner]);
 
   const handleScroll = useCallback(() => {
     if (
@@ -158,7 +159,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="flex align-items-center flex-column" key={username}>
+    <div className="flex align-items-center flex-column">
       <ProfileHeader
         profile_photo_url={profileData.profile_photo_url}
         cover_photo_url={profileData.cover_photo_url}

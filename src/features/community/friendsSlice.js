@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
 // Fetch friends for the logged-in user
-export const fetchFriends = createAsyncThunk(
-  'friends/fetchFriends',
-  async (_, { rejectWithValue }) => {
+export const fetchFriendsByUsername = createAsyncThunk(
+  'friends/fetchFriendsByUsername',
+  async ({username}, { rejectWithValue }) => {
     try {
-      const response = await api.get('/friends');
+      const response = await api.get(`/friends/${username}`);
       return response.data.friends;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -98,15 +98,15 @@ const friendsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchFriends.pending, (state) => {
+      .addCase(fetchFriendsByUsername.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchFriends.fulfilled, (state, action) => {
+      .addCase(fetchFriendsByUsername.fulfilled, (state, action) => {
         state.loading = false;
         state.friends = action.payload;
       })
-      .addCase(fetchFriends.rejected, (state, action) => {
+      .addCase(fetchFriendsByUsername.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
