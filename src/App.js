@@ -12,6 +12,7 @@ import MyGardenPage from './views/MyGardenPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
 import ConnectPage from './views/ConnectPage';
+import PostDetailsPage from './views/PostDetailsPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -78,6 +79,14 @@ function App() {
                   element={
                     <Guard authRequired={true} redirectPath={routes.home}>
                       <ConnectPage />
+                    </Guard>
+                  }
+                />
+                 <Route
+                  path={routes.post_details(':id')}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <PostDetailsPage />
                     </Guard>
                   }
                 />

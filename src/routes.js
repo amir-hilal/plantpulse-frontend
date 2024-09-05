@@ -7,6 +7,7 @@ const routes = {
   flora: '/flora',
   calendar: '/calendar',
   community_posts: '/community/posts',
+  post_details: (id = 'id') => `/community/posts/${id}`,
   community_chats: '/community/chats',
   community_connect: '/community/connect',
   profile: (username = ':username') => `/profile/${username}`,
