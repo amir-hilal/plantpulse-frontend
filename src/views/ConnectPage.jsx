@@ -74,7 +74,7 @@ const ConnectPage = () => {
         {users.length > 0 ? (
           users.map((user) => (
             <div key={user.id} className="col-12 md:col-6">
-              <UserCard user={user} />
+              <UserCard user={user} isOwner={true}/>
             </div>
           ))
         ) : (
