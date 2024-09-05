@@ -1,29 +1,30 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import Loading from 'react-loading';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchComments, clearComments } from '../features/community/commentsSlice';
-import api from '../services/api';
 import CommentCard from '../components/common/CommentCard';
-import Loading from 'react-loading';
+import {
+  clearComments,
+  fetchComments,
+} from '../features/community/commentsSlice';
+import api from '../services/api';
 
 const PostDetailsPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Get the post ID from the URL
+  const dispatch = useDispatch();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
-
-  const comments = useSelector((state) => state.comments?.comments);
-  const commentsLoading = useSelector((state) => state.comments.loading);
+  const comments = useSelector((state) => state.comments.comments);
+  const commentLoading = useSelector((state) => state.comments.loading);
   const noMoreComments = useSelector((state) => state.comments.noMoreComments);
   const page = useSelector((state) => state.comments.page);
 
-  // Fetch post details on mount
   useEffect(() => {
     const fetchPostDetails = async () => {
       try {
         const response = await api.get(`/posts/details/${id}`);
-        setPost(response.data.post);
+        setPost(response.data);
       } catch (error) {
         toast.error('Failed to load post');
       } finally {
@@ -32,21 +33,23 @@ const PostDetailsPage = () => {
     };
 
     fetchPostDetails();
-    dispatch(clearComments()); // Clear previous comments
-    dispatch(fetchComments({ postId: id, page: 1 })); // Fetch initial comments
+
+    // Clear comments before fetching new ones
+    dispatch(clearComments());
+    dispatch(fetchComments({ postId: id, page: 1 }));
   }, [id, dispatch]);
 
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
         document.documentElement.offsetHeight ||
-      commentsLoading ||
+      commentLoading ||
       noMoreComments
     )
       return;
 
-    dispatch(fetchComments({ postId: id, page }));
-  }, [dispatch, id, page, commentsLoading, noMoreComments]);
+    dispatch(fetchComments({ postId: id, page: page + 1 }));
+  }, [dispatch, id, page, commentLoading, noMoreComments]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -73,6 +76,7 @@ const PostDetailsPage = () => {
     <div className="p-4 surface-0 border-round shadow-2 m-2 w-11 mx-auto flex flex-column md:flex-row">
       {/* Post */}
       <div className="flex flex-column w-12 md:w-6 mr-0 md:mr-2">
+        {/* post header */}
         <div className="flex align-items-center mb-3">
           <img
             src={post.user.profile_photo_url}
@@ -110,8 +114,8 @@ const PostDetailsPage = () => {
         ) : (
           <p>No comments yet.</p>
         )}
-        {commentsLoading && (
-          <div className="flex justify-content-center my-4">
+        {commentLoading && (
+          <div className="flex justify-content-center align-items-center my-4">
             <Loading type="spin" color="#019444" height={30} width={30} />
           </div>
         )}
