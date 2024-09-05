@@ -15,6 +15,9 @@ const PostDetailsPage = () => {
   const dispatch = useDispatch();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [newComment, setNewComment] = useState(''); // State to hold the new comment input
+  const [commentSubmitting, setCommentSubmitting] = useState(false); // State to track comment submission
+
   const comments = useSelector((state) => state.comments.comments);
   const commentLoading = useSelector((state) => state.comments.loading);
   const noMoreComments = useSelector((state) => state.comments.noMoreComments);
@@ -55,6 +58,30 @@ const PostDetailsPage = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
+
+  // Function to handle comment submission
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+
+    setCommentSubmitting(true);
+
+    try {
+      const response = await api.post(`/posts/details/${id}/comments`, {
+        comment_text: newComment,
+      });
+
+      // After successful comment submission, clear the input and fetch the comments again
+      setNewComment('');
+      dispatch(clearComments());
+      dispatch(fetchComments({ postId: id, page: 1 }));
+      toast.success('Comment added successfully');
+    } catch (error) {
+      toast.error('Failed to add comment');
+    } finally {
+      setCommentSubmitting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -111,6 +138,38 @@ const PostDetailsPage = () => {
       {/* Comments Section */}
       <div className="w-12 md:w-6 ml-0 md:ml-2">
         <h3 className="mb-3 text-lg">Comments</h3>
+
+        {/* Comment Input */}
+        <div className="flex align-items-center mb-3">
+          <img
+            src={post.user.profile_photo_url}
+            alt="Profile"
+            className="w-3rem h-3rem border-circle mr-3"
+          />
+          <form className="flex-1 flex" onSubmit={handleCommentSubmit}>
+            <input
+              type="text"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Leave a comment..."
+              className="flex-1 p-2 bg-tint-5 border-round"
+              disabled={commentSubmitting}
+            />
+            <button
+              type="submit"
+              className="bg-primary text-white border-round p-2 ml-2"
+              disabled={commentSubmitting}
+            >
+              {commentSubmitting ? (
+                <Loading type="spin" color="#ffffff" height={20} width={20} />
+              ) : (
+                <span>&#x2193;</span>
+              )}
+            </button>
+          </form>
+        </div>
+
+        {/* Display Comments */}
         {comments.length > 0 ? (
           comments.map((comment) => (
             <CommentCard key={comment.id} comment={comment} />
