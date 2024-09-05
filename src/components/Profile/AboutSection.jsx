@@ -7,36 +7,32 @@ import {
   FaPhone,
   FaUser,
 } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 
-const AboutSection = ({isOwner}) => {
-  const user = useSelector((state) => state.auth.userProfile);
-
+const AboutSection = ({ profileData, isOwner }) => {
   return (
     <div
       className="text-sm md:text-base flex flex-column align-items-center sm:align-items-start mt-2     text-xs md:text-base"
       style={{ width: '100%', maxWidth: '300px' }}
     >
-      <h2 className="text-primary ml-1 md:ml-0">About</h2>
-      {user.about && (
-        <div className="flex align-items-center  ml-1 md:ml-0">
-          <p className="text-primary mr-2 my-0">{user.about}</p>
+      {profileData.about && (
+        <div className="flex align-items-center my-2 ml-1 md:ml-0">
+          <p className="text-primary mr-2 my-0">{profileData.about}</p>
         </div>
       )}
 
-      {user.gender && (
+      {profileData.gender && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">
           <FaUser className="text-primary mr-2" />
-          <span>{user.gender}</span>
+          <span>{profileData.gender}</span>
         </div>
       )}
 
-      {user.birthday && (
+      {profileData.birthday && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">
           <FaBirthdayCake className="text-primary mr-2" />
           <span>
             Born{' '}
-            {new Date(user.birthday).toLocaleDateString('en-US', {
+            {new Date(profileData.birthday).toLocaleDateString('en-US', {
               month: 'long',
               day: 'numeric',
               year: 'numeric',
@@ -45,24 +41,24 @@ const AboutSection = ({isOwner}) => {
         </div>
       )}
 
-      {user.address && (
+      {profileData.address && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">
           <FaMapMarkerAlt className="text-primary mr-2" />
-          <span>{user.address}</span>
+          <span>{profileData.address}</span>
         </div>
       )}
 
-      {user.email && (
+      {profileData.email && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">
           <FaEnvelope className="text-primary mr-2" />
-          <span>{user.email}</span>
+          <span>{profileData.email}</span>
         </div>
       )}
 
-      {user.phone_number && (
+      {profileData.phone_number && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">
           <FaPhone className="text-primary mr-2" />
-          <span>{user.phone_number}</span>
+          <span>{profileData.phone_number}</span>
         </div>
       )}
       {isOwner && (

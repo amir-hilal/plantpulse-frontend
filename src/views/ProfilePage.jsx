@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AddPostModal from '../components/common/AddPostModal';
 import FriendsTab from '../components/common/FriendsTab';
 import PostCard from '../components/common/PostCard';
@@ -9,7 +9,7 @@ import TabView from '../components/common/TabView';
 import UserCard from '../components/common/UserCard';
 import AboutSection from '../components/Profile/AboutSection';
 import ProfileHeader from '../components/Profile/ProfileHeader';
-import { logout } from '../features/auth/authSlice';
+
 import {
   fetchFriendRequests,
   fetchFriends,
@@ -34,6 +34,7 @@ const ProfilePage = () => {
   const friends = useSelector((state) => state.friends.friends);
   const friendRequests = useSelector((state) => state.friends.friendRequests);
   const user = useSelector((state) => state.auth.userProfile);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -41,22 +42,18 @@ const ProfilePage = () => {
         const response = await api.get(`/users/${username}`);
         setProfileData(response.data);
 
-        if (user && response.data.username === user.username) {
+        if (user && response.data && response.data.username === user.username) {
           setIsOwner(true);
         }
       } catch (error) {
-        if (error.response.status === 404) {
-          setProfileData(null);
-        } else if (error.response.status === 401) {
-          dispatch(logout());
-        }
+        navigate('/home');
       } finally {
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, [username, user, dispatch]);
+  }, [username, user, dispatch, navigate]);
 
   useEffect(() => {
     if (isOwner) {
@@ -112,7 +109,7 @@ const ProfilePage = () => {
               onClick={() => setIsModalOpen(true)}
             >
               <img
-                src={user.profile_photo_url}
+                src={profileData.profile_photo_url}
                 alt="Profile"
                 className="h-3rem w-3rem border-circle mr-3"
               />
@@ -182,7 +179,7 @@ const ProfilePage = () => {
       />
       <div className="flex flex-column sm:flex-row w-full md:w-10">
         <div className="sm:w-auto flex justify-content-center">
-          <AboutSection isOwner={isOwner} />
+          <AboutSection profileData={profileData} isOwner={isOwner} />
         </div>
         <div className="w-full h-auto mt-2 ml-2">
           <TabView tabs={tabs} />
