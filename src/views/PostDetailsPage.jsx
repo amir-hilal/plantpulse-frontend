@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchComments, clearComments } from '../features/community/commentsSlice';
 import api from '../services/api';
+import CommentCard from '../components/common/CommentCard';
+import Loading from 'react-loading';
 
 const PostDetailsPage = () => {
-  const { id } = useParams(); // Get the post ID from the URL
+  const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
+  const comments = useSelector((state) => state.comments?.comments);
+  const commentsLoading = useSelector((state) => state.comments.loading);
+  const noMoreComments = useSelector((state) => state.comments.noMoreComments);
+  const page = useSelector((state) => state.comments.page);
+
+  // Fetch post details on mount
   useEffect(() => {
-    // Fetch the post details by post ID
     const fetchPostDetails = async () => {
       try {
         const response = await api.get(`/posts/details/${id}`);
-        setPost(response.data);
+        setPost(response.data.post);
       } catch (error) {
         toast.error('Failed to load post');
       } finally {
@@ -22,7 +32,26 @@ const PostDetailsPage = () => {
     };
 
     fetchPostDetails();
-  }, [id]);
+    dispatch(clearComments()); // Clear previous comments
+    dispatch(fetchComments({ postId: id, page: 1 })); // Fetch initial comments
+  }, [id, dispatch]);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight ||
+      commentsLoading ||
+      noMoreComments
+    )
+      return;
+
+    dispatch(fetchComments({ postId: id, page }));
+  }, [dispatch, id, page, commentsLoading, noMoreComments]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   if (loading) {
     return (
@@ -44,7 +73,6 @@ const PostDetailsPage = () => {
     <div className="p-4 surface-0 border-round shadow-2 m-2 w-11 mx-auto flex flex-column md:flex-row">
       {/* Post */}
       <div className="flex flex-column w-12 md:w-6 mr-0 md:mr-2">
-        {/* post header */}
         <div className="flex align-items-center mb-3">
           <img
             src={post.user.profile_photo_url}
@@ -73,33 +101,21 @@ const PostDetailsPage = () => {
       </div>
 
       {/* Comments Section */}
-
       <div className="w-12 md:w-6 ml-0 md:ml-2">
         <h3 className="mb-3 text-lg">Comments</h3>
-        {post.comments.length > 0 ? (
-          post.comments.map((comment) => (
-            <div key={comment.id} className="flex align-items-start mb-3">
-              <img
-                src={comment.user.profile_photo_url}
-                alt={comment.user.username}
-                className="w-3rem h-3rem border-circle mr-2"
-              />
-              <div className="surface-100 p-3 border-round">
-                <p className="m-0 text-md font-medium">
-                  {comment.user.first_name} {comment.user.last_name} &#x2022;{' '}
-                  <span className="text-secondary font-8">
-                    {' '}
-                    {new Date(post.created_at).toLocaleTimeString()} |{' '}
-                    {new Date(post.created_at).toLocaleDateString()}
-                  </span>
-                </p>
-                <p className="text-sm">{comment.comment_text}</p>
-              </div>
-            </div>
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <CommentCard key={comment.id} comment={comment} />
           ))
         ) : (
           <p>No comments yet.</p>
         )}
+        {commentsLoading && (
+          <div className="flex justify-content-center my-4">
+            <Loading type="spin" color="#019444" height={30} width={30} />
+          </div>
+        )}
+        {noMoreComments && <p className="text-center">No more comments</p>}
       </div>
     </div>
   );

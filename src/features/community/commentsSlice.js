@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
-// Fetch comments for a specific post
 export const fetchComments = createAsyncThunk(
   'comments/fetchComments',
-  async ({ postId, page = 1 }, { rejectWithValue }) => {
+  async ({ postId, page }, { rejectWithValue }) => {
     try {
       const response = await api.get(`/posts/${postId}/comments?page=${page}`);
       return response.data;
@@ -34,6 +33,7 @@ const commentsSlice = createSlice({
     builder
       .addCase(fetchComments.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchComments.fulfilled, (state, action) => {
         state.loading = false;
@@ -41,7 +41,6 @@ const commentsSlice = createSlice({
           state.noMoreComments = true;
         } else {
           state.comments = [...state.comments, ...action.payload.data];
-          state.page += 1;
         }
       })
       .addCase(fetchComments.rejected, (state, action) => {

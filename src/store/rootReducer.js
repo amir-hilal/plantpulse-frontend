@@ -4,12 +4,14 @@ import friendsReducer from '../features/community/friendsSlice';
 import postsReducer from '../features/community/postsSlice'; // Import the posts slice
 import uiReducer from '../features/ui/uiSlice';
 import usersReducer from '../features/users/usersSlice';
+import commentReducer from '../features/community/commentsSlice'
 const rootReducer = combineReducers({
   auth: authReducer,
   posts: postsReducer,
   friends: friendsReducer,
   users: usersReducer,
   ui: uiReducer,
+  comments: commentReducer
 });
 
 export default rootReducer;
