@@ -12,7 +12,6 @@ const CommentCard = ({ comment }) => {
         <p className="m-0 text-md font-medium">
           {comment.user.first_name} {comment.user.last_name} &#x2022;{' '}
           <span className="text-secondary font-8">
-            {' '}
             {new Date(comment.created_at).toLocaleTimeString()} |{' '}
             {new Date(comment.created_at).toLocaleDateString()}
           </span>

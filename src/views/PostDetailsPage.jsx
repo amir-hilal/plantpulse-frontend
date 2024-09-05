@@ -59,7 +59,7 @@ const PostDetailsPage = () => {
   if (loading) {
     return (
       <div className="flex justify-content-center align-items-center h-screen">
-        Loading...
+        <Loading type="spin" color="#019444" height={30} width={30} />
       </div>
     );
   }
@@ -95,7 +95,11 @@ const PostDetailsPage = () => {
         </div>
         <div className="mb-4">
           {post.image_url && (
-            <img src={post.image_url} alt="post" className="w-full" />
+            <img
+              src={post.image_url}
+              alt="post"
+              className="w-full border-round"
+            />
           )}
 
           <p className="text-lg font-bold text-secondary my-2">{post.title}</p>
@@ -119,7 +123,9 @@ const PostDetailsPage = () => {
             <Loading type="spin" color="#019444" height={30} width={30} />
           </div>
         )}
-        {noMoreComments && <p className="text-center">No more comments</p>}
+        {noMoreComments && comments.length !== 0 && (
+          <p className="text-center">No more comments</p>
+        )}
       </div>
     </div>
   );

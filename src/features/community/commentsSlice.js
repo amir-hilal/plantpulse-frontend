@@ -5,7 +5,7 @@ export const fetchComments = createAsyncThunk(
   'comments/fetchComments',
   async ({ postId, page }, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/posts/${postId}/comments?page=${page}`);
+      const response = await api.get(`/posts/details/${postId}/comments?page=${page}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -52,4 +52,3 @@ const commentsSlice = createSlice({
 
 export const { clearComments } = commentsSlice.actions;
 export default commentsSlice.reducer;
-
