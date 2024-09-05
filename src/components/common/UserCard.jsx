@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { FaUserPlus } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import { toast } from 'react-toastify';
+import AddFriendIcon from '../../assets/svg/Icons/Add user.svg';
+import CheckIcon from '../../assets/svg/Icons/Check.svg';
+import ClockIcon from '../../assets/svg/Icons/Clock.svg';
+import CloseIcon from '../../assets/svg/Icons/Close.svg';
+import RemoveIcon from '../../assets/svg/Icons/delete.svg';
+import MessageIcon from '../../assets/svg/Icons/Message square.svg';
 import {
   acceptFriendRequest,
   declineFriendRequest,
@@ -73,36 +78,41 @@ const UserCard = ({ user, isOwner }) => {
         return (
           <div className="flex">
             <button
-              className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center"
+              className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center"
               onClick={handleRemoveFriend}
             >
-              Remove
+              <img src={RemoveIcon} alt="Remove Friend" className="icon" />
+              <span className="font-8 mt-1">Remove</span>
             </button>
-            <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center ml-2">
-              Message
+            <button className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center">
+              <img src={MessageIcon} alt="Message" className="icon" />
+              <span className="font-8 mt-1"> Message</span>
             </button>
           </div>
         );
       case 'request_sent':
         return (
-          <button className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center">
-            Request Sent
+          <button className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center">
+            <img src={ClockIcon} alt="Request Sent" className="icon" />
+            <span className="font-8 mt-1"> Request Sent</span>
           </button>
         );
       case 'request_received':
         return (
           <>
             <button
-              className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center"
+              className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center"
               onClick={handleAcceptRequest}
             >
-              Accept
+              <img src={CheckIcon} alt="Accept" className="icon" />
+              <span className="font-8 mt-1"> Accept</span>
             </button>
             <button
-              className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center ml-2"
+              className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center ml-2"
               onClick={handleDeclineRequest}
             >
-              Decline
+              <img src={CloseIcon} alt="Decline" className="icon" />
+              <span className="font-8 mt-1"> Decline</span>
             </button>
           </>
         );
@@ -110,11 +120,11 @@ const UserCard = ({ user, isOwner }) => {
       default:
         return (
           <button
-            className="flex align-items-center bg-primary text-white border-round p-2 cursor-pointer justify-content-center"
+            className="flex flex-column text-dark-grey align-items-center bg-transparent border-none cursor-pointer justify-content-center"
             onClick={handleSendRequest}
           >
-            <FaUserPlus className="mr-2" />
-            Connect
+            <img src={AddFriendIcon} alt="Connect" className="icon" />
+            <span className="font-8 mt-1"> Connect</span>
           </button>
         );
     }
