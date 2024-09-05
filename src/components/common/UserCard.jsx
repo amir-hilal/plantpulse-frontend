@@ -10,7 +10,7 @@ import {
   sendFriendRequest,
 } from '../../features/community/friendsSlice';
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, isOwner }) => {
   const [currentStatus, setCurrentStatus] = useState(user.relationship_status);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -136,7 +136,7 @@ const UserCard = ({ user }) => {
             <p className="m-0 text-xs text-secondary">{user.username}</p>
           </div>
         </div>
-        {renderButton()}
+        {isOwner && renderButton()}
       </div>
     </div>
   );

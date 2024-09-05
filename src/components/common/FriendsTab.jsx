@@ -52,7 +52,7 @@ const FriendsTab = ({ friends, onSearch, isOwner }) => {
             <div
               key={friend.id}
             >
-              <UserCard user={friend}></UserCard>
+              <UserCard user={friend} isOwner={isOwner}></UserCard>
             </div>
           ))
         ) : (
