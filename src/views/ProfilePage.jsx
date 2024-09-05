@@ -173,7 +173,7 @@ const ProfilePage = () => {
         phone_number={profileData.phone_number}
         isOwner={isOwner}
         gender={profileData.gender}
-        friendship_status={profileData.friendship_status}
+        relationship_status={profileData.relationship_status}
         user_id={profileData.id}
       />
       <div className="flex flex-column sm:flex-row w-full md:w-10">

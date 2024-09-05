@@ -23,7 +23,7 @@ const ProfileHeader = ({
   address,
   birthday,
   isOwner,
-  friendship_status
+  relationship_status
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const ProfileHeader = ({
   };
 
   const renderActionButtons = () => {
-    switch (friendship_status) {
+    switch (relationship_status) {
       case 'connected':
         return (
           <div className="flex">
