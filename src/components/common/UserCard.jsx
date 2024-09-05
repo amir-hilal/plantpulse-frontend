@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUserPlus } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify'; // Assuming you are using react-toastify for notifications
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { toast } from 'react-toastify';
 import {
   acceptFriendRequest,
   declineFriendRequest,
@@ -10,11 +11,11 @@ import {
 } from '../../features/community/friendsSlice';
 
 const UserCard = ({ user }) => {
-  const [currentStatus, setCurrentStatus] = useState(user.relationship_status); // Use relationship_status directly from the user prop
+  const [currentStatus, setCurrentStatus] = useState(user.relationship_status);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Update currentStatus when user.relationship_status changes
     setCurrentStatus(user.relationship_status);
   }, [user.relationship_status]);
 
@@ -22,7 +23,7 @@ const UserCard = ({ user }) => {
     dispatch(sendFriendRequest(user.id))
       .then(() => {
         toast.success('Friend request sent successfully');
-        setCurrentStatus('request_sent'); // Update status on successful request
+        setCurrentStatus('request_sent');
       })
       .catch(() => {
         toast.error('Failed to send friend request. Please try again.');
@@ -60,6 +61,10 @@ const UserCard = ({ user }) => {
       .catch(() => {
         toast.error('Failed to remove friend. Please try again.');
       });
+  };
+
+  const handleNavigateToProfile = () => {
+    navigate(`/profile/${user.username}`);
   };
 
   const renderButton = () => {
@@ -124,10 +129,12 @@ const UserCard = ({ user }) => {
           className="h-3rem w-3rem border-circle mr-3"
         />
         <div className="flex-1">
-          <h3 className="m-0 text-base text-primary">
-            {user.first_name} {user.last_name}
-          </h3>
-          <p className="m-0 text-xs text-secondary">{user.username}</p>
+          <div onClick={handleNavigateToProfile} className="cursor-pointer">
+            <h3 className="m-0 text-base text-primary">
+              {user.first_name} {user.last_name}
+            </h3>
+            <p className="m-0 text-xs text-secondary">{user.username}</p>
+          </div>
         </div>
         {renderButton()}
       </div>
