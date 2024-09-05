@@ -7,6 +7,7 @@ import CommentCard from '../components/common/CommentCard';
 import {
   addComment,
   clearComments,
+  deleteComment,
   fetchComments,
 } from '../features/community/commentsSlice';
 import api from '../services/api';
@@ -37,7 +38,6 @@ const PostDetailsPage = () => {
       }
     };
 
-
     // Clear comments before fetching new ones
     dispatch(clearComments());
     fetchPostDetails();
@@ -56,6 +56,9 @@ const PostDetailsPage = () => {
     dispatch(fetchComments({ postId: id, page: page + 1 }));
   }, [dispatch, id, page, commentLoading, noMoreComments]);
 
+  const handleDeleteComment = (commentId) => {
+    dispatch(deleteComment(commentId));
+  };
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -176,7 +179,12 @@ const PostDetailsPage = () => {
         {/* Display Comments */}
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <CommentCard key={comment.id} comment={comment} />
+            <CommentCard
+              key={comment.id}
+              comment={comment}
+              handleDelete={handleDeleteComment}
+              userId={user.id}
+            />
           ))
         ) : (
           <p>No comments yet.</p>
