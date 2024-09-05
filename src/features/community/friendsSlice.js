@@ -88,7 +88,14 @@ const friendsSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetFriendsState: (state) => {
+      state.friends = [];
+      state.friendRequests = [];
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFriends.pending, (state) => {
@@ -134,7 +141,7 @@ const friendsSlice = createSlice({
         state.loading = false;
         const acceptedFriendId = action.payload.friend.id;
         const acceptedFriend = action.payload.friend.user;
-        acceptedFriend.relationship_status = "connected"
+        acceptedFriend.relationship_status = 'connected';
         state.friends.push(acceptedFriend);
         state.friendRequests = state.friendRequests.filter(
           (request) => request.id !== acceptedFriendId
@@ -174,5 +181,5 @@ const friendsSlice = createSlice({
       });
   },
 });
-
+export const { resetFriendsState } = friendsSlice.actions;
 export default friendsSlice.reducer;
