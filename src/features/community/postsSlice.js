@@ -1,6 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
+// Fetch friends' posts
+export const fetchFriendsPosts = createAsyncThunk(
+  'posts/fetchFriendsPosts',
+  async ({ page = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/posts/friends?page=${page}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 // Fetch posts by username
 export const fetchPostsByUsername = createAsyncThunk(
   'posts/fetchPostsByUsername',
@@ -46,6 +59,20 @@ const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchFriendsPosts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchFriendsPosts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.posts = [...state.posts, ...action.payload.data];
+        if (action.payload.data.length < 5) {
+          state.noMorePosts = true;
+        }
+      })
+      .addCase(fetchFriendsPosts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error fetching posts';
+      })
       .addCase(fetchPostsByUsername.pending, (state) => {
         state.loading = true;
       })
