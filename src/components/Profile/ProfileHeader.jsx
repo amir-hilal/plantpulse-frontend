@@ -8,7 +8,9 @@ import ClockIcon from '../../assets/svg/Icons/Clock.svg';
 import CloseIcon from '../../assets/svg/Icons/Close.svg';
 import RemoveIcon from '../../assets/svg/Icons/delete.svg';
 import MessageIcon from '../../assets/svg/Icons/Message square.svg';
-
+import routes from '../../routes'
+import {logout} from '../../features/auth/authSlice'
+import { useNavigate } from 'react-router-dom';
 import {
   acceptFriendRequest,
   declineFriendRequest,
@@ -35,7 +37,7 @@ const ProfileHeader = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const [currentStatus, setCurrentStatus] = useState(relationship_status);
-
+  const navigate = useNavigate();
   const handleSendRequest = () => {
     dispatch(sendFriendRequest(user_id))
       .then(() => {
@@ -165,7 +167,7 @@ const ProfileHeader = ({
             className="absolute profile-picture-position h-7rem w-7rem border-circle shadow-1"
           />
           <div className="w-0 md:w-3 "></div>
-          <div className="absolute left-38 md:static translate-x-0">
+          <div className="absolute left-36 md:static translate-x-0">
             <h2 className="text-xl text-primary m-0">
               {first_name} {last_name}
             </h2>
@@ -175,13 +177,25 @@ const ProfileHeader = ({
           </div>
           <div className="ml-2 ml-auto">
             {isOwner ? (
-              <button
-                className="sm:w-9rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
-                onClick={() => setIsModalOpen(true)}
-              >
-                <span className="hidden sm:block">Edit Profile</span>
-                <FaEdit className="block sm:hidden text-xl" />
-              </button>
+              <div className="flex">
+                {' '}
+                <button
+                  className="sm:w-6rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <span className="hidden sm:block">Edit Profile</span>
+                  <FaEdit className="block sm:hidden text-xl" />
+                </button>
+                <button
+                  onClick={() => {
+                    dispatch(logout());
+                    navigate(routes.login);
+                  }}
+                  className="sm:w-6rem bg-primary border-round border-solid border-primary hover:bg-primary-reverse ml-1 sm:m-0  sm:py-2 sm:pl-4 font-16 text-left cursor-pointer"
+                >
+                  Logout
+                </button>
+              </div>
             ) : (
               renderActionButtons()
             )}
