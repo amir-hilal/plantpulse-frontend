@@ -6,7 +6,7 @@ export const fetchFriendsPosts = createAsyncThunk(
   'posts/fetchFriendsPosts',
   async ({ page = 1 }, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/posts/friends?page=${page}`);
+      const response = await api.get(`/posts?page=${page}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

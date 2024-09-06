@@ -6,13 +6,14 @@ import Guard from './components/common/Guard';
 import { initializeUser } from './features/auth/authSlice';
 import MainLayout from './MainLayout';
 import routes from './routes';
+import CommunityPostsPage from './views/CommunityPostsPage';
+import ConnectPage from './views/ConnectPage';
 import LandingPage from './views/LandingPage';
 import LoginPage from './views/LoginPage';
 import MyGardenPage from './views/MyGardenPage';
+import PostDetailsPage from './views/PostDetailsPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
-import ConnectPage from './views/ConnectPage';
-import PostDetailsPage from './views/PostDetailsPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ function App() {
                     </Guard>
                   }
                 />
-                 <Route
+                <Route
                   path={routes.community_connect}
                   element={
                     <Guard authRequired={true} redirectPath={routes.home}>
@@ -82,11 +83,20 @@ function App() {
                     </Guard>
                   }
                 />
-                 <Route
+                <Route
                   path={routes.post_details(':id')}
                   element={
                     <Guard authRequired={true} redirectPath={routes.home}>
                       <PostDetailsPage />
+                    </Guard>
+                  }
+                />
+
+                <Route
+                  path={routes.community_posts}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <CommunityPostsPage />
                     </Guard>
                   }
                 />
