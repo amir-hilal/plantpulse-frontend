@@ -115,7 +115,7 @@ const ProfilePage = () => {
               <p className="m-0 text-primary">Add new post...</p>
             </div>
           )}
-          <div className="mt-2 flex justify-content-center">
+          <div className="mt-2 flex flex-column justify-content-center">
             {posts.length > 0
               ? posts.map((post) => <PostCard key={post.id} post={post} />)
               : !postsLoading && !!posts && <p>No posts yet.</p>}
@@ -139,7 +139,16 @@ const ProfilePage = () => {
 
   if (isOwner) {
     tabs.push({
-      label: 'Friend Requests',
+      label: (
+        <div className="flex align-items-center">
+          Friend Requests
+          {friendRequests.length > 0 && (
+            <span className="ml-2 bg-red-600 text-white border-circle  flex justify-content-center align-items-center text-sm" style={{ height:'20px', width:'20px'}}>
+              {friendRequests.length}
+            </span>
+          )}
+        </div>
+      ),
       content: (
         <div>
           {friendRequests.length > 0 ? (
@@ -148,6 +157,7 @@ const ProfilePage = () => {
                 key={request.id}
                 user={request.user}
                 status={request.status}
+                isOwner={isOwner}
               />
             ))
           ) : (

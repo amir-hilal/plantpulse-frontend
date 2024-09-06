@@ -15,14 +15,16 @@ import {
   sendFriendRequest,
 } from '../../features/community/friendsSlice';
 
-const UserCard = ({ user, isOwner }) => {
+const UserCard = ({ user, isOwner, status }) => {
   const [currentStatus, setCurrentStatus] = useState(user.relationship_status);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setCurrentStatus(user.relationship_status);
-  }, [user.relationship_status]);
+    setCurrentStatus(
+      status === 'pending' ? 'request_received' : user.relationship_status
+    );
+  }, [user.relationship_status, status]);
 
   const handleSendRequest = () => {
     dispatch(sendFriendRequest(user.id))
