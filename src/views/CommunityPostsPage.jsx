@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { FaUsers } from 'react-icons/fa';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import AddPostModal from '../components/common/AddPostModal';
 import PostCard from '../components/common/PostCard';
 import {
@@ -14,7 +16,8 @@ const CommunityPostsPage = () => {
   const loading = useSelector((state) => state.posts.loading);
   const noMorePosts = useSelector((state) => state.posts.noMorePosts);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const user = useSelector((state) => state.auth.userProfile);
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(clearPosts());
     dispatch(fetchFriendsPosts({ page: 1 }));
@@ -38,15 +41,35 @@ const CommunityPostsPage = () => {
   }, [handleScroll]);
 
   return (
-    <div className="community-posts-page">
-      <div className="flex justify-content-between mb-3">
-        <h2>Community Posts</h2>
-        <button
-          className="btn btn-primary"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Add Post
-        </button>
+    <div className="community-posts-page px-8">
+      <div className="flex flex-column my-3">
+        <div className="flex align-items-center mb-5">
+          <FaUsers className=" w-2rem  text-grey" />{' '}
+          <h4 className="m-0 ml-2 text-md text-grey">Community</h4>
+        </div>
+
+        <div>
+          <div className="flex justify-content-between">
+            <div
+              className="border-round flex align-items-center cursor-pointer"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <img
+                src={user.profile_photo_url}
+                alt="Profile"
+                className="h-3rem w-3rem border-circle mr-3"
+              />
+              <p className="m-0 text-primary">Add new post...</p>
+            </div>
+            <button
+              onClick={() => navigate('/community/connect')}
+              className=" text-sm bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
+            >
+              <FaUsers className=" w-2rem mr-2 " />
+              Connect
+            </button>
+          </div>
+        </div>
       </div>
 
       <div>
@@ -63,7 +86,7 @@ const CommunityPostsPage = () => {
         </div>
       )}
 
-      {noMorePosts && <p className="text-center">No more posts</p>}
+      {noMorePosts && (posts.length!==0) && <p className="text-center">No more posts</p>}
 
       <AddPostModal
         isOpen={isModalOpen}
