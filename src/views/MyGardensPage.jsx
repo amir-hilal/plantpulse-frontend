@@ -1,71 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import PlantCard from '../components/PlantCard';
+import GardenNav from '../components/common/GardenNav';
+import PlantCard from '../components/common/PlantCard';
 import {
   clearPlants,
   fetchPlantsByGarden,
 } from '../features/plant/plantsSlice';
 
 const MyGardensPage = () => {
-  const [activeGarden, setActiveGarden] = useState(null); // Currently selected garden
   const dispatch = useDispatch();
-  const plants = useSelector((state) => state.plants.plants); // Plants in the garden
+  const [selectedGardenId, setSelectedGardenId] = useState(null); // State for selected garden
+  const plants = useSelector((state) => state.plants.plants || []); // Safe access to plants state
+  const loading = useSelector((state) => state.plants.loading);
 
+  // Assuming gardens will be fetched from the backend
   const gardens = [
-    // Placeholder for gardens, will be fetched from API later
     { id: 1, name: 'Backyard' },
     { id: 2, name: 'Living Room' },
-    { id: 3, name: 'Patio' },
+    { id: 3, name: 'Balcony' },
   ];
 
+  // Fetch plants for the selected garden
   useEffect(() => {
-    if (activeGarden) {
-      dispatch(clearPlants()); // Clear state when switching gardens
-      dispatch(fetchPlantsByGarden(activeGarden.id)); // Fetch new garden plants
+    if (selectedGardenId) {
+      dispatch(clearPlants()); // Clear plants when switching gardens
+      dispatch(fetchPlantsByGarden(selectedGardenId)); // Fetch plants for the selected garden
     }
-  }, [activeGarden, dispatch]);
+  }, [selectedGardenId, dispatch]);
 
   return (
     <div className="p-grid">
-      {/* Left Navigation */}
-      <div className="p-col-2 hidden-sm hidden-xs">
-        <div className="p-mt-3 p-d-flex p-flex-column">
-          <button
-            className="p-button p-my-2"
-            onClick={() => setActiveGarden(null)}
-          >
-            + Add New Garden
-          </button>
-          {gardens.map((garden) => (
-            <button
-              key={garden.id}
-              className={`p-button p-my-2 ${
-                activeGarden && activeGarden.id === garden.id
-                  ? 'p-button-primary'
-                  : ''
-              }`}
-              onClick={() => setActiveGarden(garden)}
-            >
-              {garden.name}
-            </button>
-          ))}
-        </div>
+      {/* Left side Garden Navigation */}
+      <div className="p-col-3">
+        <GardenNav
+          gardens={gardens}
+          selectedGardenId={selectedGardenId}
+          onSelectGarden={setSelectedGardenId} // Set selected garden ID when a garden is clicked
+        />
       </div>
 
-      {/* Plant Cards */}
-      <div className="p-col-10">
-        <div className="p-grid p-jc-center">
-          {plants.length === 0 ? (
-            <p>No plants found in this garden.</p>
-          ) : (
+      {/* Right side Plant List */}
+      <div className="p-col-9">
+        <div className="p-grid">
+          {loading ? (
+            <p>Loading plants...</p>
+          ) : plants.length > 0 ? (
             plants.map((plant) => <PlantCard key={plant.id} plant={plant} />)
+          ) : (
+            <p>No plants found in this garden...</p>
           )}
-          {/* Add New Plant */}
-          <div className="p-col-12 p-md-4 p-lg-3">
-            <div className="p-shadow-3 p-p-3 p-mb-4 p-border-round">
-              <p className="p-text-center">+ Add New Plant</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
