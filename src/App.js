@@ -10,7 +10,7 @@ import CommunityPostsPage from './views/CommunityPostsPage';
 import ConnectPage from './views/ConnectPage';
 import LandingPage from './views/LandingPage';
 import LoginPage from './views/LoginPage';
-import MyGardenPage from './views/MyGardenPage';
+import MyGardensPage from './views/MyGardensPage';
 import PostDetailsPage from './views/PostDetailsPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
@@ -71,7 +71,7 @@ function App() {
                   path={routes.myGardens}
                   element={
                     <Guard authRequired={true} redirectPath={routes.home}>
-                      <MyGardenPage />
+                      <MyGardensPage />
                     </Guard>
                   }
                 />
