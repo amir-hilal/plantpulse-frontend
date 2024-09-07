@@ -6,7 +6,7 @@ export const fetchFriendsPosts = createAsyncThunk(
   'posts/fetchFriendsPosts',
   async ({ page = 1 }, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/posts?page=${page}`);
+      const response = await api.get(`/posts/friends/all?page=${page}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -27,18 +27,6 @@ export const fetchPostsByUsername = createAsyncThunk(
   }
 );
 
-// Fetch all posts (for a general feed)
-export const fetchAllPosts = createAsyncThunk(
-  'posts/fetchAllPosts',
-  async ({ page = 1 }, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`/posts?page=${page}`);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
 
 const postsSlice = createSlice({
   name: 'posts',
