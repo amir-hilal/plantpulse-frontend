@@ -6,7 +6,7 @@ export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
   async ({ page = 1 }, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/users?page=${page}`);
+      const response = await api.get(`/users/all?page=${page}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -19,7 +19,7 @@ export const searchUsers = createAsyncThunk(
   'users/searchUsers',
   async (query, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/users/search?query=${query}`);
+      const response = await api.get(`/users/all/search?query=${query}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

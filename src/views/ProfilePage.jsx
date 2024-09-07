@@ -41,7 +41,7 @@ const ProfilePage = () => {
     const fetchProfile = async () => {
       setLoading(true)
       try {
-        const response = await api.get(`/users/${username}`);
+        const response = await api.get(`/users/show/${username}`);
         setProfileData(response.data);
 
         if (user && response.data && response.data.username === user.username) {

@@ -75,20 +75,6 @@ const postsSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Error fetching posts';
       })
-      .addCase(fetchAllPosts.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchAllPosts.fulfilled, (state, action) => {
-        state.loading = false;
-        state.posts = [...state.posts, ...action.payload.data];
-        if (action.payload.data.length < 5) {
-          state.noMorePosts = true;
-        }
-      })
-      .addCase(fetchAllPosts.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || 'Error fetching posts';
-      });
   },
 });
 
