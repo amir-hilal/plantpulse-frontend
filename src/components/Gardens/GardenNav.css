@@ -1,0 +1,28 @@
+.garden-nav {
+  width: 250px; /* Default width */
+  transition: width 0.3s ease;
+}
+
+.garden-nav ul li {
+  transition: background 0.3s ease;
+}
+
+
+
+@media (max-width: 768px) {
+  .garden-nav {
+    width: 60px; /* Shrink the nav on smaller screens */
+  }
+
+  .garden-nav .garden-name {
+    display: none; /* Hide the garden name */
+  }
+
+  .garden-nav:hover {
+    width: 250px; /* Expand on hover */
+  }
+
+  .garden-nav:hover .garden-name {
+    display: inline; /* Show garden name when hovered */
+  }
+}
