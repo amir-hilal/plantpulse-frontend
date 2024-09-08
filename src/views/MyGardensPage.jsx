@@ -13,7 +13,8 @@ import {
 const MyGardensPage = () => {
   const dispatch = useDispatch();
   const [selectedGardenId, setSelectedGardenId] = useState(null);
-  const [isModalOpen, setModalOpen] = useState(false); // State to control modal visibility
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [editingGarden, setEditingGarden] = useState(null); // Track if we are editing a garden
 
   const gardens = useSelector((state) => state.gardens.gardens || []);
   const gardenLoading = useSelector((state) => state.gardens.loading);
@@ -35,6 +36,11 @@ const MyGardensPage = () => {
     }
   }, [selectedGardenId, dispatch]);
 
+  const handleEditGarden = (garden) => {
+    setEditingGarden(garden);
+    setModalOpen(true);
+  };
+
   return (
     <div className="grid m-0">
       <div className="col-3 p-0 bg-tint-5">
@@ -47,7 +53,11 @@ const MyGardensPage = () => {
             gardens={gardens}
             selectedGardenId={selectedGardenId}
             onSelectGarden={setSelectedGardenId}
-            onAddGarden={() => setModalOpen(true)}
+            onAddGarden={() => {
+              setEditingGarden(null);
+              setModalOpen(true);
+            }}
+            onEditGarden={handleEditGarden}
           />
         )}
       </div>
@@ -71,7 +81,12 @@ const MyGardensPage = () => {
       </div>
 
       {/* Add Garden Modal */}
-      {isModalOpen && <AddGardenModal onClose={() => setModalOpen(false)} />}
+      {isModalOpen && (
+        <AddGardenModal
+          onClose={() => setModalOpen(false)}
+          garden={editingGarden} 
+        />
+      )}
     </div>
   );
 };

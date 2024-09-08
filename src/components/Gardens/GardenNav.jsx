@@ -26,7 +26,7 @@ const GardenNav = ({
         {gardens.map((garden) => (
           <li
             key={garden.id}
-            className={`cursor-pointer mb-3 p-2 sm:pl-4 border-round-left-3xl flex align-items-center bg-secondary text-tint-5 border-solid border-secondary border-right-none ${
+            className={`relative h-3rem cursor-pointer mb-3 p-2 sm:pl-4 border-round-left-3xl flex align-items-center bg-secondary text-tint-5 border-solid border-secondary border-right-none ${
               garden.id === selectedGardenId
                 ? ' bg-tint-4 text-color-secondary'
                 : ''
@@ -36,13 +36,15 @@ const GardenNav = ({
             onClick={() => onSelectGarden(garden.id)}
           >
             <GiPlantSeed className="mr-2" />
-            <span className="sm:ml-1 md:ml-5">{garden.name}</span>
+            <span className="sm:ml-1 md:ml-5 ">{garden.name}</span>
 
             {hoveredGardenId === garden.id && (
               <span
+                className={`absolute right-0 mr-3 ${garden.id ===selectedGardenId?'bg-tint-4':'bg-secondary'}`}
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent triggering onSelectGarden
                   onEditGarden(garden);
+
                 }}
               >
                 <FiEdit className="text-xl cursor-pointer ml-2" />
