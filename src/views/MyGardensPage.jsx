@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
+import AddGardenModal from '../components/Gardens/AddGardenModal';
 import GardenNav from '../components/Gardens/GardenNav';
 import PlantCard from '../components/Gardens/PlantCard';
-import { clearGardens, fetchGardens } from '../features/garden/gardensSlice'; // Fetch gardens action
+import { clearGardens, fetchGardens } from '../features/garden/gardensSlice';
 import {
   clearPlants,
   fetchPlantsByGarden,
@@ -11,34 +12,36 @@ import {
 
 const MyGardensPage = () => {
   const dispatch = useDispatch();
-  const [selectedGardenId, setSelectedGardenId] = useState(null); // State for selected garden
+  const [selectedGardenId, setSelectedGardenId] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false); // State to control modal visibility
 
   const gardens = useSelector((state) => state.gardens.gardens || []);
   const gardenLoading = useSelector((state) => state.gardens.loading);
-
-  const plants = useSelector((state) => state.plants.plants || []); // Safe access to plants state
+  const plants = useSelector((state) => state.plants.plants || []);
   const plantLoading = useSelector((state) => state.plants.loading);
 
-  // Fetch gardens when the page loads
   useEffect(() => {
     dispatch(fetchGardens());
 
     return () => {
-      dispatch(clearGardens()); // Clear gardens when component unmounts
+      dispatch(clearGardens());
     };
   }, [dispatch]);
 
-  // Fetch plants for the selected garden
   useEffect(() => {
     if (selectedGardenId) {
-      dispatch(clearPlants()); // Clear plants when switching gardens
-      dispatch(fetchPlantsByGarden(selectedGardenId)); // Fetch plants for the selected garden
+      dispatch(clearPlants());
+      dispatch(fetchPlantsByGarden(selectedGardenId));
     }
   }, [selectedGardenId, dispatch]);
 
+  // Function to open modal
+  const openModal = () => setModalOpen(true);
+  // Function to close modal
+  const closeModal = () => setModalOpen(false);
+
   return (
     <div className="grid m-0">
-      {/* Left side Garden Navigation */}
       <div className="col-3 p-0 bg-tint-5">
         {gardenLoading ? (
           <div className="loading h-20rem flex align-items-center justify-content-center">
@@ -48,12 +51,12 @@ const MyGardensPage = () => {
           <GardenNav
             gardens={gardens}
             selectedGardenId={selectedGardenId}
-            onSelectGarden={setSelectedGardenId} // Set selected garden ID when a garden is clicked
+            onSelectGarden={setSelectedGardenId}
+            onAddGarden={openModal} // Pass openModal to GardenNav
           />
         )}
       </div>
 
-      {/* Right side Plant List */}
       <div className="col-9">
         <div className="grid m-0">
           {plantLoading ? (
@@ -71,6 +74,9 @@ const MyGardensPage = () => {
           )}
         </div>
       </div>
+
+      {/* Add Garden Modal */}
+      {isModalOpen && <AddGardenModal onClose={closeModal} />}
     </div>
   );
 };
