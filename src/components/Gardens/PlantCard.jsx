@@ -2,9 +2,9 @@ import React from 'react';
 
 const PlantCard = ({ plant }) => {
   return (
-    <div className="col-12 md-6 lg-3">
+    <div className="w-3rem">
       <div className="border-round-lg shadow-1 surface-card p-3">
-        <img src={plant.image_url} alt={plant.name} className="w-full border-round mb-3" />
+        <img src={plant.image_url} alt={plant.name} className="" />
         <div className="text-xl font-bold">{plant.name}</div>
         <div className="text-md text-secondary">Age: {plant.age} years old</div>
         <div className="text-md">Category: {plant.category}</div>

@@ -1,5 +1,6 @@
 *{
   letter-spacing: 1px;
+  box-sizing: border-box;
 }
 body {
   margin: 0;
@@ -416,6 +417,10 @@ code {
 
 .min-h-10 {
   min-height: 250px;
+}
+
+.border-secondary{
+  border-color: var(--secondary-color);
 }
 
 .p-button{

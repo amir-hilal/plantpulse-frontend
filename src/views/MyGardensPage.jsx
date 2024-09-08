@@ -29,9 +29,9 @@ const MyGardensPage = () => {
   }, [selectedGardenId, dispatch]);
 
   return (
-    <div className="grid">
+    <div className="grid m-0">
       {/* Left side Garden Navigation */}
-      <div className="col-3">
+      <div className="col-3 p-0 bg-tint-5">
         <GardenNav
           gardens={gardens}
           selectedGardenId={selectedGardenId}
@@ -41,7 +41,7 @@ const MyGardensPage = () => {
 
       {/* Right side Plant List */}
       <div className="col-9">
-        <div className="grid">
+        <div className="grid m-0">
           {loading ? (
             <p>Loading plants...</p>
           ) : plants.length > 0 ? (
