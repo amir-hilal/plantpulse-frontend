@@ -7,7 +7,7 @@ import PlantCard from '../components/Gardens/PlantCard';
 import { clearGardens, fetchGardens } from '../features/garden/gardensSlice';
 import {
   clearPlants,
-  fetchPlantsByGarden,
+  fetchPlants,
 } from '../features/plant/plantsSlice';
 
 const MyGardensPage = () => {
@@ -32,7 +32,7 @@ const MyGardensPage = () => {
   useEffect(() => {
     if (selectedGardenId) {
       dispatch(clearPlants());
-      dispatch(fetchPlantsByGarden(selectedGardenId));
+      dispatch(fetchPlants(selectedGardenId));
     }
   }, [selectedGardenId, dispatch]);
 
