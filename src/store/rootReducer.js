@@ -6,6 +6,7 @@ import uiReducer from '../features/ui/uiSlice';
 import usersReducer from '../features/users/usersSlice';
 import commentReducer from '../features/community/commentsSlice';
 import plantReducer from '../features/plant/plantsSlice';
+import gardenReducer from '../features/garden/gardensSlice';
 const rootReducer = combineReducers({
   auth: authReducer,
   posts: postsReducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   users: usersReducer,
   ui: uiReducer,
   comments: commentReducer,
-  plants: plantReducer
+  plants: plantReducer,
+  gardens: gardenReducer,
 });
 
 export default rootReducer;
