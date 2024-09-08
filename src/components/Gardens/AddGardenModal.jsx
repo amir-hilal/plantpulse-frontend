@@ -7,31 +7,31 @@ import { addGarden, updateGarden } from '../../features/garden/gardensSlice'; //
 const AddGardenModal = ({ onClose, garden }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const [file, setFile] = useState(null);
-  const [filePreview, setFilePreview] = useState(null);
+  // const [file, setFile] = useState(null);
+  // const [filePreview, setFilePreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (garden) {
       setName(garden.name); // Set the name if editing
       if (garden.image) {
-        setFilePreview(garden.image); // Assuming the garden has an image field
+        // setFilePreview(garden.image); // Assuming the garden has an image field
       }
     } else {
       setName('');
-      setFilePreview(null);
+      // setFilePreview(null);
     }
   }, [garden]);
 
   // Handle file change
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      const previewURL = URL.createObjectURL(selectedFile);
-      setFilePreview(previewURL);
-    }
-  };
+  // const handleFileChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   if (selectedFile) {
+  //     setFile(selectedFile);
+  //     const previewURL = URL.createObjectURL(selectedFile);
+  //     setFilePreview(previewURL);
+  //   }
+  // };
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -40,12 +40,12 @@ const AddGardenModal = ({ onClose, garden }) => {
 
     const formData = new FormData();
     formData.append('name', name);
-    if (file) {
-      formData.append('file', file);
-    }
+    // if (file) {
+    //   formData.append('file', file);
+    // }
 
     if (garden) {
-      dispatch(updateGarden({ ...formData, id: garden.id }));
+      dispatch(updateGarden({ id: garden.id, formData }));
     } else {
       dispatch(addGarden(formData));
     }
@@ -79,7 +79,7 @@ const AddGardenModal = ({ onClose, garden }) => {
               required
             />
           </div>
-          <div className="flex flex-column mt-2">
+          {/* <div className="flex flex-column mt-2">
             <div className="flex flex-column align-items-center">
               <label
                 htmlFor="file-upload"
@@ -108,7 +108,7 @@ const AddGardenModal = ({ onClose, garden }) => {
                 Supported formats: JPEG, PNG, JPG, GIF
               </small>
             </div>
-          </div>
+          </div> */}
           <button
             type="submit"
             className={`text-white border-none border-round py-2 mt-2 w-full flex justify-content-center align-items-center ${

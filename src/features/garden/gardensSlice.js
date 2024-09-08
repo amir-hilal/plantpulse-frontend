@@ -30,6 +30,19 @@ export const addGarden = createAsyncThunk(
   }
 );
 
+export const updateGarden = createAsyncThunk(
+  'gardens/updateGarden',
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      console.log(formData.get('name'))
+      const response = await api.put(`/garden/${id}`, formData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const gardensSlice = createSlice({
   name: 'gardens',
   initialState: {
@@ -66,6 +79,23 @@ const gardensSlice = createSlice({
       .addCase(addGarden.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(updateGarden.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateGarden.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.gardens.findIndex(
+          (garden) => garden.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.gardens[index] = action.payload;
+        }
+      })
+      .addCase(updateGarden.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
