@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
-import { addGarden } from '../../features/garden/gardensSlice'; // Action to handle form submission
 import Loading from 'react-loading';
+import { useDispatch } from 'react-redux';
+import { addGarden, updateGarden } from '../../features/garden/gardensSlice'; // Action to handle form submission
 
-const AddGardenModal = ({ onClose }) => {
+const AddGardenModal = ({ onClose, garden }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (garden) {
+      setName(garden.name); // Set the name if editing
+      if (garden.image) {
+        setFilePreview(garden.image); // Assuming the garden has an image field
+      }
+    } else {
+      setName('');
+      setFilePreview(null);
+    }
+  }, [garden]);
 
   // Handle file change
   const handleFileChange = (e) => {
@@ -31,12 +43,15 @@ const AddGardenModal = ({ onClose }) => {
     if (file) {
       formData.append('file', file);
     }
-    // Dispatch the form data to the Redux action
-    dispatch(addGarden(formData));
-    setName('');
-    setFile(null);
-    setFilePreview(null);
-    onClose(); // Close the modal after submission
+
+    if (garden) {
+      dispatch(updateGarden({ ...formData, id: garden.id }));
+    } else {
+      dispatch(addGarden(formData));
+    }
+
+    setLoading(false);
+    onClose();
   };
 
   return (
@@ -51,7 +66,7 @@ const AddGardenModal = ({ onClose }) => {
         >
           <FaTimes className="text-2xl text-secondary" />
         </button>
-        <h3>Add new Garden</h3>
+        <h3>{garden ? 'Edit Garden' : 'Add new Garden'}</h3>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-column mb-4">
             <input
@@ -69,7 +84,7 @@ const AddGardenModal = ({ onClose }) => {
               <label
                 htmlFor="file-upload"
                 className="text-center cursor-pointer border-dotted border-2 border-primary"
-                style={{ padding: filePreview ? '1rem' : '7rem' }} // Conditional padding
+                style={{ padding: filePreview ? '1rem' : '7rem' }}
               >
                 <input
                   id="file-upload"
@@ -83,7 +98,7 @@ const AddGardenModal = ({ onClose }) => {
                     src={filePreview}
                     alt="Preview"
                     className="border-round"
-                    style={{ maxHeight: '200px', maxWidth: '100%' }} // Limit height and width
+                    style={{ maxHeight: '200px', maxWidth: '100%' }}
                   />
                 ) : (
                   'Drag & drop files or Browse'
@@ -96,15 +111,15 @@ const AddGardenModal = ({ onClose }) => {
           </div>
           <button
             type="submit"
-            className={` text-white border-none border-round py-2 mt-2 w-full flex justify-content-center align-items-center ${
-              !name || loading
-                ? 'bg-green-400'
-                : 'bg-primary cursor-pointer'
-            } `}
+            className={`text-white border-none border-round py-2 mt-2 w-full flex justify-content-center align-items-center ${
+              !name || loading ? 'bg-green-400' : 'bg-primary cursor-pointer'
+            }`}
             disabled={!name || loading}
           >
             {loading ? (
               <Loading type="spin" color="#fff" height={20} width={20} />
+            ) : garden ? (
+              'Save'
             ) : (
               'Add'
             )}
