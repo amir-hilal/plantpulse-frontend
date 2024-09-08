@@ -9,7 +9,7 @@ const PlantCard = ({ plant }) => {
     >
       {/* Notification and Timeline buttons */}
       <div className="flex justify-content-between align-items-center">
-        <button className="p-button">
+        <button className="">
           See Timeline
         </button>
         <div className="flex align-items-center">
