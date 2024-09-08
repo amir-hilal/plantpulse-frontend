@@ -26,38 +26,43 @@ const AddGardenModal = ({ onClose }) => {
   };
 
   return (
-    <div className="grid justify-content-center align-items-center">
-      <div className="flex flex-column">
-        <button onClick={onClose} className="self-end">
-          &times;
-        </button>
-        <h3>Add new Garden</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-column">
-            <label htmlFor="name">Garden Name</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="flex flex-column mt-2">
-            <label htmlFor="file">Garden Image (optional)</label>
-            <input
-              type="file"
-              id="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          </div>
-          <div className="flex justify-content-center mt-3">
-            <button type="submit" className="mt-2">
-              Add
-            </button>
-          </div>
-        </form>
+    <div
+      className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
+      style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
+    >
+      <div className="grid justify-content-center align-items-center">
+        <div className="flex flex-column">
+          <button onClick={onClose} className="self-end">
+            &times;
+          </button>
+          <h3>Add new Garden</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-column">
+              <label htmlFor="name">Garden Name</label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="flex flex-column mt-2">
+              <label htmlFor="file">Garden Image (optional)</label>
+              <input
+                type="file"
+                id="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </div>
+            <div className="flex justify-content-center mt-3">
+              <button type="submit" className="mt-2">
+                Add
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
