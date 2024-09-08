@@ -35,11 +35,6 @@ const MyGardensPage = () => {
     }
   }, [selectedGardenId, dispatch]);
 
-  // Function to open modal
-  const openModal = () => setModalOpen(true);
-  // Function to close modal
-  const closeModal = () => setModalOpen(false);
-
   return (
     <div className="grid m-0">
       <div className="col-3 p-0 bg-tint-5">
@@ -52,7 +47,7 @@ const MyGardensPage = () => {
             gardens={gardens}
             selectedGardenId={selectedGardenId}
             onSelectGarden={setSelectedGardenId}
-            onAddGarden={openModal} // Pass openModal to GardenNav
+            onAddGarden={() => setModalOpen(true)}
           />
         )}
       </div>
@@ -76,7 +71,7 @@ const MyGardensPage = () => {
       </div>
 
       {/* Add Garden Modal */}
-      {isModalOpen && <AddGardenModal onClose={closeModal} />}
+      {isModalOpen && <AddGardenModal onClose={() => setModalOpen(false)} />}
     </div>
   );
 };

@@ -12,7 +12,7 @@ const GardenNav = ({
       <ul className="list-none p-0 m-0 pl-2">
         <li
           className="cursor-pointer mb-3 p-2 sm:pl-4 border-round-left-3xl flex align-items-center justify-content-between"
-          onClick={onAddGarden}
+          onClick={()=>onAddGarden()}
         >
           My Gardens
           <span>
