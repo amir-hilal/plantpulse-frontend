@@ -7,6 +7,7 @@ import usersReducer from '../features/users/usersSlice';
 import commentReducer from '../features/community/commentsSlice';
 import plantReducer from '../features/plant/plantsSlice';
 import gardenReducer from '../features/garden/gardensSlice';
+import timelinesReducer from '../features/plant/timelinesSlice'
 const rootReducer = combineReducers({
   auth: authReducer,
   posts: postsReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   comments: commentReducer,
   plants: plantReducer,
   gardens: gardenReducer,
+  timelines: timelinesReducer,
 });
 
 export default rootReducer;

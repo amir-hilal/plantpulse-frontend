@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import api from '../api'; // Import your api file
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import api from '../../services/api';
 
 export const fetchTimelines = createAsyncThunk(
   'timelines/fetchTimelines',
