@@ -16,7 +16,7 @@ const GardenNav = ({
         >
           My Gardens
           <span>
-            <FiPlus />
+            <FiPlus className='text-xl' />
           </span>
         </li>
         {gardens.map((garden) => (
