@@ -45,7 +45,11 @@ const MyGardensPage = () => {
           {loading ? (
             <p>Loading plants...</p>
           ) : plants.length > 0 ? (
-            plants.map((plant) => <PlantCard key={plant.id} plant={plant} />)
+            plants.map((plant) => (
+              <div className="col-12 sm:col-6 md:col-4 lg:col-3" key={plant.id}>
+                <PlantCard plant={plant} />
+              </div>
+            ))
           ) : (
             <p>No plants found in this garden...</p>
           )}

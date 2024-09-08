@@ -22,7 +22,7 @@ const GardenNav = ({ gardens, selectedGardenId, onSelectGarden }) => {
             onClick={() => onSelectGarden(garden.id)}
           >
             <GiPlantSeed className=" mr-2" />
-            <span>{garden.name}</span>
+            <span className='sm:ml-1 md:ml-5'>{garden.name}</span>
           </li>
         ))}
       </ul>
