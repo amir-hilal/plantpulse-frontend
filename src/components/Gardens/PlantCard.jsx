@@ -2,7 +2,7 @@ import React from 'react';
 
 const PlantCard = ({ plant }) => {
   return (
-    <div className="p-col-12 p-md-6 p-lg-3">
+    <div className="col-12 md-6 lg-3">
       <div className="border-round-lg shadow-1 surface-card p-3">
         <img src={plant.image_url} alt={plant.name} className="w-full border-round mb-3" />
         <div className="text-xl font-bold">{plant.name}</div>
@@ -13,7 +13,7 @@ const PlantCard = ({ plant }) => {
         </div>
         <div className="text-sm">Last Watered: {plant.last_time_watered}</div>
         <div className="text-sm">Next Watering: {plant.next_time_to_water}</div>
-        <button className="mt-2 p-button p-component">See Timeline</button>
+        <button className="mt-2 p-button">See Timeline</button>
       </div>
     </div>
   );

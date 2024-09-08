@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import AddPostModal from '../components/common/AddPostModal';
-import FriendsTab from '../components/common/FriendsTab';
-import PostCard from '../components/common/PostCard';
 import TabView from '../components/common/TabView';
 import UserCard from '../components/common/UserCard';
+import AddPostModal from '../components/Posts/AddPostModal';
+import PostCard from '../components/Posts/PostCard';
 import AboutSection from '../components/Profile/AboutSection';
+import FriendsTab from '../components/Profile/FriendsTab';
 import ProfileHeader from '../components/Profile/ProfileHeader';
 
 import {
@@ -39,7 +39,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         const response = await api.get(`/users/show/${username}`);
         setProfileData(response.data);
@@ -58,10 +58,10 @@ const ProfilePage = () => {
     dispatch(clearPosts());
     dispatch(resetFriendsState());
     dispatch(fetchPostsByUsername({ username }));
-    dispatch(fetchFriendsByUsername({username}));
-    if(isOwner) dispatch(fetchFriendRequests());
+    dispatch(fetchFriendsByUsername({ username }));
+    if (isOwner) dispatch(fetchFriendRequests());
     fetchProfile();
-  }, [username, user, dispatch, navigate,isOwner]);
+  }, [username, user, dispatch, navigate, isOwner]);
 
   const handleScroll = useCallback(() => {
     if (
@@ -143,7 +143,10 @@ const ProfilePage = () => {
         <div className="flex align-items-center">
           Friend Requests
           {friendRequests.length > 0 && (
-            <span className="ml-2 bg-red-600 text-white border-circle  flex justify-content-center align-items-center text-sm" style={{ height:'20px', width:'20px'}}>
+            <span
+              className="ml-2 bg-red-600 text-white border-circle  flex justify-content-center align-items-center text-sm"
+              style={{ height: '20px', width: '20px' }}
+            >
               {friendRequests.length}
             </span>
           )}

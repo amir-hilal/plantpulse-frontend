@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import GardenNav from '../components/common/GardenNav';
-import PlantCard from '../components/common/PlantCard';
+import GardenNav from '../components/Gardens/GardenNav';
+import PlantCard from '../components/Gardens/PlantCard';
 import {
   clearPlants,
   fetchPlantsByGarden,
@@ -29,9 +29,9 @@ const MyGardensPage = () => {
   }, [selectedGardenId, dispatch]);
 
   return (
-    <div className="p-grid">
+    <div className="grid">
       {/* Left side Garden Navigation */}
-      <div className="p-col-3">
+      <div className="col-3">
         <GardenNav
           gardens={gardens}
           selectedGardenId={selectedGardenId}
@@ -40,8 +40,8 @@ const MyGardensPage = () => {
       </div>
 
       {/* Right side Plant List */}
-      <div className="p-col-9">
-        <div className="p-grid">
+      <div className="col-9">
+        <div className="grid">
           {loading ? (
             <p>Loading plants...</p>
           ) : plants.length > 0 ? (

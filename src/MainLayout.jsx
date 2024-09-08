@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import VerifyEmailNotice from './components/common/VerifyEmailNotice';
-import Footer from './components/layouts/Footer';
-import NavBar from './components/layouts/NavBar';
+import Footer from './components/Layout/Footer';
+import NavBar from './components/Layout/NavBar';
 import { closeMenu } from './features/ui/uiSlice';
 import routes from './routes'; // Assuming you have defined routes in a routes.js file
 

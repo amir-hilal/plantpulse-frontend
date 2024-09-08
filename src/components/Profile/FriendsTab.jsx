@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import UserCard from './UserCard';
+import UserCard from '../common/UserCard';
 
 const FriendsTab = ({ friends, onSearch, isOwner }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,9 +49,7 @@ const FriendsTab = ({ friends, onSearch, isOwner }) => {
       <div>
         {filteredFriends.length > 0 ? (
           filteredFriends.map((friend) => (
-            <div
-              key={friend.id}
-            >
+            <div key={friend.id}>
               <UserCard user={friend} isOwner={isOwner}></UserCard>
             </div>
           ))
