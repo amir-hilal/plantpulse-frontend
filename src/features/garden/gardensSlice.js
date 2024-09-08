@@ -34,9 +34,22 @@ export const updateGarden = createAsyncThunk(
   'gardens/updateGarden',
   async ({ id, formData }, { rejectWithValue }) => {
     try {
-      console.log(formData.get('name'))
+      console.log(formData.get('name'));
       const response = await api.put(`/garden/${id}`, formData);
       return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Thunk to delete a garden
+export const deleteGarden = createAsyncThunk(
+  'gardens/deleteGarden',
+  async (id, { rejectWithValue }) => {
+    try {
+      await api.delete(`/garden/${id}`);
+      return id; // Return the id of the deleted garden so we can remove it from the state
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -96,6 +109,20 @@ const gardensSlice = createSlice({
       .addCase(updateGarden.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(deleteGarden.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteGarden.fulfilled, (state, action) => {
+        state.loading = false;
+        state.gardens = state.gardens.filter(
+          (garden) => garden.id !== action.payload
+        );
+      })
+      .addCase(deleteGarden.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to delete garden';
       });
   },
 });

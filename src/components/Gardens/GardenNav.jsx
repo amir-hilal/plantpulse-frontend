@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { FaRegTrashCan } from 'react-icons/fa6';
 import { FiEdit, FiPlus } from 'react-icons/fi';
-import { GiPlantSeed } from 'react-icons/gi'; // Example icon for garden
+import { GiPlantSeed } from 'react-icons/gi';
+import { useDispatch } from 'react-redux';
+import { deleteGarden } from '../../features/garden/gardensSlice';
 
 const GardenNav = ({
   gardens,
@@ -9,6 +12,8 @@ const GardenNav = ({
   onAddGarden,
   onEditGarden,
 }) => {
+  const dispatch = useDispatch();
+
   const [hoveredGardenId, setHoveredGardenId] = useState(null);
 
   return (
@@ -39,16 +44,34 @@ const GardenNav = ({
             <span className="sm:ml-1 md:ml-5 ">{garden.name}</span>
 
             {hoveredGardenId === garden.id && (
-              <span
-                className={`absolute right-0 mr-3 ${garden.id ===selectedGardenId?'bg-tint-4':'bg-secondary'}`}
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent triggering onSelectGarden
-                  onEditGarden(garden);
-
-                }}
-              >
-                <FiEdit className="text-xl cursor-pointer ml-2" />
-              </span>
+              <div className="m-0 p-0 flex align-items-center">
+                <span
+                  className={`absolute right-0 p-2 cursor-pointer ${
+                    garden.id === selectedGardenId
+                      ? 'bg-tint-4'
+                      : 'bg-secondary'
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering onSelectGarden
+                    onEditGarden(garden);
+                  }}
+                >
+                  <FiEdit className="text-xl " />
+                </span>
+                <span
+                  className={`absolute right-0 p-2 mr-5 cursor-pointer ${
+                    garden.id === selectedGardenId
+                      ? 'bg-tint-4'
+                      : 'bg-secondary'
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering onSelectGarden
+                    dispatch(deleteGarden(garden.id)); // Dispatch the delete action
+                  }}
+                >
+                  <FaRegTrashCan className="text-xl " />
+                </span>
+              </div>
             )}
           </li>
         ))}
