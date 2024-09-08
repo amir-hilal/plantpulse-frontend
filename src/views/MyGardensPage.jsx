@@ -41,7 +41,9 @@ const MyGardensPage = () => {
       {/* Left side Garden Navigation */}
       <div className="col-3 p-0 bg-tint-5">
         {gardenLoading ? (
-          <p>Loading gardens...</p>
+          <div className="loading h-20rem flex align-items-center justify-content-center">
+            <Loading type="spin" color="#019444" height={50} width={50} />
+          </div>
         ) : (
           <GardenNav
             gardens={gardens}
@@ -55,7 +57,7 @@ const MyGardensPage = () => {
       <div className="col-9">
         <div className="grid m-0">
           {plantLoading ? (
-            <div className="loading h-20rem flex align-items-center justify-content-center">
+            <div className="loading h-30rem w-full flex align-items-center justify-content-center">
               <Loading type="spin" color="#019444" height={50} width={50} />
             </div>
           ) : plants.length > 0 ? (
