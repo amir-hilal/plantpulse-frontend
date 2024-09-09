@@ -54,9 +54,9 @@ const FriendsTab = ({ friends, onSearch, isOwner }) => {
             </div>
           ))
         ) : (
-          <div className="text-center text-secondary mt-4">
+          <p className="text-center text-secondary mt-6">
             No friends to show...
-          </div>
+          </p>
         )}
       </div>
     </div>

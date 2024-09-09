@@ -117,7 +117,7 @@ const ProfilePage = () => {
           <div className="mt-2 flex flex-column justify-content-center">
             {posts.length > 0
               ? posts.map((post) => <PostCard key={post.id} post={post} />)
-              : !postsLoading && !!posts && <p>No posts yet.</p>}
+              : !postsLoading && !!posts && <p className='text-center text-secondary'>No posts yet...</p>}
           </div>
           {postLoading && (
             <div className="flex justify-content-center align-items-center my-4">
@@ -163,7 +163,7 @@ const ProfilePage = () => {
               />
             ))
           ) : (
-            <p className="text-center">No friend requests.</p>
+            <p className="text-center mt-8 text-secondary">No friend requests.</p>
           )}
         </div>
       ),
