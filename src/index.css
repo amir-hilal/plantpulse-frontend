@@ -419,7 +419,9 @@ code {
 .min-h-10 {
   min-height: 250px;
 }
-
+.min-w-5 {
+  min-width: 125px;
+}
 .border-secondary{
   border-color: var(--secondary-color);
 }
@@ -504,4 +506,9 @@ code {
     right:6px;
     bottom: .5rem;
   }
+}
+
+.aspect-ratio-10-16{
+
+  aspect-ratio: 10 / 16 !important;
 }

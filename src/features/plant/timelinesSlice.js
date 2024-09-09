@@ -20,7 +20,16 @@ const timelinesSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    openTimelineModal: (state) => {
+      state.modalOpen = true;
+    },
+    closeTimelineModal: (state) => {
+      state.timelines = [];
+
+      state.modalOpen = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTimelines.pending, (state) => {
@@ -36,5 +45,7 @@ const timelinesSlice = createSlice({
       });
   },
 });
+export const { openTimelineModal, closeTimelineModal } =
+  timelinesSlice.actions;
 
 export default timelinesSlice.reducer;

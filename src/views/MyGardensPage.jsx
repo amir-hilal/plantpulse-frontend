@@ -5,10 +5,7 @@ import AddGardenModal from '../components/Gardens/AddGardenModal';
 import GardenNav from '../components/Gardens/GardenNav';
 import PlantCard from '../components/Gardens/PlantCard';
 import { clearGardens, fetchGardens } from '../features/garden/gardensSlice';
-import {
-  clearPlants,
-  fetchPlants,
-} from '../features/plant/plantsSlice';
+import { clearPlants, fetchPlants } from '../features/plant/plantsSlice';
 
 const MyGardensPage = () => {
   const dispatch = useDispatch();
@@ -42,8 +39,8 @@ const MyGardensPage = () => {
   };
 
   return (
-    <div className="grid m-0">
-      <div className="col-3 p-0 bg-tint-5">
+    <div className="flex">
+      <div className="col-3 p-0 bg-tint-5 min-w-5">
         {gardenLoading ? (
           <div className="loading h-screen flex align-items-center justify-content-center">
             <Loading type="spin" color="#019444" height={50} width={50} />
@@ -62,7 +59,7 @@ const MyGardensPage = () => {
         )}
       </div>
 
-      <div className="col-9">
+      <div className="sm:col-9">
         <div className="grid m-0">
           {plantLoading ? (
             <div className="loading h-screen w-full flex align-items-center justify-content-center">
@@ -70,12 +67,15 @@ const MyGardensPage = () => {
             </div>
           ) : plants.length > 0 ? (
             plants.map((plant) => (
-              <div className="col-12 sm:col-6 md:col-4 lg:col-3" key={plant.id}>
+              <div
+                className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16"
+                key={plant.id}
+              >
                 <PlantCard plant={plant} />
               </div>
             ))
           ) : (
-            <p>No plants found in this garden...</p>
+            <p className="w-full">No plants found in this garden...</p>
           )}
         </div>
       </div>
