@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
-import AddGardenModal from '../components/Gardens/AddGardenModal';
+import AddPlantModal from '../components/Gardens/AddPlantModal';
 import GardenNav from '../components/Gardens/GardenNav';
 import PlantCard from '../components/Gardens/PlantCard';
 import TimelineModal from '../components/Gardens/TimelineModal';
@@ -96,7 +96,7 @@ const MyGardensPage = () => {
 
       {/* Add Garden Modal */}
       {isModalOpen && (
-        <AddGardenModal
+        <AddPlantModal
           onClose={() => setModalOpen(false)}
           garden={editingGarden}
         />
