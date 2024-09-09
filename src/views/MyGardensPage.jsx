@@ -25,6 +25,9 @@ const MyGardensPage = () => {
   const gardenLoading = useSelector((state) => state.gardens.loading);
   const plants = useSelector((state) => state.plants.plants || []);
   const plantLoading = useSelector((state) => state.plants.loading);
+  const selectedGarden = gardens.find(
+    (garden) => garden.id === selectedGardenId
+  );
 
   useEffect(() => {
     dispatch(fetchGardens());
@@ -49,7 +52,6 @@ const MyGardensPage = () => {
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
     if (selectedFile) {
-      console.log(selectedFile)
       dispatch(updateGardenImage({ id: selectedGardenId, file: selectedFile }));
     }
   };
@@ -90,38 +92,33 @@ const MyGardensPage = () => {
             ) : (
               <>
                 <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16">
-                  <div
-                    className="surface-card shadow-2 border-round-lg p-3 flex align-items-center justify-content-center text-center cursor-pointer mb-2"
-                    onClick={() => setPlantModalOpen(true)} // This will open the modal
-                    style={{ height: '50%' }}
-                  >
-                    <span className="text-2xl font-bold">+ Add New Plant</span>
-                  </div>
-
-                  {/* Garden Image with Edit Hover */}
+                      {/* Garden Image with Edit Hover */}
+                      <p className="m-0 text-secondary text-center" style={{ height: '6%' }}>
+                      Garden Image
+                    </p>
                   <div className="relative group" style={{ height: '50%' }}>
-                    {selectedGardenId !== null && gardens[selectedGardenId] ? (
+
+                    {selectedGarden ? (
                       <>
                         <label htmlFor="file-upload" className="cursor-pointer">
-                          <div className="relative">
+                          <div className="relative w-full h-full surface-card shadow-2 border-round-lg bg-gray-200 flex align-items-center justify-content-center">
                             {/* Check if image_url exists, if not show a gray placeholder */}
-                            {gardens[selectedGardenId].image_url ? (
+                            {selectedGarden.image_url ? (
                               <img
-                                src={gardens[selectedGardenId].image_url}
+                                src={selectedGarden.image_url}
                                 alt="garden"
-                                className="surface-card shadow-2 border-round-lg w-full mt-2 blurry"
+                                className="border-round-lg  w-full h-full blurry"
+
                               />
                             ) : (
-                              <div className="w-full surface-card shadow-2 border-round-lg bg-gray-200 flex align-items-center justify-content-center">
-                                <span className="text-gray-500">
-                                  No Image Available
-                                </span>
-                              </div>
+                              <span className="text-gray-500">
+                                No Image Available
+                              </span>
                             )}
 
                             {/* Edit icon, shown on hover */}
-                            <div className="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center opacity-0 edit-icon">
-                              <MdEdit className="text-black text-3xl" />
+                            <div className="absolute w-full h-full top-0 left-0 flex align-items-center justify-content-center opacity-0 edit-icon">
+                              <MdEdit className="text-primary text-3xl" />
                             </div>
                           </div>
                         </label>
@@ -145,7 +142,7 @@ const MyGardensPage = () => {
 
                             {/* Edit icon, shown on hover */}
                             <div className="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center opacity-0 edit-icon">
-                              <MdEdit className="text-black text-3xl" />
+                              <MdEdit className="text-primary text-3xl" />
                             </div>
                           </div>
                         </label>
@@ -160,6 +157,13 @@ const MyGardensPage = () => {
                         />
                       </div>
                     )}
+                  </div>
+                  <div
+                    className="surface-card shadow-2 border-round-lg p-3 flex align-items-center justify-content-center text-center cursor-pointer mt-2"
+                    onClick={() => setPlantModalOpen(true)} // This will open the modal
+                    style={{ height: '44%' }}
+                  >
+                    <span className="text-2xl font-bold">+ Add New Plant</span>
                   </div>
                 </div>
 
