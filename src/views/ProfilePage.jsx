@@ -189,7 +189,7 @@ const ProfilePage = () => {
         user_id={profileData.id}
       />
       <div className="flex flex-column sm:flex-row w-full md:w-10">
-        <div className="sm:w-auto flex justify-content-center">
+        <div className="sm:w-auto flex justify-content-center pr-6">
           <AboutSection profileData={profileData} isOwner={isOwner} />
         </div>
         <div className="w-full h-auto mt-2 ml-2">

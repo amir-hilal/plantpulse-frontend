@@ -11,7 +11,7 @@ import {
 const AboutSection = ({ profileData, isOwner }) => {
   return (
     <div
-      className="text-sm md:text-base flex flex-column align-items-center sm:align-items-start mt-2     text-xs md:text-base"
+      className="text-sm md:text-base flex flex-column align-items-center sm:align-items-start mt-2 text-xs md:text-base"
       style={{ width: '100%', maxWidth: '300px' }}
     >
       {profileData.about && (
@@ -43,7 +43,7 @@ const AboutSection = ({ profileData, isOwner }) => {
 
       {profileData.address && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">
-          <FaMapMarkerAlt className="text-primary mr-2" />
+          <FaMapMarkerAlt className="text-primary text-2xl mr-2 " />
           <span>{profileData.address}</span>
         </div>
       )}
