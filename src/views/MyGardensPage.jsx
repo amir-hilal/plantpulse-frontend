@@ -12,11 +12,12 @@ import {
   updateGardenImage,
 } from '../features/garden/gardensSlice';
 import { clearPlants, fetchPlants } from '../features/plant/plantsSlice';
-
+import AddGardenModal from '../components/Gardens/AddGardenModal';
 const MyGardensPage = () => {
   const dispatch = useDispatch();
   const [selectedGardenId, setSelectedGardenId] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isPlantModalOpen, setPlantModalOpen] = useState(false);
   const [editingGarden, setEditingGarden] = useState(null); // Track if we are editing a garden
   const [selectedFile, setSelectedFile] = useState(null);
   const gardens = useSelector((state) => state.gardens.gardens || []);
@@ -71,7 +72,6 @@ const MyGardensPage = () => {
           />
         )}
       </div>
-
       <div className="sm:col-9">
         <div className="grid m-0">
           {plantLoading ? (
@@ -83,24 +83,34 @@ const MyGardensPage = () => {
               <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16">
                 <div
                   className="surface-card shadow-2 border-round-lg p-3 flex align-items-center justify-content-center text-center cursor-pointer mb-2"
-                  onClick={() => setModalOpen(true)} // This will open the modal
+                  onClick={() => setPlantModalOpen(true)} // This will open the modal
                   style={{ height: '50%' }}
                 >
                   <span className="text-2xl font-bold">+ Add New Plant</span>
                 </div>
+
+                {/* Garden Image with Edit Hover */}
                 <div className="relative group">
                   <label htmlFor="file-upload" className="cursor-pointer">
                     <div className="relative">
-                      {/* Image itself */}
-                      <img
-                        src={gardens[selectedGardenId].image_url}
-                        alt="garden"
-                        className="surface-card shadow-2 border-round-lg w-full mt-2 group-hover:blur-sm"
-                      />
+                      {/* Check if image_url exists, if not show a gray placeholder */}
+                      {gardens[selectedGardenId].image_url ? (
+                        <img
+                          src={gardens[selectedGardenId].image_url}
+                          alt="garden"
+                          className="surface-card shadow-2 border-round-lg w-full mt-2 group-hover:blur-sm"
+                        />
+                      ) : (
+                        <div className="w-full h-48 surface-card shadow-2 border-round-lg bg-gray-200 flex align-items-center justify-content-center">
+                          <span className="text-gray-500">
+                            No Image Available
+                          </span>
+                        </div>
+                      )}
 
                       {/* Edit icon, shown on hover */}
                       <div className="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center opacity-0 edit-icon">
-                        <MdEdit className='text-black text-3xl' />
+                        <MdEdit className="text-black text-3xl" />
                       </div>
                     </div>
                   </label>
@@ -133,12 +143,12 @@ const MyGardensPage = () => {
         </div>
 
         {/* Add Plant Modal */}
-        {isModalOpen && <AddPlantModal onClose={() => setModalOpen(false)} />}
+        {isPlantModalOpen && <AddPlantModal onClose={() => setPlantModalOpen(false)} />}
       </div>
 
       {/* Add Garden Modal */}
       {isModalOpen && (
-        <AddPlantModal
+        <AddGardenModal
           onClose={() => setModalOpen(false)}
           garden={editingGarden}
         />
