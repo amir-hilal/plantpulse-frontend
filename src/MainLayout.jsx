@@ -6,7 +6,7 @@ import VerifyEmailNotice from './components/common/VerifyEmailNotice';
 import Footer from './components/Layout/Footer';
 import NavBar from './components/Layout/NavBar';
 import { closeMenu } from './features/ui/uiSlice';
-import routes from './routes'; // Assuming you have defined routes in a routes.js file
+import routes from './routes';
 
 const MainLayout = ({ children }) => {
   const isMenuOpen = useSelector((state) => state.ui.isMenuOpen);
