@@ -167,15 +167,15 @@ const ProfileHeader = ({
             className="absolute profile-picture-position h-7rem w-7rem border-circle shadow-1"
           />
           <div className="w-0 md:w-3 "></div>
-          <div className="absolute left-36 md:static translate-x-0">
+          <div className="absolute  sm:static translate-x-0">
             <h2 className="text-xl text-primary m-0">
               {first_name} {last_name}
             </h2>
-            <p className="text-secondary m-0 text-center sm:text-left">
+            <p className="text-secondary m-0 sm:text-center sm:text-left">
               {username}
             </p>
           </div>
-          <div className="ml-2 ml-auto">
+          <div className="ml-auto">
             {isOwner ? (
               <div className="flex">
                 {' '}
@@ -191,7 +191,7 @@ const ProfileHeader = ({
                     dispatch(logout());
                     navigate(routes.login);
                   }}
-                  className="sm:w-6rem bg-primary border-round border-solid border-primary hover:bg-primary-reverse ml-1 sm:m-0  sm:py-2 sm:pl-4 font-16 text-left cursor-pointer"
+                  className="sm:w-6rem bg-tint-5 border-round border-solid border-500 hover:surface-300 ml-1 sm:m-0 text-grey  sm:py-2  font-16  cursor-pointer"
                 >
                   Logout
                 </button>
