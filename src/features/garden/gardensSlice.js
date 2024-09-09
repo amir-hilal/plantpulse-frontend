@@ -47,12 +47,7 @@ export const updateGardenImage = createAsyncThunk(
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await api.put(`/garden/update-image/${id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
+      const response = await api.put(`/garden/update-image/${id}`, formData);
       return response.data; // This will return the updated garden with the new image_url
     } catch (error) {
       return rejectWithValue(error.response.data);
