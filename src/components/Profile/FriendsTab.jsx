@@ -29,7 +29,7 @@ const FriendsTab = ({ friends, onSearch, isOwner }) => {
             value={searchQuery}
             onChange={handleSearchChange}
             placeholder="Search for friends"
-            className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round appearance-none outline-none focus:border-primary z-1"
+            className="w-full p-2 pl-5 bg-tint-5 border-solid surface-border border-round-lg appearance-none outline-none focus:border-primary z-1"
           />
         </div>
 
@@ -37,7 +37,7 @@ const FriendsTab = ({ friends, onSearch, isOwner }) => {
         {isOwner && (
           <button
             onClick={() => navigate('/community/connect')}
-            className="col-3 text-sm bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
+            className="col-3 text-sm bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
           >
             <FaUsers className=" w-2rem mr-2 " />
             Connect

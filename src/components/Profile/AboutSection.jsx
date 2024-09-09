@@ -62,7 +62,7 @@ const AboutSection = ({ profileData, isOwner }) => {
         </div>
       )}
       {isOwner && (
-        <button className="bg-primary border-round border-solid border-primary hover:bg-primary-reverse py-2 mt-4 flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0">
+        <button className="bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-2 mt-4 flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0">
           <FaDownload className="mr-2" />
           Export Data
         </button>

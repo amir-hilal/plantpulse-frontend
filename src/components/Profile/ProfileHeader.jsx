@@ -144,14 +144,14 @@ const ProfileHeader = ({
     <div className="profile-header flex flex-column align-items-center w-full md:w-10">
       {/* Cover Photo */}
       <div
-        className="relative cover-photo h-10rem bg-light-grey border-noround md:border-round-lg border-noround-bottom w-full"
+        className="relative cover-photo h-10rem bg-light-grey border-noround md:border-round-xl border-noround-bottom w-full"
         style={{
           backgroundImage: `url(${cover_photo_url})`,
           backgroundSize: 'cover',
         }}
       >
         {isOwner && (
-          <button className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-content-center align-items-center">
+          <button className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round-lg py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-content-center align-items-center">
             <span className="hidden sm:block">Edit Cover Photo</span>
             <FaEdit className="block sm:hidden text-xl" />
           </button>
@@ -180,7 +180,7 @@ const ProfileHeader = ({
               <div className="flex">
                 {' '}
                 <button
-                  className="sm:w-6rem py-2 sm:mr-4 border-round border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
+                  className="sm:w-6rem py-2 sm:mr-4 border-round-lg border-solid border-primary bg-tint-5 text-primary hover:bg-primary hover:text-tint-5 cursor-pointer flex justify-content-center align-items-center"
                   onClick={() => setIsModalOpen(true)}
                 >
                   <span className="hidden sm:block">Edit Profile</span>
@@ -191,7 +191,7 @@ const ProfileHeader = ({
                     dispatch(logout());
                     navigate(routes.login);
                   }}
-                  className="sm:w-6rem bg-tint-5 border-round border-solid border-500 hover:surface-300 ml-1 sm:m-0 text-grey  sm:py-2  font-16  cursor-pointer"
+                  className="sm:w-6rem bg-tint-5 border-round-lg border-solid border-500 hover:surface-300 ml-1 sm:m-0 text-grey  sm:py-2  font-16  cursor-pointer"
                 >
                   Logout
                 </button>

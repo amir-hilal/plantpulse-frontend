@@ -59,7 +59,7 @@ const AddGardenModal = ({ onClose, garden }) => {
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
-      <div className="relative bg-white border-round-xl p-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-hidden">
+      <div className="relative bg-white border-round-xl p-6 w-3 shadow-4 overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer bg-transparent border-none"
@@ -74,7 +74,7 @@ const AddGardenModal = ({ onClose, garden }) => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="p-2 border-1 border-solid surface-border border-round-lg appearance-none outline-none focus:border-primary"
               placeholder="Enter Garden Name"
               required
             />

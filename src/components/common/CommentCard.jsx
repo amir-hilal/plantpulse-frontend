@@ -16,7 +16,7 @@ const CommentCard = ({ comment, handleDelete,userId }) => {
         alt={comment.user.username}
         className="w-3rem h-3rem border-circle mr-2"
       />
-      <div className="surface-100 p-3 border-round flex-1">
+      <div className="surface-100 p-3 border-round-lg flex-1">
         <p className="m-0 text-md font-medium">
           {/* User's first and last name are clickable */}
           <span className="cursor-pointer" onClick={navigateToProfile}>
@@ -35,7 +35,7 @@ const CommentCard = ({ comment, handleDelete,userId }) => {
       {comment.user_id === userId && (
         <button
           className="p-ml-auto p-2 cursor-pointer bg-transparent border-none"
-          onClick={() => handleDelete(comment.id)} 
+          onClick={() => handleDelete(comment.id)}
         >
           <img src={DeleteIcon} alt="Delete" className="w-2rem h-2rem" />
         </button>
