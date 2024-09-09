@@ -28,7 +28,7 @@ const PlantCard = ({ plant }) => {
       {/* Notification and Timeline buttons */}
       <div className="flex justify-content-between align-items-center">
         <button
-          className="p-button p-component text-xs"
+          className="p-button p-2 text-xs cursor-pointer"
           onClick={handleOpenTimeline}
         >
           See Timeline

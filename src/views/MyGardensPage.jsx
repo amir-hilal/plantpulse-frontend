@@ -61,6 +61,16 @@ const MyGardensPage = () => {
       </div>
 
       <div className="sm:col-9">
+        <div className="flex justify-content-between mb-4">
+          {/* Add Plant Button */}
+          <button
+            className="p-button p-component"
+            onClick={() => setModalOpen(true)} // This will open the modal
+          >
+            Add New Plant
+          </button>
+        </div>
+
         <div className="grid m-0">
           {plantLoading ? (
             <div className="loading h-screen w-full flex align-items-center justify-content-center">
@@ -79,6 +89,9 @@ const MyGardensPage = () => {
             <p className="w-full">No plants found in this garden...</p>
           )}
         </div>
+
+        {/* Add Plant Modal */}
+        {isModalOpen && <AddPlantModal onClose={() => setModalOpen(false)} />}
       </div>
 
       {/* Add Garden Modal */}
