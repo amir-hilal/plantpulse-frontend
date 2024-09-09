@@ -17,6 +17,7 @@ const timelinesSlice = createSlice({
   name: 'timelines',
   initialState: {
     timelines: [],
+    modalOpen: false,
     loading: false,
     error: null,
   },
@@ -45,7 +46,6 @@ const timelinesSlice = createSlice({
       });
   },
 });
-export const { openTimelineModal, closeTimelineModal } =
-  timelinesSlice.actions;
+export const { openTimelineModal, closeTimelineModal } = timelinesSlice.actions;
 
 export default timelinesSlice.reducer;

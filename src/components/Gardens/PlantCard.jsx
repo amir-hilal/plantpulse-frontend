@@ -1,7 +1,10 @@
 import React from 'react';
 import { BsBell } from 'react-icons/bs'; // Notification bell icon
 import { useDispatch } from 'react-redux';
-import { openTimelineModal, fetchTimelines } from '../../features/plant/timelinesSlice'; // Assuming you have these actions
+import {
+  fetchTimelines,
+  openTimelineModal,
+} from '../../features/plant/timelinesSlice'; // Assuming you have these actions
 
 const PlantCard = ({ plant }) => {
   const dispatch = useDispatch();
@@ -15,16 +18,19 @@ const PlantCard = ({ plant }) => {
     <div
       className="surface-card shadow-2 border-round-lg p-3 flex flex-column text-xs"
       style={{
-        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url(${plant.image_url})`,
+        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)), url(${plant.image_url})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         height: '100%',
-        color: 'white'
+        color: 'white',
       }}
     >
       {/* Notification and Timeline buttons */}
       <div className="flex justify-content-between align-items-center">
-        <button className="p-button p-component text-xs" onClick={handleOpenTimeline}>
+        <button
+          className="p-button p-component text-xs"
+          onClick={handleOpenTimeline}
+        >
           See Timeline
         </button>
         <div className="flex align-items-center">

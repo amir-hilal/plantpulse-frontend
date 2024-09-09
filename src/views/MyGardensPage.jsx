@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddGardenModal from '../components/Gardens/AddGardenModal';
 import GardenNav from '../components/Gardens/GardenNav';
 import PlantCard from '../components/Gardens/PlantCard';
+import TimelineModal from '../components/Gardens/TimelineModal';
 import { clearGardens, fetchGardens } from '../features/garden/gardensSlice';
 import { clearPlants, fetchPlants } from '../features/plant/plantsSlice';
 
@@ -87,6 +88,7 @@ const MyGardensPage = () => {
           garden={editingGarden}
         />
       )}
+      <TimelineModal />
     </div>
   );
 };
