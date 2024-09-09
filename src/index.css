@@ -514,7 +514,7 @@ code {
 }
 
 
-.group:hover img {
+.group:hover .blurry {
   filter: blur(2px);
 }
 

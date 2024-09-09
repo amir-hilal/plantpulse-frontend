@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MdEdit } from 'react-icons/md';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
+import AddGardenModal from '../components/Gardens/AddGardenModal';
 import AddPlantModal from '../components/Gardens/AddPlantModal';
 import GardenNav from '../components/Gardens/GardenNav';
 import PlantCard from '../components/Gardens/PlantCard';
@@ -12,7 +13,7 @@ import {
   updateGardenImage,
 } from '../features/garden/gardensSlice';
 import { clearPlants, fetchPlants } from '../features/plant/plantsSlice';
-import AddGardenModal from '../components/Gardens/AddGardenModal';
+
 const MyGardensPage = () => {
   const dispatch = useDispatch();
   const [selectedGardenId, setSelectedGardenId] = useState(null);
@@ -48,6 +49,7 @@ const MyGardensPage = () => {
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
     if (selectedFile) {
+      console.log(selectedFile)
       dispatch(updateGardenImage({ id: selectedGardenId, file: selectedFile }));
     }
   };
@@ -72,78 +74,117 @@ const MyGardensPage = () => {
           />
         )}
       </div>
+
       <div className="sm:col-9">
-        <div className="grid m-0">
-          {plantLoading ? (
-            <div className="loading h-screen w-full flex align-items-center justify-content-center">
-              <Loading type="spin" color="#019444" height={50} width={50} />
-            </div>
-          ) : plants.length > 0 ? (
-            <>
-              <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16">
-                <div
-                  className="surface-card shadow-2 border-round-lg p-3 flex align-items-center justify-content-center text-center cursor-pointer mb-2"
-                  onClick={() => setPlantModalOpen(true)} // This will open the modal
-                  style={{ height: '50%' }}
-                >
-                  <span className="text-2xl font-bold">+ Add New Plant</span>
-                </div>
-
-                {/* Garden Image with Edit Hover */}
-                <div className="relative group">
-                  <label htmlFor="file-upload" className="cursor-pointer">
-                    <div className="relative">
-                      {/* Check if image_url exists, if not show a gray placeholder */}
-                      {gardens[selectedGardenId].image_url ? (
-                        <img
-                          src={gardens[selectedGardenId].image_url}
-                          alt="garden"
-                          className="surface-card shadow-2 border-round-lg w-full mt-2 group-hover:blur-sm"
-                        />
-                      ) : (
-                        <div className="w-full h-48 surface-card shadow-2 border-round-lg bg-gray-200 flex align-items-center justify-content-center">
-                          <span className="text-gray-500">
-                            No Image Available
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Edit icon, shown on hover */}
-                      <div className="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center opacity-0 edit-icon">
-                        <MdEdit className="text-black text-3xl" />
-                      </div>
-                    </div>
-                  </label>
-
-                  {/* Hidden file input */}
-                  <input
-                    id="file-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="hidden" // Hide the input field
-                  />
-                </div>
+        {/* Check if selectedGardenId is null and display the message */}
+        {!selectedGardenId ? (
+          <div className="h-full flex align-items-center justify-content-center">
+            <p className="text-lg font-bold">Select a garden to manage</p>
+          </div>
+        ) : (
+          <div className="grid m-0">
+            {plantLoading ? (
+              <div className="loading h-screen w-full flex align-items-center justify-content-center">
+                <Loading type="spin" color="#019444" height={50} width={50} />
               </div>
-              {/* Render each plant as a card */}
-              {plants.map((plant) => (
-                <div
-                  className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16"
-                  key={plant.id}
-                >
-                  <PlantCard plant={plant} />
-                </div>
-              ))}
+            ) : (
+              <>
+                <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16">
+                  <div
+                    className="surface-card shadow-2 border-round-lg p-3 flex align-items-center justify-content-center text-center cursor-pointer mb-2"
+                    onClick={() => setPlantModalOpen(true)} // This will open the modal
+                    style={{ height: '50%' }}
+                  >
+                    <span className="text-2xl font-bold">+ Add New Plant</span>
+                  </div>
 
-              {/* Add New Plant Button, styled as a card */}
-            </>
-          ) : (
-            <p className="w-full">No plants found in this garden...</p>
-          )}
-        </div>
+                  {/* Garden Image with Edit Hover */}
+                  <div className="relative group" style={{ height: '50%' }}>
+                    {selectedGardenId !== null && gardens[selectedGardenId] ? (
+                      <>
+                        <label htmlFor="file-upload" className="cursor-pointer">
+                          <div className="relative">
+                            {/* Check if image_url exists, if not show a gray placeholder */}
+                            {gardens[selectedGardenId].image_url ? (
+                              <img
+                                src={gardens[selectedGardenId].image_url}
+                                alt="garden"
+                                className="surface-card shadow-2 border-round-lg w-full mt-2 blurry"
+                              />
+                            ) : (
+                              <div className="w-full surface-card shadow-2 border-round-lg bg-gray-200 flex align-items-center justify-content-center">
+                                <span className="text-gray-500">
+                                  No Image Available
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Edit icon, shown on hover */}
+                            <div className="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center opacity-0 edit-icon">
+                              <MdEdit className="text-black text-3xl" />
+                            </div>
+                          </div>
+                        </label>
+
+                        {/* Hidden file input */}
+                        <input
+                          id="file-upload"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden w-full h-full" // Hide the input field
+                        />
+                      </>
+                    ) : (
+                      <div className="w-full h-full surface-card shadow-2 border-round-lg bg-gray-200 flex align-items-center justify-content-center">
+                        <label htmlFor="file-upload" className="cursor-pointer">
+                          <div className="relative">
+                            <span className="text-gray-500 blurry">
+                              No Garden Image
+                            </span>
+
+                            {/* Edit icon, shown on hover */}
+                            <div className="absolute top-0 left-0 w-full h-full flex align-items-center justify-content-center opacity-0 edit-icon">
+                              <MdEdit className="text-black text-3xl" />
+                            </div>
+                          </div>
+                        </label>
+
+                        {/* Hidden file input */}
+                        <input
+                          id="file-upload"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden" // Hide the input field
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Conditional rendering for plants */}
+                {plants.length > 0 ? (
+                  plants.map((plant) => (
+                    <div
+                      className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16"
+                      key={plant.id}
+                    >
+                      <PlantCard plant={plant} />
+                    </div>
+                  ))
+                ) : (
+                  <p className="w-full">No plants found in this garden...</p>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
         {/* Add Plant Modal */}
-        {isPlantModalOpen && <AddPlantModal onClose={() => setPlantModalOpen(false)} />}
+        {isPlantModalOpen && (
+          <AddPlantModal onClose={() => setPlantModalOpen(false)} />
+        )}
       </div>
 
       {/* Add Garden Modal */}

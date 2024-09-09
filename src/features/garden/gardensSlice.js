@@ -47,7 +47,7 @@ export const updateGardenImage = createAsyncThunk(
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await api.put(`/update-image/${id}`, formData, {
+      const response = await api.put(`/garden/update-image/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -3,8 +3,8 @@ import { FaUsers } from 'react-icons/fa';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import AddPostModal from '../components/Posts/AddPostModal';
-import PostCard from '../components/Posts/PostCard';
+import AddPostModal from '../components/posts/AddPostModal';
+import PostCard from '../components/posts/PostCard';
 import {
   clearPosts,
   fetchFriendsPosts,

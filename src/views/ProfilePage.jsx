@@ -4,12 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import TabView from '../components/common/TabView';
 import UserCard from '../components/common/UserCard';
-import AddPostModal from '../components/Posts/AddPostModal';
-import PostCard from '../components/Posts/PostCard';
+import AddPostModal from '../components/posts/AddPostModal';
+import PostCard from '../components/posts/PostCard';
 import AboutSection from '../components/Profile/AboutSection';
 import FriendsTab from '../components/Profile/FriendsTab';
 import ProfileHeader from '../components/Profile/ProfileHeader';
-
 import {
   fetchFriendRequests,
   fetchFriendsByUsername,
