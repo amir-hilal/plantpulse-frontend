@@ -76,7 +76,16 @@ const MyGardensPage = () => {
                 >
                   <span className="text-2xl font-bold">+ Add New Plant</span>
                 </div>
-                <img src={gardens[selectedGardenId].image_url} alt="garden" className='surface-card shadow-2 border-round-lg w-full mt-2'/>
+                <div>
+                  <img
+                    src={gardens[selectedGardenId].image_url}
+                    alt="garden"
+                    className="surface-card shadow-2 border-round-lg w-full mt-2"
+                  />
+                  <button className="bg-primary hover:bg-primary-reverse border-round w-full border-primary p-3 border-solid cursor-pointer">
+                    Change garden image
+                  </button>
+                </div>
               </div>
               {/* Render each plant as a card */}
               {plants.map((plant) => (
