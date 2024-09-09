@@ -78,7 +78,7 @@ const MyGardensPage = () => {
         )}
       </div>
 
-      <div className="sm:col-10 ">
+      <div className="sm:col-10 p-4">
         {/* Check if selectedGardenId is null and display the message */}
         {!selectedGardenId ? (
           <div className="h-full flex align-items-center justify-content-center">
@@ -99,13 +99,13 @@ const MyGardensPage = () => {
                     {selectedGarden ? (
                       <>
                         <label htmlFor="file-upload" className="cursor-pointer">
-                          <div className="relative w-full h-full surface-card shadow-1 border-round-xl bg-gray-200 flex align-items-center justify-content-center">
+                          <div className="relative w-full h-full surface-card shadow-1 border-round-2xl bg-gray-200 flex align-items-center justify-content-center">
                             {/* Check if image_url exists, if not show a gray placeholder */}
                             {selectedGarden.image_url ? (
                               <img
                                 src={selectedGarden.image_url}
                                 alt="garden"
-                                className="border-round-xl  w-full h-full blurry"
+                                className="border-round-2xl  w-full h-full blurry"
                               />
                             ) : (
                               <span className="text-gray-500">
@@ -130,7 +130,7 @@ const MyGardensPage = () => {
                         />
                       </>
                     ) : (
-                      <div className="w-full h-full surface-card shadow-1 border-round-xl bg-gray-200 flex align-items-center justify-content-center">
+                      <div className="w-full h-full surface-card shadow-1 border-round-2xl bg-gray-200 flex align-items-center justify-content-center">
                         <label htmlFor="file-upload" className="cursor-pointer">
                           <div className="relative">
                             <span className="text-gray-500 blurry">
@@ -156,7 +156,7 @@ const MyGardensPage = () => {
                     )}
                   </div>
                   <div
-                    className="shadow-1 border-round-xl p-3 flex align-items-center justify-content-center text-center cursor-pointer mt-2 surface-400"
+                    className="shadow-1 border-round-2xl p-3 flex align-items-center justify-content-center text-center cursor-pointer mt-2 surface-400"
                     onClick={() => setPlantModalOpen(true)} // This will open the modal
                     style={{ height: '50%' }}
                   >

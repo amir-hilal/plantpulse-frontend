@@ -1,11 +1,10 @@
 import React from 'react';
-import { BsBell } from 'react-icons/bs'; // Notification bell icon
 import { useDispatch } from 'react-redux';
+import wateringCan from '../../assets/svg/Icons/watering.svg';
 import {
   fetchTimelines,
   openTimelineModal,
 } from '../../features/plant/timelinesSlice'; // Assuming you have these actions
-
 const PlantCard = ({ plant }) => {
   const dispatch = useDispatch();
 
@@ -16,7 +15,7 @@ const PlantCard = ({ plant }) => {
 
   return (
     <div
-      className="surface-card shadow-1 border-round-xl p-3 flex flex-column text-xs justify-content-between"
+      className="surface-card shadow-1 border-round-2xl p-3 flex flex-column text-xs justify-content-between"
       style={{
         backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)), url(${plant.image_url})`,
         backgroundSize: 'cover',
@@ -28,14 +27,14 @@ const PlantCard = ({ plant }) => {
       {/* Notification and Timeline buttons */}
       <div className="flex justify-content-between align-items-center">
         <button
-          className="p-button p-2 text-xs cursor-pointer"
+          className="border-round-lg text-secondary border-none surface-300 hover:surface-400 h-full text-xs cursor-pointer"
           onClick={handleOpenTimeline}
         >
           See Timeline
         </button>
-        <div className="flex align-items-center">
-          <BsBell className="mr-2" />
-          <span>T, 10AM</span>
+        <div className=" border-round-lg text-secondary border-none surface-300 px-2 flex align-items-center">
+          <img src={wateringCan} alt="watering" className="mr-2" />
+          <span className="text-secondary">T, 10AM</span>
         </div>
       </div>
 
