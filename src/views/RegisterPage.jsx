@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
 import api from '../services/api';
-import { ToastContainer } from 'react-toastify';
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -73,7 +72,7 @@ const RegisterPage = () => {
         className="logo mb-6 cursor-pointer"
         onClick={() => navigate('/')}
       />
-      <div className=" flex flex-column align-items-center bg-tint-5 border-round-xl w-8">
+      <div className=" flex flex-column align-items-center bg-tint-5 border-round-3xl w-6 md:w-4 p-4">
         <div className="flex flex-column align-items-center w-10">
           <h2 className="text-center text-secondary">Create New Account</h2>
         </div>
@@ -86,7 +85,7 @@ const RegisterPage = () => {
               value={formData.first_name}
               onChange={handleChange}
               required
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className=" h-3rem bg-tint-5 p-3 border-400 border-round-lg text-xs md:text-base text-color p-2 border-1 border-solid appearance-none outline-none focus:border-primary w-full"
             />
           </div>
 
@@ -98,7 +97,7 @@ const RegisterPage = () => {
               value={formData.last_name}
               onChange={handleChange}
               required
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className=" h-3rem bg-tint-5 p-3 border-400 border-round-lg text-xs md:text-base text-color p-2 border-1 border-solid appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div className="field col-12 flex p-0">
@@ -109,7 +108,7 @@ const RegisterPage = () => {
               value={formData.username}
               onChange={handleChange}
               required
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className=" h-3rem bg-tint-5 p-3 border-400 border-round-lg text-xs md:text-base text-color p-2 border-1 border-solid appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div className="field col-12 flex p-0">
@@ -120,7 +119,7 @@ const RegisterPage = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className=" h-3rem bg-tint-5 p-3 border-400 border-round-lg text-xs md:text-base text-color p-2 border-1 border-solid appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div className="field col-12 flex p-0">
@@ -131,7 +130,7 @@ const RegisterPage = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className=" h-3rem bg-tint-5 p-3 border-400 border-round-lg text-xs md:text-base text-color p-2 border-1 border-solid appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div className="field col-12 flex p-0">
@@ -142,13 +141,13 @@ const RegisterPage = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className=" h-3rem bg-tint-5 p-3 border-400 border-round-lg text-xs md:text-base text-color p-2 border-1 border-solid appearance-none outline-none focus:border-primary w-full"
             />
           </div>
 
           <button
             type="submit"
-            className="p-button text-xs md:text-base w-full flex align-items-center justify-content-center"
+            className="bg-primary border-round-lg border-none p-3 h-3rem  text-xs md:text-base w-full flex align-items-center justify-content-center cursor-pointer"
           >
             {isLoading ? (
               <Loading type="spin" color="#fff" height={15} width={15} />

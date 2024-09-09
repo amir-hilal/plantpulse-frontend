@@ -58,7 +58,7 @@ const LoginPage = () => {
         className="logo mb-6 cursor-pointer"
         onClick={() => navigate('/')}
       />
-      <div className=" flex flex-column align-items-center bg-tint-5 border-round-xl w-6 p-5">
+      <div className=" flex flex-column align-items-center bg-tint-5 border-round-3xl w-6 md:w-4 p-4">
         <div className="flex flex-column align-items-center w-10">
           <h2 className="text-center text-secondary">Log in to PlantPulse</h2>
         </div>
@@ -71,7 +71,7 @@ const LoginPage = () => {
               value={formData.emailOrUsername}
               onChange={handleChange}
               required
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="h-3rem text-xs md:text-base text-color bg-tint-5 p-3 border-1 border-solid border-400 border-round-lg appearance-none outline-none focus:border-primary w-full"
             />
           </div>
           <div className="field col-12 flex p-0">
@@ -81,7 +81,7 @@ const LoginPage = () => {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className=" h-3rem text-xs md:text-base text-color bg-tint-5 p-3 border-1 border-solid border-400 border-round-lg appearance-none outline-none focus:border-primary w-full"
               required
             />
           </div>
@@ -95,7 +95,7 @@ const LoginPage = () => {
           </div>
           <button
             type="submit"
-            className="p-button  text-xs md:text-base w-full flex align-items-center justify-content-center cursor-pointer"
+            className="bg-primary border-round-lg border-none p-3 h-3rem  text-xs md:text-base w-full flex align-items-center justify-content-center cursor-pointer"
           >
             {isLoading ? (
               <Loading type="spin" color="#fff" height={15} width={15} />
