@@ -101,7 +101,7 @@ const PostDetailsPage = () => {
   }
 
   return (
-    <div className="p-4 surface-0 border-round shadow-2 m-2 w-11 mx-auto flex flex-column md:flex-row">
+    <div className="p-4 surface-0 border-round shadow-1 m-2 w-11 mx-auto flex flex-column md:flex-row">
       {/* Post */}
       <div className="flex flex-column w-12 md:w-6 mr-0 md:mr-2">
         {/* post header */}

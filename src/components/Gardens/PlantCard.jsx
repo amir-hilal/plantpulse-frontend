@@ -16,7 +16,7 @@ const PlantCard = ({ plant }) => {
 
   return (
     <div
-      className="surface-card shadow-2 border-round-lg p-3 flex flex-column text-xs justify-content-between"
+      className="surface-card shadow-1 border-round-xl p-3 flex flex-column text-xs justify-content-between"
       style={{
         backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)), url(${plant.image_url})`,
         backgroundSize: 'cover',

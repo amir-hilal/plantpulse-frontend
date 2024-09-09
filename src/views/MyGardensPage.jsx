@@ -7,6 +7,7 @@ import AddPlantModal from '../components/Gardens/AddPlantModal';
 import GardenNav from '../components/Gardens/GardenNav';
 import PlantCard from '../components/Gardens/PlantCard';
 import TimelineModal from '../components/Gardens/TimelineModal';
+import { FaPlus } from "react-icons/fa6";
 import {
   clearGardens,
   fetchGardens,
@@ -58,7 +59,7 @@ const MyGardensPage = () => {
 
   return (
     <div className="flex">
-      <div className="col-3 p-0 bg-tint-5 min-w-5">
+      <div className="col-2 p-0 bg-tint-5 min-w-5">
         {gardenLoading ? (
           <div className="loading h-screen flex align-items-center justify-content-center">
             <Loading type="spin" color="#019444" height={50} width={50} />
@@ -77,38 +78,34 @@ const MyGardensPage = () => {
         )}
       </div>
 
-      <div className="sm:col-9">
+      <div className="sm:col-10 ">
         {/* Check if selectedGardenId is null and display the message */}
         {!selectedGardenId ? (
           <div className="h-full flex align-items-center justify-content-center">
             <p className="text-lg font-bold">Select a garden to manage</p>
           </div>
         ) : (
-          <div className="grid m-0">
+          <div className="grid m-">
             {plantLoading ? (
               <div className="loading h-screen w-full flex align-items-center justify-content-center">
                 <Loading type="spin" color="#019444" height={50} width={50} />
               </div>
             ) : (
               <>
-                <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16">
-                      {/* Garden Image with Edit Hover */}
-                      <p className="m-0 text-secondary text-center" style={{ height: '6%' }}>
-                      Garden Image
-                    </p>
-                  <div className="relative group" style={{ height: '50%' }}>
+                <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16 p-4">
+                  {/* Garden Image with Edit Hover */}
 
+                  <div className="relative group" style={{ height: '50%' }}>
                     {selectedGarden ? (
                       <>
                         <label htmlFor="file-upload" className="cursor-pointer">
-                          <div className="relative w-full h-full surface-card shadow-2 border-round-lg bg-gray-200 flex align-items-center justify-content-center">
+                          <div className="relative w-full h-full surface-card shadow-1 border-round-xl bg-gray-200 flex align-items-center justify-content-center">
                             {/* Check if image_url exists, if not show a gray placeholder */}
                             {selectedGarden.image_url ? (
                               <img
                                 src={selectedGarden.image_url}
                                 alt="garden"
-                                className="border-round-lg  w-full h-full blurry"
-
+                                className="border-round-xl  w-full h-full blurry"
                               />
                             ) : (
                               <span className="text-gray-500">
@@ -133,7 +130,7 @@ const MyGardensPage = () => {
                         />
                       </>
                     ) : (
-                      <div className="w-full h-full surface-card shadow-2 border-round-lg bg-gray-200 flex align-items-center justify-content-center">
+                      <div className="w-full h-full surface-card shadow-1 border-round-xl bg-gray-200 flex align-items-center justify-content-center">
                         <label htmlFor="file-upload" className="cursor-pointer">
                           <div className="relative">
                             <span className="text-gray-500 blurry">
@@ -159,11 +156,15 @@ const MyGardensPage = () => {
                     )}
                   </div>
                   <div
-                    className="surface-card shadow-2 border-round-lg p-3 flex align-items-center justify-content-center text-center cursor-pointer mt-2"
+                    className="shadow-1 border-round-xl p-3 flex align-items-center justify-content-center text-center cursor-pointer mt-2 surface-400"
                     onClick={() => setPlantModalOpen(true)} // This will open the modal
-                    style={{ height: '44%' }}
+                    style={{ height: '50%' }}
                   >
-                    <span className="text-2xl font-bold">+ Add New Plant</span>
+                        <span className="text-2xl text-secondary flex flex-column justify-content-center align-items-center">
+                        <FaPlus />
+
+                      Add New Plant
+                    </span>
                   </div>
                 </div>
 
@@ -171,7 +172,7 @@ const MyGardensPage = () => {
                 {plants.length > 0 ? (
                   plants.map((plant) => (
                     <div
-                      className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16"
+                      className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16 p-4"
                       key={plant.id}
                     >
                       <PlantCard plant={plant} />

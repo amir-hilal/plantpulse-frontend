@@ -49,43 +49,78 @@ const AddPlantModal = ({ onClose }) => {
         </button>
         <h2 className="text-center">Add New Plant</h2>
 
-        <div className="grid mt-4">
-          <div className="col-12 mb-3">
-            <input
-              type="text"
-              name="name"
-              placeholder="Plant Name"
-              value={plantData.name}
-              onChange={handleInputChange}
-              className="w-full p-2"
-            />
-          </div>
+        <div className="formgrid grid ml-0 mr-0">
+          <div className="flex justify-content-between">
+            <div className="field col-4 md:col-3 flex flex-column p-0 md:pr-1">
+              <label htmlFor="age">Plant</label>
 
-          <div className="col-12 mb-3 flex">
-            <input
-              type="number"
-              name="ageDays"
-              placeholder="Days"
-              value={plantData.ageDays}
-              onChange={handleInputChange}
-              className="w-full p-2 mr-2"
-            />
-            <input
-              type="number"
-              name="ageMonths"
-              placeholder="Months"
-              value={plantData.ageMonths}
-              onChange={handleInputChange}
-              className="w-full p-2 mr-2"
-            />
-            <input
-              type="number"
-              name="ageYears"
-              placeholder="Years"
-              value={plantData.ageYears}
-              onChange={handleInputChange}
-              className="w-full p-2"
-            />
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                value={plantData.name}
+                onChange={handleInputChange}
+                className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              />
+            </div>
+
+            <div className="field col-4 md:col-3 flex  p-0 md:pl-1  flex-column">
+              <label htmlFor="age">Age</label>
+              <div className="flex">
+                <input
+                  type="number"
+                  name="ageDays"
+                  placeholder="Days"
+                  value={plantData.ageDays}
+                  onChange={handleInputChange}
+                  className="col-4 p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primarymr-1"
+                />
+                <input
+                  type="number"
+                  name="ageMonths"
+                  placeholder="Months"
+                  value={plantData.ageMonths}
+                  onChange={handleInputChange}
+                  className="col-4 p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary mr-1"
+                />
+                <input
+                  type="number"
+                  name="ageYears"
+                  placeholder="Years"
+                  value={plantData.ageYears}
+                  onChange={handleInputChange}
+                  className="col-4 p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                />
+              </div>
+            </div>
+
+            <div className="field col-4 md:col-3 flex flex-column p-0 md:pr-1">
+              <label htmlFor="category">Category</label>
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                value={plantData.name}
+                onChange={handleInputChange}
+                className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              />
+            </div>
+          </div>
+          {/*  */}
+
+          <div className='flex flex-column w-full'>
+              <label htmlFor="category">Description</label>
+
+            <textarea
+              cols={10}
+                type="text"
+                name="descirption"
+                placeholder="Descirption..."
+                value={plantData.description}
+                onChange={handleInputChange}
+                className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              />
           </div>
 
           <div className="col-12 mb-3">
