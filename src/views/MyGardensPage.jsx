@@ -38,7 +38,7 @@ const MyGardensPage = () => {
     setEditingGarden(garden);
     setModalOpen(true);
   };
-
+  console.log(gardens);
   return (
     <div className="flex">
       <div className="col-3 p-0 bg-tint-5 min-w-5">
@@ -61,30 +61,35 @@ const MyGardensPage = () => {
       </div>
 
       <div className="sm:col-9">
-        <div className="flex justify-content-between mb-4">
-          {/* Add Plant Button */}
-          <button
-            className="p-button p-component"
-            onClick={() => setModalOpen(true)} // This will open the modal
-          >
-            Add New Plant
-          </button>
-        </div>
-
         <div className="grid m-0">
           {plantLoading ? (
             <div className="loading h-screen w-full flex align-items-center justify-content-center">
               <Loading type="spin" color="#019444" height={50} width={50} />
             </div>
           ) : plants.length > 0 ? (
-            plants.map((plant) => (
-              <div
-                className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16"
-                key={plant.id}
-              >
-                <PlantCard plant={plant} />
+            <>
+              <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16">
+                <div
+                  className="surface-card shadow-2 border-round-lg p-3 flex align-items-center justify-content-center text-center cursor-pointer mb-2"
+                  onClick={() => setModalOpen(true)} // This will open the modal
+                  style={{ height: '50%' }}
+                >
+                  <span className="text-2xl font-bold">+ Add New Plant</span>
+                </div>
+                <img src={gardens[selectedGardenId].image_url} alt="garden" className='surface-card shadow-2 border-round-lg w-full mt-2'/>
               </div>
-            ))
+              {/* Render each plant as a card */}
+              {plants.map((plant) => (
+                <div
+                  className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16"
+                  key={plant.id}
+                >
+                  <PlantCard plant={plant} />
+                </div>
+              ))}
+
+              {/* Add New Plant Button, styled as a card */}
+            </>
           ) : (
             <p className="w-full">No plants found in this garden...</p>
           )}

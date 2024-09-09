@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
 
 const AddPlantModal = ({ onClose }) => {
   const [plantData, setPlantData] = useState({
@@ -35,10 +36,16 @@ const AddPlantModal = ({ onClose }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content border-round-xl p-6 shadow-4 w-11 sm:w-8 md:w-8 lg:w-8 bg-white">
-        <button onClick={onClose} className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer">
-          X {/* Close button */}
+    <div
+      className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
+      style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
+    >
+      <div className="relative bg-white border-round-xl p-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-hidden">
+        <button
+          onClick={onClose}
+          className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer bg-transparent border-none"
+        >
+          <FaTimes className="text-2xl text-secondary" />
         </button>
         <h2 className="text-center">Add New Plant</h2>
 
