@@ -18,11 +18,7 @@ export const addGarden = createAsyncThunk(
   'gardens/addGarden',
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/garden', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await api.post('/garden', formData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -37,6 +33,27 @@ export const updateGarden = createAsyncThunk(
       console.log(formData.get('name'));
       const response = await api.put(`/garden/${id}`, formData);
       return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Thunk to update garden image
+export const updateGardenImage = createAsyncThunk(
+  'gardens/updateGardenImage',
+  async ({ id, file }, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await api.put(`/update-image/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data; // This will return the updated garden with the new image_url
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -123,6 +140,22 @@ const gardensSlice = createSlice({
       .addCase(deleteGarden.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to delete garden';
+      })
+      .addCase(updateGardenImage.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateGardenImage.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.gardens.findIndex(
+          (garden) => garden.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.gardens[index] = action.payload; // Update garden with the new image URL
+        }
+      })
+      .addCase(updateGardenImage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
