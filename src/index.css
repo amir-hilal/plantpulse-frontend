@@ -512,3 +512,14 @@ code {
 
   aspect-ratio: 10 / 16 !important;
 }
+
+
+.group:hover img {
+  filter: blur(2px);
+}
+
+.group:hover .edit-icon {
+  opacity: 1 !important;
+}
+
+
