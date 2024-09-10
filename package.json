@@ -11,6 +11,7 @@
     "classnames": "^2.5.1",
     "framer-motion": "^11.3.30",
     "lodash": "^4.17.21",
+    "markdown-to-jsx": "^7.5.0",
     "plantpulse-frontend": "file:",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",

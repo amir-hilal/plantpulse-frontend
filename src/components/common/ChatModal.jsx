@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Markdown from 'markdown-to-jsx';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { IoIosSend } from 'react-icons/io';
@@ -66,17 +67,24 @@ const ChatModal = ({ isOpen, onClose }) => {
         { text: 'Flora is typing...', sender: 'assistant' },
       ]);
 
+      // Get weather data (if available) and append to the message
+      let weatherInfo = '';
+      if (weatherData.length > 0) {
+        const currentWeather = weatherData[0];
+        weatherInfo = `The current weather is ${currentWeather.weather[0].description}, with a temperature of ${currentWeather.main.temp}°C. `;
+      }
+
       // Create the base system prompt for both plant care and website navigation
       const systemPrompt = {
         role: 'system',
         content:
-          'You are a helpful assistant for plant care and website navigation. Answer plant-related questions and guide users through the website.',
+          'You are a helpful assistant for plant care and website navigation. Answer plant-related questions and guide users through the website, and answer plant-related questions in Markdown format, using titles, bullet points, and numbered lists where appropriate.',
       };
 
       // User prompt for the message they just sent
       const userPrompt = {
         role: 'user',
-        content: userMessage,
+        content: `${userMessage}. ${weatherInfo}`,
       };
 
       // Website information to dynamically inject for navigation questions
@@ -109,20 +117,34 @@ const ChatModal = ({ isOpen, onClose }) => {
         userPrompt,
         { role: 'assistant', content: assistantPrompt },
       ];
-
       try {
         // Send the message to GPT
         const response = await axios.post(
           'https://openai-service.vercel.app/api/openai/chat',
-          {
-            messages: messagesToSend,
-          }
+          { messages: messagesToSend }
         );
 
-        const assistantMessage = response.data.choices[0].message.content;
+        // Extract the response from GPT
+        let assistantMessage = response.data.choices[0].message.content;
+        const finishReason = response.data.choices[0].finish_reason;
 
-        // Remove the typing indicator and show the response
-        setMessages((prevMessages) => prevMessages.slice(0, -1)); // Remove "Flora is typing"
+        // If the response is incomplete due to token limit, request the continuation
+        if (finishReason === 'length') {
+          const continuationResponse = await axios.post(
+            'https://openai-service.vercel.app/api/openai/chat',
+            {
+              messages: [
+                ...messagesToSend,
+                { role: 'assistant', content: assistantMessage },
+              ],
+            }
+          );
+          assistantMessage +=
+            continuationResponse.data.choices[0].message.content;
+        }
+
+        // Remove "Flora is typing" and show the response
+        setMessages((prevMessages) => prevMessages.slice(0, -1));
         setMessages((prevMessages) => [
           ...prevMessages,
           { text: assistantMessage, sender: 'assistant' },
@@ -139,12 +161,14 @@ const ChatModal = ({ isOpen, onClose }) => {
     }
   };
 
+  console.log(messages)
+
   return (
     <div
       className={`chat-modal bg-tint-5 ${isOpen ? 'slide-in' : 'slide-out'}`}
     >
       <div className="h-10rem">
-        <div className="bg-secondary text-tint-5 py-2 px-4 flex justify-content-between align-items-center border-round-top-xl">
+        <div className="bg-secondary text-tint-5 py-2 px-4 flex justify-content-between align-items-center sm:border-round-top-xl">
           <span>
             <h4 className="m-0">Hi I'm Flora 👋,</h4>
             <p className="m-0">How can I Help you?</p>
@@ -164,16 +188,21 @@ const ChatModal = ({ isOpen, onClose }) => {
         )}
       </div>
 
-      <div className="h-19rem px-4 pb-3 flex flex-column justify-content-end">
-        <div className="flex-grow overflow-y-scroll mb-2">
+      <div className="h-22rem px-4 pb-3 flex flex-column justify-content-end">
+        <div className="flex flex-column overflow-y-scroll scroll-bar-hidden mb-2">
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`p-2 mb-2 ${
-                msg.sender === 'user' ? 'bg-blue-100 text-right' : 'bg-gray-100'
+              style={{width:'fit-content'}}
+              className={`p-2 mb-2 w-auto  border-round-xl ${
+                msg.sender === 'user' ? 'align-self-end bg-blue-100 text-right' : 'align-self-start bg-gray-100'
               } rounded-lg`}
             >
-              {msg.text}
+              {msg.sender === 'assistant' ? (
+                <Markdown>{msg.text}</Markdown> // Render as markdown
+              ) : (
+                <span>{msg.text}</span>
+              )}
             </div>
           ))}
         </div>

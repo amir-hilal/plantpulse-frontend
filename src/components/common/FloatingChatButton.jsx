@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaChevronDown, FaCommentDots } from 'react-icons/fa'; // Comment and Down Arrow Icons
-import api from '../../services/api'; // Import the API instance
 import { toast } from 'react-toastify';
+import api from '../../services/api'; // Import the API instance
 
 const FloatingChatButton = ({ onClick, isChatOpen }) => {
   const [currentTemp, setCurrentTemp] = useState(null);
@@ -38,7 +38,11 @@ const FloatingChatButton = ({ onClick, isChatOpen }) => {
   }, []);
 
   return (
-    <div className="fixed bottom-0 right-0 z-1001 cursor-pointer mr-4 mb-4 scale-1">
+    <div
+      className={`fixed bottom-0 right-0 z-1001 cursor-pointer mr-4 mb-4 scale-1 ${
+        isChatOpen ? 'arrow-close-chatbot-modal' : ''
+      } `}
+    >
       <button
         className="h-3rem  bg-secondary border-round-3xl border-none text-white p-3 rounded-full shadow-lg transition duration-300 flex align-items-center cursor-pointer"
         onClick={onClick}
