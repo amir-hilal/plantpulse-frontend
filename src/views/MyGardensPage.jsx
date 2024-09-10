@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaPlus } from 'react-icons/fa6';
 import { MdEdit } from 'react-icons/md';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,7 +8,6 @@ import AddPlantModal from '../components/Gardens/AddPlantModal';
 import GardenNav from '../components/Gardens/GardenNav';
 import PlantCard from '../components/Gardens/PlantCard';
 import TimelineModal from '../components/Gardens/TimelineModal';
-import { FaPlus } from "react-icons/fa6";
 import {
   clearGardens,
   fetchGardens,
@@ -92,7 +92,6 @@ const MyGardensPage = () => {
             ) : (
               <>
                 <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16 p-4">
-
                   <div className="relative group" style={{ height: '50%' }}>
                     {selectedGarden ? (
                       <>
@@ -158,9 +157,8 @@ const MyGardensPage = () => {
                     onClick={() => setPlantModalOpen(true)} // This will open the modal
                     style={{ height: '50%' }}
                   >
-                        <span className="text-xl text-secondary flex flex-column justify-content-center align-items-center">
-                        <FaPlus className='mb-3 text-2xl' />
-
+                    <span className="text-xl text-secondary flex flex-column justify-content-center align-items-center">
+                      <FaPlus className="mb-3 text-2xl" />
                       Add New Plant
                     </span>
                   </div>
@@ -177,7 +175,7 @@ const MyGardensPage = () => {
                     </div>
                   ))
                 ) : (
-                  <p className="w-full">No plants found in this garden...</p>
+                  <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16 p-4"> <p>No plants yet... Add plants into you garden.</p></div>
                 )}
               </>
             )}
