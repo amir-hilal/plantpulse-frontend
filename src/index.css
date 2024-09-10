@@ -268,19 +268,19 @@ code {
 }
 
 .bg-tint-1 {
-  background-color: var(--tint_1);
+  background-color: var(--tint_1) !important;
 }
 
 .bg-tint-2 {
-  background-color: var(--tint_2);
+  background-color: var(--tint_2) !important;
 }
 
 .bg-tint-3 {
-  background-color: var(--tint_3);
+  background-color: var(--tint_3) !important;
 }
 
 .bg-tint-4 {
-  background-color: var(--tint_4);
+  background-color: var(--tint_4) !important;
 }
 
 .bg-tint-5 {

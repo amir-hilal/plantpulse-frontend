@@ -208,13 +208,13 @@ const NavBar = () => {
           <>
             <button
               onClick={() => navigate(routes.login)}
-              className="bg-primary text-tint-5 px-4 py-2 border-round mr-2 border-none hover:bg-tint-4 cursor-pointer"
+              className="bg-primary text-tint-5 px-4 py-2 border-round mr-2 border-none hover:bg-green-800 cursor-pointer"
             >
               Login
             </button>
             <button
               onClick={() => navigate(routes.register)}
-              className="bg-tint-5 text-primary px-4 py-2 border-round border-none hover:bg-tint-4 cursor-pointer"
+              className="bg-tint-5 text-primary px-4 py-2 border-round border-none hover:surface-400 cursor-pointer"
             >
               Register
             </button>
@@ -388,7 +388,7 @@ const NavBar = () => {
                     navigate(routes.login);
                     toggleMenu();
                   }}
-                  className="text-tint-5  font-16 bg-primary hover:bg-tint-4  px-4 py-2 border-round mb-2 w-full text-left border-none  cursor-pointer"
+                  className="text-tint-5  font-16 bg-primary hover:bg-green-800 px-4 py-2 border-round mb-2 w-full text-left border-none  cursor-pointer"
                 >
                   Login
                 </button>
@@ -397,7 +397,7 @@ const NavBar = () => {
                     navigate(routes.register);
                     toggleMenu();
                   }}
-                  className="bg-tint-5  font-16 text-primary  hover:bg-tint-4 px-4 py-2 border-round w-full text-left border-none  cursor-pointer"
+                  className="bg-tint-5  font-16 text-primary  hover:surface-400 px-4 py-2 border-round w-full text-left border-none  cursor-pointer"
                 >
                   Register
                 </button>
