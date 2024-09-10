@@ -1,24 +1,40 @@
-import axios from 'axios'; // For fetching weather data
 import React, { useEffect, useState } from 'react';
 import { FaChevronDown, FaCommentDots } from 'react-icons/fa'; // Comment and Down Arrow Icons
+import api from '../../services/api'; // Import the API instance
+import { toast } from 'react-toastify';
 
 const FloatingChatButton = ({ onClick, isChatOpen }) => {
-  const [currentTemp, setCurrentTemp] = useState(null); // State for storing the current temperature
+  const [currentTemp, setCurrentTemp] = useState(null);
 
-  // Fetch current weather when the component mounts
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=33.85&lon=35.72&appid=34101af2ad3cf08fc9745f39c16739ea&units=metric`
-        );
-        setCurrentTemp(response.data.main.temp); // Update the state with the temperature
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+
+            try {
+              const response = await api.get('/weather', {
+                params: { lat: latitude, lon: longitude },
+              });
+
+              setCurrentTemp(response.data.main.temp);
+            } catch (error) {
+              // Handle API-specific errors here
+              toast.error('Failed to fetch weather data.');
+              console.error('Axios error:', error);
+            }
+          });
+        } else {
+          toast.error('Geolocation is not supported by this browser.');
+        }
       } catch (error) {
-        console.error('Error fetching weather:', error);
+        toast.error('An error occurred while fetching location data.');
+        console.error('Geolocation error:', error);
       }
     };
 
-    fetchWeather(); // Call the fetchWeather function on component mount
+    fetchWeather();
   }, []);
 
   return (

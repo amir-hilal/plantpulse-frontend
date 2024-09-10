@@ -1,27 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { IoIosSend } from 'react-icons/io';
-import WeatherForecast from './WeatherForecast'; // Import the WeatherForecast component
-import { weatherApi } from '../../services/api';
+import { toast } from 'react-toastify';
+import api from '../../services/api';
+import WeatherForecast from './WeatherForecast';
+
 const ChatModal = ({ isOpen, onClose }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [weatherData, setWeatherData] = useState([]);
 
-  // Fetch weather when modal opens
   useEffect(() => {
     if (isOpen) {
       fetchWeather();
     }
   }, [isOpen]);
 
-  // Fetch weather data using OpenWeatherMap API
   const fetchWeather = async () => {
     try {
-      const response = await weatherApi.get('/forecast');
-      setWeatherData(response.data.list);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+
+            try {
+              const response = await api.get('/forecast', {
+                params: { lat: latitude, lon: longitude },
+              });
+
+              setWeatherData(response.data.list);
+            } catch (error) {
+              toast.error(
+                'Failed to fetch weather data. Please try again later.'
+              );
+              console.error('Error fetching weather data from API:', error);
+            }
+          },
+          (geoError) => {
+            toast.error(
+              'Unable to retrieve your location. Please enable location access.'
+            );
+            console.error('Geolocation error:', geoError);
+          }
+        );
+      } else {
+        toast.error('Geolocation is not supported by this browser.');
+        console.error('Geolocation is not supported by this browser.');
+      }
     } catch (error) {
-      console.error('Error fetching weather:', error);
+      toast.error('An unexpected error occurred. Please try again.');
+      console.error('Unexpected error:', error);
     }
   };
 
@@ -31,7 +59,6 @@ const ChatModal = ({ isOpen, onClose }) => {
       setChatInput('');
     }
   };
-
   return (
     <div
       className={`chat-modal bg-tint-5 ${isOpen ? 'slide-in' : 'slide-out'}`}
@@ -50,7 +77,6 @@ const ChatModal = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Weather Forecast Section */}
         {weatherData.length > 0 && (
           <div className="py-2 px-3">
             <WeatherForecast weatherData={weatherData.slice(0, 10)} />
@@ -58,7 +84,6 @@ const ChatModal = ({ isOpen, onClose }) => {
         )}
       </div>
 
-      {/* Chat Messages */}
       <div className="h-19rem px-4 pb-3 flex flex-column justify-content-end">
         <div className="flex-grow overflow-y-scroll mb-2">
           {messages.map((msg, index) => (
@@ -73,7 +98,6 @@ const ChatModal = ({ isOpen, onClose }) => {
           ))}
         </div>
 
-        {/* Chat Input */}
         <div className="flex h-2rem">
           <input
             type="text"
