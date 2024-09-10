@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { IoIosSend } from 'react-icons/io';
@@ -53,12 +54,91 @@ const ChatModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (chatInput.trim()) {
+      const userMessage = chatInput;
       setMessages([...messages, { text: chatInput, sender: 'user' }]);
       setChatInput('');
+
+      // Show a typing indicator while waiting for the response
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: 'Flora is typing...', sender: 'assistant' },
+      ]);
+
+      // Create the base system prompt for both plant care and website navigation
+      const systemPrompt = {
+        role: 'system',
+        content:
+          'You are a helpful assistant for plant care and website navigation. Answer plant-related questions and guide users through the website.',
+      };
+
+      // User prompt for the message they just sent
+      const userPrompt = {
+        role: 'user',
+        content: userMessage,
+      };
+
+      // Website information to dynamically inject for navigation questions
+      const websiteInfo = {
+        gardenSection:
+          "In the 'My Garden' section, you can view all your plants and their health status.",
+        wateringSchedule:
+          "In the 'Watering Calendar' section, you can find upcoming watering tasks for each plant.",
+        plantEncyclopedia:
+          "In the 'Plant Encyclopedia' section, you will find detailed information about different plant species.",
+      };
+
+      // Check if the user is asking about navigation or plant care (basic example)
+      let navigationInfo = '';
+      if (userMessage.toLowerCase().includes('health status')) {
+        navigationInfo = websiteInfo.gardenSection;
+      } else if (userMessage.toLowerCase().includes('watering schedule')) {
+        navigationInfo = websiteInfo.wateringSchedule;
+      } else if (userMessage.toLowerCase().includes('plant encyclopedia')) {
+        navigationInfo = websiteInfo.plantEncyclopedia;
+      }
+
+      // Prepare the final GPT prompt
+      const assistantPrompt = navigationInfo
+        ? `You are helping a user navigate the website. The user wants to know: "${userMessage}". Here is some information about the website that can help you respond: ${navigationInfo}.`
+        : `You are helping a user with plant care. The user asked: "${userMessage}". Provide useful advice.`;
+
+      const messagesToSend = [
+        systemPrompt,
+        userPrompt,
+        { role: 'assistant', content: assistantPrompt },
+      ];
+
+      try {
+        // Send the message to GPT
+        const response = await axios.post(
+          'https://openai-service.vercel.app/api/openai/chat',
+          {
+            messages: messagesToSend,
+          }
+        );
+
+        const assistantMessage = response.data.choices[0].message.content;
+
+        // Remove the typing indicator and show the response
+        setMessages((prevMessages) => prevMessages.slice(0, -1)); // Remove "Flora is typing"
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: assistantMessage, sender: 'assistant' },
+        ]);
+      } catch (error) {
+        toast.error(
+          'Failed to communicate with the chatbot. Please try again.'
+        );
+        console.error('Error sending message to chatbot:', error);
+
+        // Remove the typing indicator in case of error
+        setMessages((prevMessages) => prevMessages.slice(0, -1));
+      }
     }
   };
+
   return (
     <div
       className={`chat-modal bg-tint-5 ${isOpen ? 'slide-in' : 'slide-out'}`}
@@ -66,7 +146,7 @@ const ChatModal = ({ isOpen, onClose }) => {
       <div className="h-10rem">
         <div className="bg-secondary text-tint-5 py-2 px-4 flex justify-content-between align-items-center border-round-top-xl">
           <span>
-            <h4 className="m-0">Hi I'm flora 👋,</h4>
+            <h4 className="m-0">Hi I'm Flora 👋,</h4>
             <p className="m-0">How can I Help you?</p>
           </span>
           <button

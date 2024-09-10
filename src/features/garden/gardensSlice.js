@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../services/api'; // Axios instance for API requests
+import api from '../../services/api'; 
 
 // Async thunk for fetching gardens
 export const fetchGardens = createAsyncThunk(
