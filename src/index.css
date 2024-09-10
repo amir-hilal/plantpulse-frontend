@@ -526,3 +526,9 @@ code {
 .weather-card::-webkit-scrollbar {
   display: none;
 }
+
+
+.scale-1:hover{
+  transform: scale(1.05) !important;
+  transition:  transform .3s ease;
+}
