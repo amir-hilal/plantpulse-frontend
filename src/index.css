@@ -523,3 +523,6 @@ code {
 }
 
 
+.weather-card::-webkit-scrollbar {
+  display: none;
+}
