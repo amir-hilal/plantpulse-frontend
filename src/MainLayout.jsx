@@ -29,7 +29,6 @@ const MainLayout = ({ children }) => {
   return (
     <>
       <ToastContainer />
-
       <NavBar />
       <div
         className={`main-content ${isMenuOpen ? 'blurred' : ''}`}
@@ -37,10 +36,12 @@ const MainLayout = ({ children }) => {
       >
         <VerifyEmailNotice />
         <main>{children}</main>
-        {/* Render footer only on home and landing page */}
         {showFooter && <Footer />}
       </div>
-      <FloatingChatButton onClick={() => setChatOpen(true)} />
+      <FloatingChatButton
+        onClick={() => setChatOpen(!isChatOpen)}
+        isChatOpen={isChatOpen}
+      />{' '}
       <ChatModal isOpen={isChatOpen} onClose={() => setChatOpen(false)} />
     </>
   );
