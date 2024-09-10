@@ -159,7 +159,7 @@ const MyGardensPage = () => {
                     style={{ height: '50%' }}
                   >
                         <span className="text-xl text-secondary flex flex-column justify-content-center align-items-center">
-                        <FaPlus />
+                        <FaPlus className='mb-3 text-2xl' />
 
                       Add New Plant
                     </span>
