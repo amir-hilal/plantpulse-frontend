@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../services/api';
+import { api } from '../../services/api';
 
 // Fetch friends for the logged-in user
 export const fetchFriendsByUsername = createAsyncThunk(
   'friends/fetchFriendsByUsername',
-  async ({username}, { rejectWithValue }) => {
+  async ({ username }, { rejectWithValue }) => {
     try {
       const response = await api.get(`/friends/${username}`);
       return response.data.friends;

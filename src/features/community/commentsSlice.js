@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import api from '../../services/api';
+import { api } from '../../services/api';
 // Fetch comments with pagination
 export const fetchComments = createAsyncThunk(
   'comments/fetchComments',

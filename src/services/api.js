@@ -1,10 +1,16 @@
 import axios from 'axios';
-import { toast } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify';
+
+const openWeatherApiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
 
 const apiEndpoint = 'http://127.0.0.1:8000/api';
+const weatherApiBaseUrl = 'https://api.openweathermap.org/data/2.5';
 
 const api = axios.create({
-  baseURL: apiEndpoint
+  baseURL: apiEndpoint,
+});
+const weatherApi = axios.create({
+  baseURL: weatherApiBaseUrl,
 });
 
 // Request interceptor
@@ -46,4 +52,74 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+// Use your API endpoint here
+
+// Get the OpenWeather API key from environment variables
+
+// Function to fetch latitude and longitude from the browser
+const getUserLocation = () => {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    } else {
+      reject(new Error('Geolocation is not supported by this browser.'));
+    }
+  });
+};
+
+// Request interceptor for weatherApi
+weatherApi.interceptors.request.use(
+  async (config) => {
+    try {
+      // Fetch latitude and longitude
+      const location = await getUserLocation();
+
+      // Add latitude, longitude, and API key to the request params
+      config.params = {
+        lat: location.lat,
+        lon: location.lon,
+        appid: openWeatherApiKey,
+        units: 'metric', // Set units to metric
+        ...config.params, // Keep any existing params
+      };
+    } catch (error) {
+      toast.error('Failed to get location! Please allow location access.');
+      return Promise.reject(error);
+    }
+    return config;
+  },
+  (error) => {
+    toast.error('Failed to send request!');
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor for weatherApi
+weatherApi.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.log(error);
+    if (error.response) {
+      if (error.response.status >= 500) {
+        toast.error('Weather service error! Please try again later.');
+      } else {
+        toast.error(`Error: ${error.response.statusText}`);
+      }
+    } else {
+      toast.error('Network error! Please check your connection.');
+    }
+    return Promise.reject(error);
+  }
+);
+
+export { api, weatherApi };
