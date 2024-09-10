@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
-import { api } from '../services/api';
+import api from '../services/api';
 
 const RegisterPage = () => {
   const dispatch = useDispatch();

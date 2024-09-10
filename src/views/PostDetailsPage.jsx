@@ -10,7 +10,7 @@ import {
   deleteComment,
   fetchComments,
 } from '../features/community/commentsSlice';
-import { api } from '../services/api';
+import api from '../services/api';
 
 const PostDetailsPage = () => {
   const { id } = useParams(); // Get the post ID from the URL

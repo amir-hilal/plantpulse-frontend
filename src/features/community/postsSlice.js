@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { api } from '../../services/api';
+import api from '../../services/api';
 
 // Fetch friends' posts
 export const fetchFriendsPosts = createAsyncThunk(
@@ -26,6 +26,7 @@ export const fetchPostsByUsername = createAsyncThunk(
     }
   }
 );
+
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -73,7 +74,7 @@ const postsSlice = createSlice({
       .addCase(fetchPostsByUsername.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Error fetching posts';
-      });
+      })
   },
 });
 

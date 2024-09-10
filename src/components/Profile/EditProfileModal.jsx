@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { login } from '../../features/auth/authSlice';
-import { api } from '../../services/api';
+import api from '../../services/api';
 
 const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
   const dispatch = useDispatch();

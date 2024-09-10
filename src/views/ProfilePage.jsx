@@ -18,7 +18,7 @@ import {
   clearPosts,
   fetchPostsByUsername,
 } from '../features/community/postsSlice';
-import { api } from '../services/api';
+import api from '../services/api';
 
 const ProfilePage = () => {
   const { username } = useParams();
