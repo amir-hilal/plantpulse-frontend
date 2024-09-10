@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { FaTimes } from 'react-icons/fa'; // Close icon
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { FaTimes } from 'react-icons/fa'; // Close icon
 
 const ChatModal = ({ isOpen, onClose }) => {
   const [chatInput, setChatInput] = useState('');
@@ -18,7 +18,7 @@ const ChatModal = ({ isOpen, onClose }) => {
   const fetchWeather = async () => {
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_API_KEY&units=metric`
+        `https://api.openweathermap.org/data/2.5/forecast?lat=33.85&lon=35.72&appid=34101af2ad3cf08fc9745f39c16739ea&units=metric`
       );
       setWeather(response.data);
     } catch (error) {
@@ -36,27 +36,32 @@ const ChatModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-0 right-0 w-full sm:w-80 h-full sm:h-auto bg-white shadow-lg border-t sm:border-t-0 sm:rounded-t-lg z-50">
-      <div className="bg-orange-500 text-white p-4 flex justify-between items-center">
-        <h2 className="font-bold text-lg">Hi there! How can we help?</h2>
-        <button onClick={onClose} className="text-white">
-          <FaTimes size={24} />
+    <div className="fixed bottom-0 right-0  h-30rem w-30rem mb-8 mr-4 bg-tint-4 border-round-xl">
+      <div className="bg-tint-1 text-white p-4 flex justify-between align-items-center border-round-xl">
+        <h2 className="m-0">Hi there! How can we help?</h2>
+        <button
+          onClick={onClose}
+          className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer bg-transparent border-none"
+        >
+          <FaTimes className="text-2xl text-secondary" />
         </button>
       </div>
 
-      <div className="p-4 flex flex-col h-full sm:h-80 overflow-auto">
+      <div className="p-4 flex  sm:h-80 overflow-auto">
         {/* Weather Section */}
         {weather && (
           <div className="mb-4 p-3 bg-gray-100 rounded-lg">
             <h3 className="font-bold text-lg">Current Weather</h3>
-            <p>{weather.name}, {weather.sys.country}</p>
+            <p>
+              {weather.name}, {weather.sys.country}
+            </p>
             <p>Temp: {weather.main.temp}°C</p>
             <p>Condition: {weather.weather[0].description}</p>
           </div>
         )}
 
         {/* Chat Messages */}
-        <div className="flex-grow overflow-y-auto mb-4">
+        <div className="flex overflow-y-auto mb-4">
           {messages.map((msg, index) => (
             <div
               key={index}
