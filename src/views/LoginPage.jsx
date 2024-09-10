@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
 import { login } from '../features/auth/authSlice';
 import api from '../services/api';
-import { ToastContainer } from 'react-toastify';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -58,7 +57,7 @@ const LoginPage = () => {
         className="logo mb-6 cursor-pointer"
         onClick={() => navigate('/')}
       />
-      <div className=" flex flex-column align-items-center bg-tint-5 border-round-3xl w-6 md:w-4 p-4">
+      <div className=" flex flex-column align-items-center bg-tint-5 border-round-3xl w-9 md:w-6 lg:w-4 p-4">
         <div className="flex flex-column align-items-center w-10">
           <h2 className="text-center text-secondary">Log in to PlantPulse</h2>
         </div>
