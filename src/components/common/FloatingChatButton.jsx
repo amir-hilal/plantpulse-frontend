@@ -22,28 +22,28 @@ const FloatingChatButton = ({ onClick, isChatOpen }) => {
   }, []);
 
   return (
-    <div className="fixed bottom-0 right-0 z-50 cursor-pointer mr-4 mb-4 scale-1">
+    <div className="fixed bottom-0 right-0 z-1001 cursor-pointer mr-4 mb-4 scale-1">
       <button
-        className="h-3rem  bg-secondary border-round-3xl border-none text-white p-3 rounded-full shadow-lg transition duration-300 flex align-items-center"
+        className="h-3rem  bg-secondary border-round-3xl border-none text-white p-3 rounded-full shadow-lg transition duration-300 flex align-items-center cursor-pointer"
         onClick={onClick}
       >
-          {/* Conditional rendering based on whether chat is open */}
-          {isChatOpen ? (
-            <p className="m-0">
-              <FaChevronDown size={18} />
-            </p>
-          ) : (
-            <div className='flex align-items-center'>
-              <div>
-                <p className="m-0">Ask Flora</p>
-                {/* Display current temperature if available */}
-                {currentTemp !== null && (
-                  <p className="text-xs m-0">{currentTemp.toFixed(1)}°C</p>
-                )}
-              </div>
-              <FaCommentDots className='ml-2' size={18} />
-              </div>
-          )}
+        {/* Conditional rendering based on whether chat is open */}
+        {isChatOpen ? (
+          <p className="m-0">
+            <FaChevronDown size={18} />
+          </p>
+        ) : (
+          <div className="flex align-items-center">
+            <div>
+              <p className="m-0">Ask Flora</p>
+              {/* Display current temperature if available */}
+              {currentTemp !== null && (
+                <p className="text-xs m-0">{Math.floor(currentTemp)}°C</p>
+              )}
+            </div>
+            <FaCommentDots className="ml-2" size={18} />
+          </div>
+        )}
       </button>
     </div>
   );

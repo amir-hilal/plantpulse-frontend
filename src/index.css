@@ -437,6 +437,10 @@ code {
 .z-50{
   z-index: 50;
 }
+
+.z-1000{
+  z-index: 1001;
+}
 .main-content {
   transition: filter 0.3s ease, opacity 0.3s ease;
 }
@@ -531,4 +535,41 @@ code {
 .scale-1:hover{
   transform: scale(1.05) !important;
   transition:  transform .3s ease;
+}
+
+
+/* Base Chat Modal Styles */
+.chat-modal {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  max-width: 30rem;
+  height: 30rem;
+  margin-bottom: 2rem;
+  margin-right: 2rem;
+  background-color: var(--tint-4);
+  border-radius: 1rem;
+  box-shadow: 50px 100px 200px rgba(0, 0, 0, .3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 1000;
+
+  /* Start Hidden */
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* When chat modal is open (slide-in) */
+.chat-modal.slide-in {
+  opacity: 1 !important;
+  transform: translateY(-10%) !important;
+}
+
+/* For sliding out when modal is closed (optional) */
+.chat-modal.slide-out {
+  opacity: 0 !important;
+  transform: translateY(100%) !important;
 }

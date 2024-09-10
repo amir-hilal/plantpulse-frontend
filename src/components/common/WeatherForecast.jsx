@@ -35,7 +35,7 @@ const WeatherForecast = ({ weatherData }) => {
           {/* Weather Description */}
           <p className="m-0">{forecast.weather[0].main}</p>
           {/* Temperature */}
-          <p className="m-0">{forecast.main.temp}°C</p>
+          <p className="m-0">{Math.floor(forecast.main.temp)}°C</p>
         </div>
       ))}
     </div>
