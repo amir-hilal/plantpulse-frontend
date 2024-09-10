@@ -59,7 +59,7 @@ const AddGardenModal = ({ onClose, garden }) => {
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
-      <div className="relative bg-white border-round-xl p-6 w-3 shadow-4 overflow-hidden">
+      <div className="relative bg-white border-round-xl p-6   shadow-4 overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer bg-transparent border-none"
