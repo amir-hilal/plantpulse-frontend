@@ -1,9 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { IoIosSend } from 'react-icons/io';
 import WeatherForecast from './WeatherForecast'; // Import the WeatherForecast component
-
+import { weatherApi } from '../../services/api';
 const ChatModal = ({ isOpen, onClose }) => {
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([]);
@@ -19,11 +18,8 @@ const ChatModal = ({ isOpen, onClose }) => {
   // Fetch weather data using OpenWeatherMap API
   const fetchWeather = async () => {
     try {
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?lat=33.85&lon=35.72&appid=6b04a4627fcc5296824c1dbe2f3d15c7&units=metric`
-      );
-      const forecasts = response.data.list;
-      setWeatherData(forecasts);
+      const response = await weatherApi.get('/forecast');
+      setWeatherData(response.data.list);
     } catch (error) {
       console.error('Error fetching weather:', error);
     }
