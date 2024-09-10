@@ -78,7 +78,7 @@ const MyGardensPage = () => {
         )}
       </div>
 
-      <div className="w-auto flex align-items-center justify-content-center">
+      <div className="sm:col-10 p-4">
         {!selectedGardenId ? (
           <div className="h-full flex align-items-center justify-content-center">
             <p className="text-lg font-bold">Select a garden to manage</p>
@@ -86,7 +86,7 @@ const MyGardensPage = () => {
         ) : (
           <div className="grid w-full">
             {plantLoading ? (
-              <div className="loading h-screen w-30rem flex align-items-center justify-content-center">
+              <div className="loading h-screen w-full flex align-items-center justify-content-center">
                 <Loading type="spin" color="#019444" height={50} width={50} />
               </div>
             ) : (
