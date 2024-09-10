@@ -89,23 +89,35 @@ const ChatModal = ({ isOpen, onClose }) => {
 
       // Website information to dynamically inject for navigation questions
       const websiteInfo = {
-        gardenSection:
-          "In the 'My Garden' section, you can view all your plants and their health status.",
-        wateringSchedule:
-          "In the 'Watering Calendar' section, you can find upcoming watering tasks for each plant.",
-        plantEncyclopedia:
-          "In the 'Plant Encyclopedia' section, you will find detailed information about different plant species.",
+        gardenSection: {
+          keywords: ['health status', 'garden', 'plants overview', 'manage', 'see', 'plants', 'gardens'],
+          info: "In the 'My Garden' section, you can view all your plants and their health status.",
+        },
+        wateringSchedule: {
+          keywords: ['watering schedule', 'watering tasks', 'calendar','watering', 'schedule','tasks','water'],
+          info: "In the 'Watering Calendar' section, you can find upcoming watering tasks for each plant.",
+        },
+        plantEncyclopedia: {
+          keywords: ['plant encyclopedia', 'plant information', 'species info', 'tutorials'],
+          info: "In the 'Plant Encyclopedia' section, you will find detailed information about different plant species.",
+        },
       };
 
-      // Check if the user is asking about navigation or plant care (basic example)
-      let navigationInfo = '';
-      if (userMessage.toLowerCase().includes('health status')) {
-        navigationInfo = websiteInfo.gardenSection;
-      } else if (userMessage.toLowerCase().includes('watering schedule')) {
-        navigationInfo = websiteInfo.wateringSchedule;
-      } else if (userMessage.toLowerCase().includes('plant encyclopedia')) {
-        navigationInfo = websiteInfo.plantEncyclopedia;
-      }
+      // Function to match user message with website sections
+      const findNavigationInfo = (message) => {
+        for (const section in websiteInfo) {
+          const { keywords, info } = websiteInfo[section];
+          if (
+            keywords.some((keyword) => message.toLowerCase().includes(keyword))
+          ) {
+            return info;
+          }
+        }
+        return '';
+      };
+
+      // Check if the user is asking about navigation or plant care
+      let navigationInfo = findNavigationInfo(userMessage);
 
       // Prepare the final GPT prompt
       const assistantPrompt = navigationInfo
@@ -161,7 +173,7 @@ const ChatModal = ({ isOpen, onClose }) => {
     }
   };
 
-  console.log(messages)
+  console.log(messages);
 
   return (
     <div
@@ -193,9 +205,11 @@ const ChatModal = ({ isOpen, onClose }) => {
           {messages.map((msg, index) => (
             <div
               key={index}
-              style={{width:'fit-content'}}
+              style={{ width: 'fit-content' }}
               className={`p-2 mb-2 w-auto  border-round-xl ${
-                msg.sender === 'user' ? 'align-self-end bg-blue-100 text-right' : 'align-self-start bg-gray-100'
+                msg.sender === 'user'
+                  ? 'align-self-end bg-blue-100 text-right'
+                  : 'align-self-start bg-gray-100'
               } rounded-lg`}
             >
               {msg.sender === 'assistant' ? (
