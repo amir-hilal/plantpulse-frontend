@@ -154,7 +154,7 @@ const MyGardensPage = () => {
                     )}
                   </div>
                   <div
-                    className="shadow-1 border-round-2xl p-3 flex align-items-center justify-content-center text-center cursor-pointer mt-2 surface-400"
+                    className="shadow-1 border-round-2xl p-3 flex align-items-center justify-content-center text-center cursor-pointer mt-2 surface-300"
                     onClick={() => setPlantModalOpen(true)} // This will open the modal
                     style={{ height: '50%' }}
                   >
