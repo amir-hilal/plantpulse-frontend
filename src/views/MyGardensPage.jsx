@@ -105,8 +105,8 @@ const MyGardensPage = () => {
                                 className="border-round-2xl  w-full h-full blurry"
                               />
                             ) : (
-                              <span className="text-gray-500">
-                                No Image Available
+                              <span className="text-gray-500 blurry">
+                                No Garden Image
                               </span>
                             )}
 
@@ -175,7 +175,10 @@ const MyGardensPage = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16 p-4"> <p>No plants yet... Add plants into you garden.</p></div>
+                  <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16 p-4">
+                    {' '}
+                    <p>No plants yet... Add plants into you garden.</p>
+                  </div>
                 )}
               </>
             )}
