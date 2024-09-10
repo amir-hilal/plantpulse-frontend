@@ -20,7 +20,7 @@ const MyGardensPage = () => {
   const [selectedGardenId, setSelectedGardenId] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isPlantModalOpen, setPlantModalOpen] = useState(false);
-  const [editingGarden, setEditingGarden] = useState(null); // Track if we are editing a garden
+  const [editingGarden, setEditingGarden] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const gardens = useSelector((state) => state.gardens.gardens || []);
   const gardenLoading = useSelector((state) => state.gardens.loading);
@@ -29,6 +29,7 @@ const MyGardensPage = () => {
   const selectedGarden = gardens.find(
     (garden) => garden.id === selectedGardenId
   );
+  const [isUploadingImage, setIsUploadingImage] = useState(false); // Image uploading state
 
   useEffect(() => {
     dispatch(fetchGardens());
@@ -51,9 +52,19 @@ const MyGardensPage = () => {
   };
 
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+    const file = e.target.files[0];
+    setSelectedFile(file);
+
     if (selectedFile) {
-      dispatch(updateGardenImage({ id: selectedGardenId, file: selectedFile }));
+      setIsUploadingImage(true);
+      dispatch(updateGardenImage({ id: selectedGardenId, file }))
+        .unwrap()
+        .then(() => {
+          setIsUploadingImage(false);
+        })
+        .catch(() => {
+          setIsUploadingImage(false);
+        });
     }
   };
 
@@ -97,12 +108,19 @@ const MyGardensPage = () => {
                       <>
                         <label htmlFor="file-upload" className="cursor-pointer">
                           <div className="relative w-full h-full surface-card shadow-1 border-round-2xl bg-gray-200 flex align-items-center justify-content-center">
-                            {/* Check if image_url exists, if not show a gray placeholder */}
-                            {selectedGarden.image_url ? (
+                            {/* Display loading circle while uploading */}
+                            {isUploadingImage ? (
+                              <Loading
+                                type="spin"
+                                color="#019444"
+                                height={50}
+                                width={50}
+                              />
+                            ) : selectedGarden.image_url ? (
                               <img
                                 src={selectedGarden.image_url}
                                 alt="garden"
-                                className="border-round-2xl  w-full h-full blurry"
+                                className="border-round-2xl w-full h-full blurry"
                               />
                             ) : (
                               <span className="text-gray-500 blurry">
@@ -112,7 +130,9 @@ const MyGardensPage = () => {
 
                             {/* Edit icon, shown on hover */}
                             <div className="absolute w-full h-full top-0 left-0 flex align-items-center justify-content-center opacity-0 edit-icon">
-                              <MdEdit className="text-secondary text-3xl" />
+                              {!isUploadingImage && (
+                                <MdEdit className="text-secondary text-3xl" />
+                              )}
                             </div>
                           </div>
                         </label>
