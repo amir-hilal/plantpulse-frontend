@@ -158,7 +158,7 @@ const MyGardensPage = () => {
                     onClick={() => setPlantModalOpen(true)} // This will open the modal
                     style={{ height: '50%' }}
                   >
-                        <span className="text-2xl text-secondary flex flex-column justify-content-center align-items-center">
+                        <span className="text-xl text-secondary flex flex-column justify-content-center align-items-center">
                         <FaPlus />
 
                       Add New Plant
