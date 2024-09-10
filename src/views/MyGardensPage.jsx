@@ -78,22 +78,20 @@ const MyGardensPage = () => {
         )}
       </div>
 
-      <div className="sm:col-10 p-4">
-        {/* Check if selectedGardenId is null and display the message */}
+      <div className="w-auto flex align-items-center justify-content-center">
         {!selectedGardenId ? (
           <div className="h-full flex align-items-center justify-content-center">
             <p className="text-lg font-bold">Select a garden to manage</p>
           </div>
         ) : (
-          <div className="grid m-">
+          <div className="grid w-full">
             {plantLoading ? (
-              <div className="loading h-screen w-full flex align-items-center justify-content-center">
+              <div className="loading h-screen w-30rem flex align-items-center justify-content-center">
                 <Loading type="spin" color="#019444" height={50} width={50} />
               </div>
             ) : (
               <>
                 <div className="col-12 sm:col-6 lg:col-4 xl:col-3 aspect-ratio-10-16 p-4">
-                  {/* Garden Image with Edit Hover */}
 
                   <div className="relative group" style={{ height: '50%' }}>
                     {selectedGarden ? (
@@ -115,7 +113,7 @@ const MyGardensPage = () => {
 
                             {/* Edit icon, shown on hover */}
                             <div className="absolute w-full h-full top-0 left-0 flex align-items-center justify-content-center opacity-0 edit-icon">
-                              <MdEdit className="text-primary text-3xl" />
+                              <MdEdit className="text-secondary text-3xl" />
                             </div>
                           </div>
                         </label>
