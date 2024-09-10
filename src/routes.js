@@ -4,7 +4,6 @@ const routes = {
   register: '/register',
   myGardens: '/my-gardens',
   tutorials: '/tutorials',
-  flora: '/flora',
   calendar: '/calendar',
   community_posts: '/community/posts',
   post_details: (id = 'id') => `/community/posts/${id}`,

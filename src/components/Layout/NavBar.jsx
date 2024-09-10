@@ -21,7 +21,6 @@ const NavBar = () => {
   ];
 
   const utilitiesItems = [
-    { label: 'Flora', path: routes.flora },
     { label: 'Calendar', path: routes.calendar, disabled: !isLoggedIn },
     { label: 'Tutorials', path: routes.tutorials },
   ];

@@ -102,7 +102,6 @@ function App() {
                 />
                 {/* <Route path="/home" element={<HomePage />} />
                   <Route path="/plant-details" element={<PlantDetailsPage />} />
-                  <Route path="/flora" element={<FloraPage />} />
                   <Route path="/tutorials" element={<TutorialsPage />} />
                   <Route
                     path="/tutorial-details"
