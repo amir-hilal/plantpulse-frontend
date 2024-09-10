@@ -119,7 +119,7 @@ const NavBar = () => {
           <div
             className={`dropdown-content ${
               isCommunityOpen ? 'show' : ''
-            } bg-tint-5 p-2 border-round shadow-lg absolute ml-4 mt-2 z-50`}
+            } surface-100 p-2 border-round shadow-lg absolute ml-4 mt-2 z-50`}
           >
             <ul className="list-none m-0 p-0">
               {communityItems.map((item, index) => (
@@ -160,7 +160,7 @@ const NavBar = () => {
           <div
             className={`dropdown-content ${
               isUtilitiesOpen ? 'show' : ''
-            } bg-tint-5 p-2 border-round shadow-lg absolute mt-2 z-50`}
+            } surface-100 p-2 border-round shadow-lg absolute mt-2 z-50`}
           >
             <ul className="list-none m-0 p-0">
               {utilitiesItems.map((item, index) => (
