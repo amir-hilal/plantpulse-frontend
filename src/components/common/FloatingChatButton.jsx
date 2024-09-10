@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaChevronDown, FaCommentDots } from 'react-icons/fa'; // Comment and Down Arrow Icons
 import { toast } from 'react-toastify';
 import api from '../../services/api'; // Import the API instance
-
+import floraIcon from '../../assets/svg/Icons/floraIcon.svg'
 const FloatingChatButton = ({ onClick, isChatOpen }) => {
   const [currentTemp, setCurrentTemp] = useState(null);
 
@@ -60,8 +60,8 @@ const FloatingChatButton = ({ onClick, isChatOpen }) => {
               {currentTemp !== null && (
                 <p className="text-xs m-0">{Math.floor(currentTemp)}°C</p>
               )}
-            </div>
-            <FaCommentDots className="ml-2" size={18} />
+              </div>
+              <img src={floraIcon} alt="flora" height={35} className='ml-1'/>
           </div>
         )}
       </button>

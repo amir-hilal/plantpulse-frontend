@@ -526,13 +526,24 @@ code {
   opacity: 1 !important;
 }
 
-.scroll-bar-hidden::-webkit-scrollbar{
-display: none;
-}
-.weather-card::-webkit-scrollbar {
-  display: none;
+.scroll-bar-style::-webkit-scrollbar{
+  width: 10px;
 }
 
+.scroll-bar-style::-webkit-scrollbar-thumb {
+  background-color: grey; /* Color of the scrollbar thumb */
+  border-radius: 20px; /* Rounded corners for the thumb */
+}
+
+.scroll-bar-style::-webkit-scrollbar-track {
+  background-color: transparent; /* Hide the track */
+}
+
+/* For Firefox */
+.scroll-bar-style {
+  scrollbar-width: thin; /* Makes scrollbar smaller */
+  scrollbar-color: grey transparent; /* Thumb color (grey) and track color (transparent) */
+}
 
 .scale-1:hover{
   transform: scale(1.05) !important;

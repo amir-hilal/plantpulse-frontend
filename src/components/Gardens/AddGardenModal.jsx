@@ -74,7 +74,7 @@ const AddGardenModal = ({ onClose, garden }) => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="p-2 border-1 border-solid surface-border border-round-lg appearance-none outline-none focus:border-primary"
+              className="p-2 border-1 border-solid bg-tint-5 border-round-lg border-400 appearance-none outline-none focus:border-primary"
               placeholder="Enter Garden Name"
               required
             />

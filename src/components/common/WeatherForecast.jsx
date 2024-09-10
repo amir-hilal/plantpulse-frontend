@@ -2,7 +2,7 @@ import React from 'react';
 
 const WeatherForecast = ({ weatherData }) => {
   return (
-    <div className="flex overflow-x-auto weather-card">
+    <div className="flex overflow-x-scroll scroll-bar-style">
       {weatherData.map((forecast, index) => (
         <div
           key={index}

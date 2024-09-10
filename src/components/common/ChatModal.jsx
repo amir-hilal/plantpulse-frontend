@@ -177,7 +177,7 @@ const ChatModal = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`chat-modal bg-tint-5 ${isOpen ? 'slide-in' : 'slide-out'}`}
+      className={`chat-modal surface-50 ${isOpen ? 'slide-in' : 'slide-out'}`}
     >
       <div className="h-10rem">
         <div className="bg-secondary text-tint-5 py-2 px-4 flex justify-content-between align-items-center sm:border-round-top-xl">
@@ -201,15 +201,15 @@ const ChatModal = ({ isOpen, onClose }) => {
       </div>
 
       <div className="h-22rem px-4 pb-3 flex flex-column justify-content-end">
-        <div className="flex flex-column overflow-y-scroll scroll-bar-hidden mb-2">
+        <div className="flex flex-column overflow-y-scroll scroll-bar-style mb-2">
           {messages.map((msg, index) => (
             <div
               key={index}
               style={{ width: 'fit-content' }}
               className={`p-2 mb-2 w-auto  border-round-xl ${
                 msg.sender === 'user'
-                  ? 'align-self-end bg-blue-100 text-right'
-                  : 'align-self-start bg-gray-100'
+                  ? 'align-self-end bg-tint-5 text-right'
+                  : 'align-self-start surface-200'
               } rounded-lg`}
             >
               {msg.sender === 'assistant' ? (
@@ -224,7 +224,7 @@ const ChatModal = ({ isOpen, onClose }) => {
         <div className="flex h-2rem">
           <input
             type="text"
-            className=" h-2rem bg-tint-5 p-3 border-400 border-round-lg text-xs md:text-base text-color p-2 border-1 border-solid appearance-none outline-none focus:border-primary w-full "
+            className=" h-2rem surface-100 p-3 border-400 border-round-lg text-xs md:text-base text-color p-2 border-1 border-solid appearance-none outline-none focus:border-primary w-full "
             placeholder="Ask anything about your plants..."
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
