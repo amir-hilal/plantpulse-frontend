@@ -58,18 +58,33 @@ const PlantCard = ({ plant }) => {
         onMouseEnter={() => setIsHovered(true)} // Track hover state
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Notification and Timeline buttons */}
-        <div className="flex justify-content-between align-items-center">
-          <button
-            className="border-round-lg text-secondary border-none surface-300 hover:surface-400 h-full text-xs cursor-pointer"
-            onClick={handleOpenTimeline}
+        <div className="flex flex-column">
+          <div
+            className={`flex align-items-center  ${
+              isHovered ? 'justify-content-between' : 'justify-content-end'
+            } `}
           >
-            See Timeline
-          </button>
-          <div className=" border-round-lg text-secondary border-none surface-300 px-2 flex align-items-center">
-            <img src={wateringCan} alt="watering" className="mr-2" />
-            <span className="text-secondary">T, 10AM</span>
+            {isHovered && (
+              <button
+                className="border-round-lg text-secondary border-none surface-300 hover:surface-400 h-full text-xs cursor-pointer"
+                onClick={handleOpenTimeline}
+              >
+                See Timeline
+              </button>
+            )}
+            <div className=" border-round-lg text-secondary align-self-end border-none surface-300 px-2 flex align-items-center cursor-pointer">
+              <img src={wateringCan} alt="watering" className="mr-2" />
+              <span className="text-secondary">T, 10AM</span>
+            </div>
           </div>
+          {isHovered && (
+            <button
+              className="mt-2 w-3rem bg-error hover:bg-red-700 border-none text-white p-2 border-round-lg cursor-pointer"
+              onClick={handleDelete}
+            >
+              <FaTrash />
+            </button>
+          )}
         </div>
 
         <div>
@@ -102,16 +117,6 @@ const PlantCard = ({ plant }) => {
             </div>
           </div>
         </div>
-
-        {/* Trash button (only visible on hover) */}
-        {isHovered && (
-          <button
-            className="absolute top-3 right-3 bg-red-600 text-white p-2 border-round-full cursor-pointer"
-            onClick={handleDelete}
-          >
-            <FaTrash />
-          </button>
-        )}
       </div>
 
       {/* Confirmation Modal */}
