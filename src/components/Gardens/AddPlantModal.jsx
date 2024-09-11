@@ -179,7 +179,7 @@ const AddPlantModal = ({ onClose, gardenId }) => {
     formData.append('age', convertAgeToDays(age, ageUnit));
     formData.append('category', category);
     formData.append('description', description);
-    formData.append('watering', watering);
+    formData.append('watering_frequency', watering);
     formData.append('health_status', healthStatus);
     formData.append('height', height);
     formData.append('garden_id', gardenId);

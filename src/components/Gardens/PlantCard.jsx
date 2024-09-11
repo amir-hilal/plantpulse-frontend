@@ -5,12 +5,31 @@ import {
   fetchTimelines,
   openTimelineModal,
 } from '../../features/plant/timelinesSlice'; // Assuming you have these actions
+
 const PlantCard = ({ plant }) => {
   const dispatch = useDispatch();
 
   const handleOpenTimeline = () => {
     dispatch(openTimelineModal());
     dispatch(fetchTimelines(plant.id));
+  };
+
+
+
+  // Background color based on health status
+  const getHealthStatusBackground = (status) => {
+    switch (status) {
+      case 'Healthy':
+        return 'bg-green-500';
+      case 'Unhealthy':
+        return 'bg-yellow-500';
+      case 'Diseased':
+        return 'bg-red-500';
+      case 'Recovering':
+        return 'bg-blue-500';
+      default:
+        return 'bg-gray-500';
+    }
   };
 
   return (
@@ -43,11 +62,9 @@ const PlantCard = ({ plant }) => {
         <div className="flex flex-column mt-5">
           <div className="flex justify-content-between mb-2">
             <span
-              className={`px-2 py-1 border-round-sm ${
-                plant.health_status === 'Healthy'
-                  ? 'bg-green-500'
-                  : 'bg-red-500'
-              }`}
+              className={`px-2 py-1 border-round-sm ${getHealthStatusBackground(
+                plant.health_status
+              )}`}
             >
               {plant.health_status}
             </span>
@@ -61,7 +78,7 @@ const PlantCard = ({ plant }) => {
             <span className="text-right text-sm w-6rem">Last Time Watered</span>
           </div>
           <div className=" mb-2 flex justify-content-between align-items-start">
-            <p className="text-left m-0">{plant.age} years old</p>{' '}
+            <p className="text-left m-0">{plant.formatted_age}</p>{' '}
             <span className="text-right text-sm w-6rem">
               {plant.last_watered}
             </span>
