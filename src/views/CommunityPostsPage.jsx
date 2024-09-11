@@ -17,6 +17,7 @@ const CommunityPostsPage = () => {
   const noMorePosts = useSelector((state) => state.posts.noMorePosts);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useSelector((state) => state.auth.userProfile);
+  const userLoading = useSelector((state) => state.auth.loading);
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(clearPosts());
@@ -39,6 +40,18 @@ const CommunityPostsPage = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
+
+  if (userLoading) {
+    // Show a loading spinner while user data is being fetched
+    return (
+      <div className="flex justify-content-center align-items-center h-full">
+        <Loading type="spin" color="#019444" height={50} width={50} />
+      </div>
+    );
+  }
+  if (!user) {
+    return <p>Please log in to view the community posts.</p>;
+  }
 
   return (
     <div className="community-posts-page px-8">
