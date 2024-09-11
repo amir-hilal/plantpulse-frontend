@@ -1,268 +1,224 @@
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import Loading from 'react-loading';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { addNewPlant } from '../../features/plant/plantsSlice';
 
-const AddPlantModal = ({ onClose }) => {
-  const [loading, setLoading] = useState(false);
+const AddPlantModal = ({ isOpen, onClose, categories }) => {
+  const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
-
-  const [plantData, setPlantData] = useState({
-    name: '',
-    ageDays: '',
-    ageMonths: '',
-    ageYears: '',
-    category: '',
-    description: '',
-    watering: '',
-    height: '',
-    healthStatus: '',
-    image: null,
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    const limits = {
-      ageDays: 6,
-      ageWeeks: 51,
-      watering: { min: 1, max: 7 },
-    };
-
-    // Handle limits for ageDays and ageWeeks
-    if (name === 'ageDays' || name === 'ageWeeks') {
-      setPlantData({
-        ...plantData,
-        [name]: value > limits[name] ? limits[name] : value,
-      });
-    }
-    // Handle limits for watering
-    else if (name === 'watering') {
-      setPlantData({
-        ...plantData,
-        [name]:
-          value < limits.watering.min
-            ? limits.watering.min
-            : value > limits.watering.max
-            ? limits.watering.max
-            : value,
-      });
-    }
-    // Handle other cases without limits
-    else {
-      setPlantData({
-        ...plantData,
-        [name]: value,
-      });
-    }
-  };
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [ageUnit, setAgeUnit] = useState('days');
+  const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
+  const [watering, setWatering] = useState(1);
+  const [healthStatus, setHealthStatus] = useState('Healthy');
+  const [height, setHeight] = useState('');
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
+      setFile(selectedFile);
       const previewURL = URL.createObjectURL(selectedFile);
       setFilePreview(previewURL);
-      setPlantData({
-        ...plantData,
-        image: e.target.files[0],
-      });
+    }
+  };
+
+  const convertAgeToDays = (age, unit) => {
+    switch (unit) {
+      case 'weeks':
+        return age * 7;
+      case 'years':
+        return age * 365;
+      default:
+        return age;
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log('Plant data:', plantData);
-    onClose();
-    setLoading(false); // Close the modal after submission
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('age', convertAgeToDays(age, ageUnit));
+    formData.append('category', category);
+    formData.append('description', description);
+    formData.append('watering', watering);
+    formData.append('health_status', healthStatus);
+    formData.append('height', height);
+    if (file) {
+      formData.append('file', file);
+    }
+
+    try {
+      await dispatch(addNewPlant(formData)).unwrap();
+      toast.success('Plant added successfully');
+      setName('');
+      setAge('');
+      setAgeUnit('days');
+      setCategory('');
+      setDescription('');
+      setWatering(1);
+      setHealthStatus('Healthy');
+      setHeight('');
+      setFile(null);
+      setFilePreview(null);
+      onClose();
+    } catch (error) {
+      toast.error('Failed to add plant');
+    } finally {
+      setLoading(false);
+    }
   };
-  const isFormValid = () => {
-    const { name, ageDays, category, watering, healthStatus } = plantData;
-    return name && ageDays && category && watering && healthStatus && !loading;
-  };
+
+  if (!isOpen) return null;
+
   return (
     <div
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
-      <div className="relative bg-white border-round-xl p-3 md:p-6 w-11   lg:w-8 shadow-4 overflow-hidden">
+      <div className="relative bg-white border-round-xl p-6 w-9 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer bg-transparent border-none"
         >
           <FaTimes className="text-2xl text-secondary" />
         </button>
-        <h2 className="text-center">Add New Plant</h2>
-
-        <form
-          onSubmit={handleSubmit}
-          className="formgrid  grid ml-0 mr-0 w-full"
-        >
-          <div className="flex justify-content-between w-full flex-wrap">
-            <div className="field col-3  flex flex-column p-0 ">
-              <label htmlFor="age" className='text-xs md:text-base'>Plant Name</label>
-
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={plantData.name}
-                onChange={handleInputChange}
-                className="p-2 text-xs md:text-base border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
-              />
-            </div>
-
-            <div className="field col-6 sm:col-4  flex p-0  flex-column">
-              <label htmlFor="age" className="pl-2 text-xs md:text-base">
-                Age
-              </label>
-              <div className="flex pl-1 sm:pl-2 pr-1 sm:pr-2 justify-content-between">
-                <input
-                  type="number"
-                  name="ageDays"
-                  placeholder="Days"
-                  value={plantData.ageDays}
-                  onChange={handleInputChange}
-                  className="w-4rem sm:w-5rem text-xs md:text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
-                  min="0"
-                  max="6" // Limiting days to 6
-                />
-                <input
-                  type="number"
-                  name="ageWeeks"
-                  placeholder="Weeks"
-                  value={plantData.ageWeeks}
-                  onChange={handleInputChange}
-                  className="w-4rem sm:w-5rem text-xs md:text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
-                  min="0"
-                  max="51" // Limiting weeks to 51
-                />
-                <input
-                  type="number"
-                  name="ageYears"
-                  placeholder="Years"
-                  value={plantData.ageYears}
-                  onChange={handleInputChange}
-                  className="w-4rem sm:w-5rem text-xs md:text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
-                />
-              </div>
-            </div>
-
-            <div className="field col-3 flex flex-column p-0 ">
-              <label htmlFor="category"  className='text-xs md:text-base'>Category</label>
-
-              <input
-                type="text"
-                name="category"
-                placeholder="Category"
-                value={plantData.category}
-                onChange={handleInputChange}
-                className="p-2 border-1 text-xs md:text-base border-solid surface-border border-round appearance-none outline-none focus:border-primary"
-              />
-            </div>
-          </div>
-          {/*  */}
-
-          <div className="flex flex-column w-full mb-3">
-            <textarea
-              rows={6}
+        <h2 className="text-center m-0">Add New Plant</h2>
+        <form onSubmit={handleSubmit} className="flex flex-column mt-1">
+          <div className="flex flex-column mb-4">
+            <input
               type="text"
-              name="descirption"
-              placeholder="Descirption..."
-              value={plantData.description}
-              onChange={handleInputChange}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              placeholder="Enter plant name"
+              required
             />
           </div>
-
-          <div className="flex justify-content-between w-full mb-3">
-            <div className="col-3  p-0">
-              <input
-                type="number"
-                name="watering"
-                placeholder="Watering Frequency (per week, 1-7)"
-                value={plantData.watering}
-                onChange={handleInputChange}
-                className="p-2 text-xs md:text-base w-full border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
-                min="1"
-                max="7" // Limiting days to 6
-              />
-            </div>
-
-            <div className="col-3  p-0">
-              <input
-                type="number"
-                name="height"
-                placeholder="Height"
-                value={plantData.height}
-                onChange={handleInputChange}
-                className="p-2 w-full text-xs md:text-base border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
-              />
-            </div>
-            <div className="col-3  p-0">
-              <select
-                name="healthStatus"
-                value={plantData.healthStatus}
-                onChange={handleInputChange}
-                className="p-2 w-full border-1 text-xs md:text-base border-solid surface-border border-round appearance-none outline-none focus:border-primary"
-              >
-                <option value="" disabled>
-                  Select Health Status
+          <div className="flex mb-4">
+            <input
+              type="number"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              className="p-2 border-1 border-solid surface-border border-round"
+              placeholder="Enter age"
+              required
+            />
+            <select
+              value={ageUnit}
+              onChange={(e) => setAgeUnit(e.target.value)}
+              className="ml-2 p-2 border-1 border-solid surface-border border-round"
+            >
+              <option value="days">Days</option>
+              <option value="weeks">Weeks</option>
+              <option value="years">Years</option>
+            </select>
+          </div>
+          <div className="flex flex-column mb-4">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="p-2 border-1 border-solid surface-border border-round"
+              required
+            >
+              <option value="">Select category</option>
+              {categories.map((cat) => (
+                <option value={cat.id} key={cat.id}>
+                  {cat.name}
                 </option>
-                <option value="Healthy">Healthy</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Unhealthy">Unhealthy</option>
-                <option value="Critical">Critical</option>
-              </select>
-            </div>
+              ))}
+            </select>
           </div>
-
+          <div className="flex flex-column mb-4">
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="p-2 border-1 border-solid surface-border border-round"
+              placeholder="Enter description"
+              required
+            />
+          </div>
+          <div className="flex flex-column mb-4">
+            <label>Watering Frequency (times per week)</label>
+            <input
+              type="range"
+              min="1"
+              max="7"
+              value={watering}
+              onChange={(e) => setWatering(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-column mb-4">
+            <select
+              value={healthStatus}
+              onChange={(e) => setHealthStatus(e.target.value)}
+              className="p-2 border-1 border-solid surface-border border-round"
+              required
+            >
+              <option value="Healthy">Healthy</option>
+              <option value="Unhealthy">Unhealthy</option>
+              <option value="Diseased">Diseased</option>
+              <option value="Recovering">Recovering</option>
+            </select>
+          </div>
+          <div className="flex flex-column mb-4">
+            <input
+              type="number"
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
+              className="p-2 border-1 border-solid surface-border border-round"
+              placeholder="Enter height in cm"
+            />
+          </div>
           <div className="flex flex-column w-full">
-            <div className="flex flex-column align-items-center">
-              <label
-                htmlFor="file-upload"
-                className="text-center  cursor-pointer border-dotted border-2 border-primary w-full"
-                style={{ padding: filePreview ? '1rem' : '6rem' }} // Conditional padding
-              >
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
+            <label
+              htmlFor="file-upload"
+              className="text-center  cursor-pointer border-dotted border-2 border-primary w-full"
+              style={{ padding: filePreview ? '1rem' : '6rem' }} // Conditional padding
+            >
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              {filePreview ? (
+                <img
+                  src={filePreview}
+                  alt="Preview"
+                  className="border-round"
+                  style={{ maxHeight: '200px', maxWidth: '100%' }}
                 />
-                {filePreview ? (
-                  <img
-                    src={filePreview}
-                    alt="Preview"
-                    className="border-round"
-                    style={{ maxHeight: '200px', maxWidth: '100%' }} // Limit height and width
-                  />
-                ) : (
-                  'Drag & drop files or Browse'
-                )}
-              </label>
-              <small className="text-center mt-2 text-xs md:text-base">
-                Supported formats: JPEG, PNG, JPG, GIF
-              </small>
-            </div>
+              ) : (
+                'Drag & drop image or Browse'
+              )}
+            </label>
           </div>
-        </form>
-
-        <div className="flex justify-content-center mt-4">
           <button
             type="submit"
-            className={` text-white border-none border-round py-2 mt-2 w-full flex justify-content-center align-items-center ${
-              !isFormValid() ? 'bg-green-300' : 'bg-primary cursor-pointer'
+            className={`text-white border-none border-round py-2 mt-2 w-full flex justify-content-center align-items-center ${
+              !name || !age || !category || !description || loading
+                ? 'bg-green-400'
+                : 'bg-primary cursor-pointer'
             } `}
-            disabled={!isFormValid()}
+            disabled={!name || !age || !category || !description || loading}
           >
             {loading ? (
               <Loading type="spin" color="#fff" height={20} width={20} />
             ) : (
-              'Add'
+              'Add Plant'
             )}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
