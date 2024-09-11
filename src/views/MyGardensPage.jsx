@@ -106,7 +106,7 @@ const MyGardensPage = () => {
                   <div className="relative group" style={{ height: '50%' }}>
                     {selectedGarden ? (
                       <>
-                        <label htmlFor="file-upload" className="cursor-pointer">
+                        <label htmlFor="garden-file-upload" className="cursor-pointer">
                           <div className="relative w-full h-full surface-card shadow-1 border-round-2xl bg-gray-200 flex align-items-center justify-content-center">
                             {/* Display loading circle while uploading */}
                             {isUploadingImage ? (
@@ -139,7 +139,7 @@ const MyGardensPage = () => {
 
                         {/* Hidden file input */}
                         <input
-                          id="file-upload"
+                          id="garden-file-upload"
                           type="file"
                           accept="image/*"
                           onChange={handleFileChange}
@@ -148,7 +148,7 @@ const MyGardensPage = () => {
                       </>
                     ) : (
                       <div className="w-full h-full surface-card shadow-1 border-round-2xl bg-gray-200 flex align-items-center justify-content-center">
-                        <label htmlFor="file-upload" className="cursor-pointer">
+                        <label htmlFor="garden-file-upload" className="cursor-pointer">
                           <div className="relative">
                             <span className="text-gray-500 blurry">
                               No Garden Image
@@ -163,7 +163,7 @@ const MyGardensPage = () => {
 
                         {/* Hidden file input */}
                         <input
-                          id="file-upload"
+                          id="garden-file-upload"
                           type="file"
                           accept="image/*"
                           onChange={handleFileChange}

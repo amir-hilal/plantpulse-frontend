@@ -15,7 +15,7 @@ const GardenNav = ({
 }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null); 
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const [hoveredGardenId, setHoveredGardenId] = useState(null);
 
@@ -58,8 +58,8 @@ const GardenNav = ({
             onMouseLeave={() => setHoveredGardenId(null)}
             onClick={() => onSelectGarden(garden.id)}
           >
-            <GiPlantSeed className="mr-2" />
-            <span className="sm:ml-1 lg:ml-5 ">{garden.name}</span>
+            <GiPlantSeed className="hidden md:block mr-2" />
+            <span className="ml-3 md:ml-1 lg:ml-4 ">{garden.name}</span>
 
             {hoveredGardenId === garden.id && (
               <div className="m-0 p-0 flex align-items-center">

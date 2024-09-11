@@ -8,7 +8,7 @@ import { addNewPlant } from '../../features/plant/plantsSlice';
 
 const AddPlantModal = ({ onClose, gardenId }) => {
   const [file, setFile] = useState(null);
-  const [filePreview, setFilePreview] = useState(null);
+  const [filePlantPreview, setFilePlantPreview] = useState(null);
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [ageUnit, setAgeUnit] = useState('days');
@@ -137,17 +137,18 @@ const AddPlantModal = ({ onClose, gardenId }) => {
     { value: 'years', label: 'Years' },
   ];
 
-  const handleFileChange = (e) => {
+  const handlePlantFileChange = (e) => {
     const selectedFile = e.target.files[0];
+    console.log(selectedFile)
     if (selectedFile) {
       setFile(selectedFile);
       const previewURL = URL.createObjectURL(selectedFile);
-      setFilePreview(previewURL);
+      setFilePlantPreview(previewURL);
     }
   };
 
   const handleCategoryChange = (selectedOption) => {
-    setCategory(selectedOption.value);
+    setCategory(selectedOption.label);
   };
 
   const handleAgeUnitChange = (selectedOption) => {
@@ -198,7 +199,7 @@ const AddPlantModal = ({ onClose, gardenId }) => {
       setHealthStatus('Healthy');
       setHeight('');
       setFile(null);
-      setFilePreview(null);
+      setFilePlantPreview(null);
       onClose();
     } catch (error) {
       toast.error('Failed to add plant');
@@ -261,9 +262,9 @@ const AddPlantModal = ({ onClose, gardenId }) => {
               onChange={handleCategoryChange}
               placeholder="Search and select category"
               styles={customStyles}
-              className='md:col-5 p-0 mb-3 md:mb-0 '// Apply custom styles here
+              className="md:col-5 p-0 mb-3 md:mb-0 " // Apply custom styles here
             />
-            <div className='flex justify-content-between w-auto sm:col-5 p-0'>
+            <div className="flex justify-content-between w-auto sm:col-5 p-0">
               <Select
                 value={healthStatusOptions.find(
                   (option) => option.value === healthStatus
@@ -271,7 +272,7 @@ const AddPlantModal = ({ onClose, gardenId }) => {
                 onChange={handleHealthStatusChange}
                 options={healthStatusOptions}
                 styles={customStyles}
-                className='w-9rem'
+                className="w-9rem"
                 placeholder="Select health status"
                 required
               />{' '}
@@ -352,20 +353,20 @@ const AddPlantModal = ({ onClose, gardenId }) => {
           </div>
           <div className="flex flex-column w-full">
             <label
-              htmlFor="file-upload"
+              htmlFor="plant-file-upload"
               className="text-center  cursor-pointer border-dotted border-2 border-primary w-full"
-              style={{ padding: filePreview ? '1rem' : '6rem' }} // Conditional padding
+              style={{ padding: filePlantPreview ? '1rem' : '6rem' }} // Conditional padding
             >
               <input
-                id="file-upload"
+                id="plant-file-upload"
                 type="file"
                 accept="image/*"
-                onChange={handleFileChange}
+                onChange={handlePlantFileChange}
                 className="hidden"
               />
-              {filePreview ? (
+              {filePlantPreview ? (
                 <img
-                  src={filePreview}
+                  src={filePlantPreview}
                   alt="Preview"
                   className="border-round"
                   style={{ maxHeight: '200px', maxWidth: '100%' }}
