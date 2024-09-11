@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import Loading from 'react-loading';
 import { useDispatch } from 'react-redux';
+import Select from 'react-select'; // Import react-select
 import { toast } from 'react-toastify';
 import { addNewPlant } from '../../features/plant/plantsSlice';
 
-const AddPlantModal = ({ isOpen, onClose, categories }) => {
+const AddPlantModal = ({ onClose }) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [name, setName] = useState('');
@@ -19,6 +20,123 @@ const AddPlantModal = ({ isOpen, onClose, categories }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const categories = [
+    { id: 1, name: 'Vegetables' },
+    { id: 2, name: 'Fruits' },
+    { id: 3, name: 'Herbs' },
+    { id: 4, name: 'Flowers' },
+    { id: 5, name: 'Succulents' },
+    { id: 6, name: 'Cacti' },
+    { id: 7, name: 'Trees' },
+    { id: 8, name: 'Shrubs' },
+    { id: 9, name: 'Vines' },
+    { id: 10, name: 'Grasses' },
+    { id: 11, name: 'Aquatic Plants' },
+    { id: 12, name: 'Bulbs' },
+    { id: 13, name: 'Ornamental Plants' },
+    { id: 14, name: 'Ferns' },
+    { id: 15, name: 'Palms' },
+    { id: 16, name: 'Bonsai' },
+  ];
+
+  const healthStatusOptions = [
+    { value: 'Healthy', label: 'Healthy' },
+    { value: 'Unhealthy', label: 'Unhealthy' },
+    { value: 'Diseased', label: 'Diseased' },
+    { value: 'Recovering', label: 'Recovering' },
+  ];
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      backgroundColor: 'var(--surface-0)',
+      borderColor: 'var(--surface-border)',
+      borderRadius: 'var(--border-radius)',
+      color: 'var(--text-color)',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '12px',
+      boxShadow: state.isFocused ? '0 0 0 1px var(--primary-color)' : null,
+      '&:hover': {
+        borderColor: 'var(--primary-color)',
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: 'var(--surface-0)',
+      borderRadius: 'var(--border-radius)',
+      zIndex: 9999,
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? 'var(--primary-color)'
+        : state.isFocused
+        ? 'var(--tint_5)'
+        : 'var(--surface-0)',
+      color: state.isSelected
+        ? 'var(--primary-color-text)'
+        : 'var(--text-color)',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '14px',
+      '&:hover': {
+        backgroundColor: 'var(--tint_1)',
+        color: 'var(--primary-color-text)',
+      },
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: 'var(--text-color)',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '14px',
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: 'var(--text-color-secondary)',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '14px',
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: 'var(--text-color-secondary)',
+      '&:hover': {
+        color: 'var(--primary-color)',
+      },
+    }),
+    indicatorSeparator: () => ({
+      display: 'none',
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: 'var(--text-color)',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '14px',
+    }),
+    multiValue: (provided) => ({
+      ...provided,
+      backgroundColor: 'var(--tint_4)',
+      borderRadius: 'var(--border-radius)',
+      color: 'var(--text-color)',
+    }),
+    multiValueLabel: (provided) => ({
+      ...provided,
+      color: 'var(--text-color)',
+    }),
+    multiValueRemove: (provided) => ({
+      ...provided,
+      color: 'var(--text-color-secondary)',
+      '&:hover': {
+        backgroundColor: 'var(--primary-color)',
+        color: 'var(--primary-color-text)',
+      },
+    }),
+  };
+
+  const ageOptions = [
+    { value: 'days', label: 'Days' },
+    { value: 'weeks', label: 'Weeks' },
+    { value: 'years', label: 'Years' },
+  ];
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -26,6 +144,18 @@ const AddPlantModal = ({ isOpen, onClose, categories }) => {
       const previewURL = URL.createObjectURL(selectedFile);
       setFilePreview(previewURL);
     }
+  };
+
+  const handleCategoryChange = (selectedOption) => {
+    setCategory(selectedOption.value);
+  };
+
+  const handleAgeUnitChange = (selectedOption) => {
+    setAgeUnit(selectedOption.value);
+  };
+
+  const handleHealthStatusChange = (selectedOption) => {
+    setHealthStatus(selectedOption.value);
   };
 
   const convertAgeToDays = (age, unit) => {
@@ -76,14 +206,12 @@ const AddPlantModal = ({ isOpen, onClose, categories }) => {
     }
   };
 
-  if (!isOpen) return null;
-
   return (
     <div
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
-      <div className="relative bg-white border-round-xl p-6 w-9 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-hidden">
+      <div className="relative bg-white border-round-xl px-2 py-4 sm:px-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer bg-transparent border-none"
@@ -91,62 +219,88 @@ const AddPlantModal = ({ isOpen, onClose, categories }) => {
           <FaTimes className="text-2xl text-secondary" />
         </button>
         <h2 className="text-center m-0">Add New Plant</h2>
-        <form onSubmit={handleSubmit} className="flex flex-column mt-1">
-          <div className="flex flex-column mb-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-column mt-1 text-sm md:text-base"
+        >
+          <div className="flex mb-3 justify-content-between">
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="p-2 md:col-5 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               placeholder="Enter plant name"
               required
             />
+            <div className="flex justify-content-between sm:col-5 p-0 ">
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                placeholder="Enter age"
+                required
+              />
+              <Select
+                value={ageOptions.find((option) => option.value === ageUnit)}
+                onChange={handleAgeUnitChange}
+                options={ageOptions}
+                styles={customStyles}
+                className="ml-2"
+                placeholder="Select age unit"
+              />
+            </div>
           </div>
-          <div className="flex mb-4">
-            <input
-              type="number"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              className="p-2 border-1 border-solid surface-border border-round"
-              placeholder="Enter age"
-              required
+          <div className="flex justify-content-between mb-3">
+            <Select
+              options={categories.map((cat) => ({
+                value: cat.id,
+                label: cat.name,
+              }))}
+              onChange={handleCategoryChange}
+              placeholder="Search and select category"
+              styles={customStyles}
+              className='md:col-5 p-0 '// Apply custom styles here
             />
-            <select
-              value={ageUnit}
-              onChange={(e) => setAgeUnit(e.target.value)}
-              className="ml-2 p-2 border-1 border-solid surface-border border-round"
-            >
-              <option value="days">Days</option>
-              <option value="weeks">Weeks</option>
-              <option value="years">Years</option>
-            </select>
+            <div className='flex sm:col-5 p-0'>
+              <Select
+                value={healthStatusOptions.find(
+                  (option) => option.value === healthStatus
+                )}
+                onChange={handleHealthStatusChange}
+                options={healthStatusOptions}
+                styles={customStyles}
+                className='w-9rem'
+                placeholder="Select health status"
+                required
+              />{' '}
+              <input
+                type="number"
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
+                className="p-2 ml-2 w-10rem border-1 border-solid surface-border border-round"
+                placeholder="Enter height in cm"
+              />
+            </div>
           </div>
-          <div className="flex flex-column mb-4">
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="p-2 border-1 border-solid surface-border border-round"
-              required
-            >
-              <option value="">Select category</option>
-              {categories.map((cat) => (
-                <option value={cat.id} key={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-column mb-4">
+          <div className="flex flex-column mb-3">
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="p-2 border-1 border-solid surface-border border-round"
+              className="p-2 w-full  border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               placeholder="Enter description"
               required
+              rows={2}
+              style={{ fontFamily: 'inter' }}
             />
           </div>
+
           <div className="flex flex-column mb-4">
             <label>Watering Frequency (times per week)</label>
+            <small className="mb-2 text-grey">
+              Tip: 1 means once a week, 7 means every day
+            </small>
+
             <input
               type="range"
               min="1"
@@ -154,29 +308,46 @@ const AddPlantModal = ({ isOpen, onClose, categories }) => {
               value={watering}
               onChange={(e) => setWatering(e.target.value)}
               required
+              className="w-full"
+              style={{
+                appearance: 'none',
+                height: '8px',
+                background: `linear-gradient(to right, var(--primary-color) ${
+                  ((watering - 1) / 6) * 100
+                }%, var(--surface-border) ${((watering - 1) / 6) * 100}%)`,
+                borderRadius: 'var(--border-radius)',
+                outline: 'none',
+              }}
             />
-          </div>
-          <div className="flex flex-column mb-4">
-            <select
-              value={healthStatus}
-              onChange={(e) => setHealthStatus(e.target.value)}
-              className="p-2 border-1 border-solid surface-border border-round"
-              required
-            >
-              <option value="Healthy">Healthy</option>
-              <option value="Unhealthy">Unhealthy</option>
-              <option value="Diseased">Diseased</option>
-              <option value="Recovering">Recovering</option>
-            </select>
-          </div>
-          <div className="flex flex-column mb-4">
-            <input
-              type="number"
-              value={height}
-              onChange={(e) => setHeight(e.target.value)}
-              className="p-2 border-1 border-solid surface-border border-round"
-              placeholder="Enter height in cm"
-            />
+
+            <div className="flex justify-content-between mt-2">
+              {[...Array(7)].map((_, index) => (
+                <span key={index} className="text-sm text-grey">
+                  {index + 1}
+                </span>
+              ))}
+            </div>
+
+            <style jsx>{`
+              input[type='range']::-webkit-slider-thumb {
+                appearance: none;
+                width: 20px;
+                height: 20px;
+                background: var(--primary-color); /* Green thumb */
+                border-radius: 50%;
+                cursor: pointer;
+                border: 2px solid var(--primary-color-text);
+              }
+
+              input[type='range']::-moz-range-thumb {
+                background: var(--primary-color); /* Green thumb for Firefox */
+                border: 2px solid var(--primary-color-text);
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+              }
+            `}</style>
           </div>
           <div className="flex flex-column w-full">
             <label

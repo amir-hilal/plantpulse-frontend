@@ -13,6 +13,22 @@ export const fetchPlants = createAsyncThunk(
   }
 );
 
+export const addNewPlant = createAsyncThunk(
+  'plants/addNewPlant',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/plants', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const plantsSlice = createSlice({
   name: 'plants',
   initialState: {
@@ -35,6 +51,17 @@ const plantsSlice = createSlice({
         state.plants = action.payload;
       })
       .addCase(fetchPlants.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(addNewPlant.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addNewPlant.fulfilled, (state, action) => {
+        state.loading = false;
+        state.plants.push(action.payload);
+      })
+      .addCase(addNewPlant.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
