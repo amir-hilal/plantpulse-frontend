@@ -211,7 +211,7 @@ const AddPlantModal = ({ onClose }) => {
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
-      <div className="relative bg-white border-round-xl px-2 py-4 sm:px-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-hidden">
+      <div className="relative bg-white border-round-xl px-2 py-4 sm:px-6 w-11 sm:w-10 md:w-8 lg:w-8 shadow-4 overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer bg-transparent border-none"
@@ -223,16 +223,16 @@ const AddPlantModal = ({ onClose }) => {
           onSubmit={handleSubmit}
           className="flex flex-column mt-1 text-sm md:text-base"
         >
-          <div className="flex mb-3 justify-content-between">
+          <div className="flex flex-column md:flex-row  mb-3 justify-content-between">
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="p-2 md:col-5 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              className="p-2 mb-3 md:mb-0 md:col-5 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               placeholder="Enter plant name"
               required
             />
-            <div className="flex justify-content-between sm:col-5 p-0 ">
+            <div className="flex justify-content-between w-auto sm:col-5 p-0 ">
               <input
                 type="number"
                 value={age}
@@ -251,7 +251,7 @@ const AddPlantModal = ({ onClose }) => {
               />
             </div>
           </div>
-          <div className="flex justify-content-between mb-3">
+          <div className="flex flex-column md:flex-row justify-content-between mb-3">
             <Select
               options={categories.map((cat) => ({
                 value: cat.id,
@@ -260,9 +260,9 @@ const AddPlantModal = ({ onClose }) => {
               onChange={handleCategoryChange}
               placeholder="Search and select category"
               styles={customStyles}
-              className='md:col-5 p-0 '// Apply custom styles here
+              className='md:col-5 p-0 mb-3 md:mb-0 '// Apply custom styles here
             />
-            <div className='flex sm:col-5 p-0'>
+            <div className='flex justify-content-between w-auto sm:col-5 p-0'>
               <Select
                 value={healthStatusOptions.find(
                   (option) => option.value === healthStatus
