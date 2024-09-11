@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../services/api'; // Import your api file
+import api from '../../services/api';
 
 export const fetchPlants = createAsyncThunk(
   'plants/fetchPlants',
@@ -29,6 +29,19 @@ export const addNewPlant = createAsyncThunk(
   }
 );
 
+// New deletePlant action
+export const deletePlant = createAsyncThunk(
+  'plants/deletePlant',
+  async (plantId, { rejectWithValue }) => {
+    try {
+      await api.delete(`/plants/${plantId}`);
+      return plantId; // Return the id of the deleted plant
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const plantsSlice = createSlice({
   name: 'plants',
   initialState: {
@@ -38,7 +51,7 @@ const plantsSlice = createSlice({
   },
   reducers: {
     clearPlants: (state) => {
-      state.plants = []; // Clear plants when switching gardens
+      state.plants = [];
     },
   },
   extraReducers: (builder) => {
@@ -62,6 +75,16 @@ const plantsSlice = createSlice({
         state.plants.push(action.payload);
       })
       .addCase(addNewPlant.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deletePlant.fulfilled, (state, action) => {
+        state.loading = false;
+        state.plants = state.plants.filter(
+          (plant) => plant.id !== action.payload
+        );
+      })
+      .addCase(deletePlant.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
