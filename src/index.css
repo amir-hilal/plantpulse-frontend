@@ -232,7 +232,7 @@ code {
 }
 
 .bg-light-grey {
-  background-color: var(--light_grey);
+  background-color: var(--light_grey) !important;
 }
 
 .bg-grey-blue {

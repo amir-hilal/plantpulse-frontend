@@ -26,7 +26,17 @@ export const fetchPostsByUsername = createAsyncThunk(
     }
   }
 );
-
+export const deletePost = createAsyncThunk(
+  'posts/deletePost',
+  async ( postId , { rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/posts/${postId}`);
+      return { postId, message: response.data.message };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -75,6 +85,19 @@ const postsSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Error fetching posts';
       })
+      .addCase(deletePost.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.posts = state.posts.filter(
+          (post) => post.id !== action.payload.postId
+        );
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error deleting post';
+      });
   },
 });
 

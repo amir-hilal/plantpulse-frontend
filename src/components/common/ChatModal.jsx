@@ -173,7 +173,6 @@ const ChatModal = ({ isOpen, onClose }) => {
     }
   };
 
-  console.log(messages);
 
   return (
     <div

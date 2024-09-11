@@ -15,7 +15,7 @@ const GardenNav = ({
 }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null); // Keep track of the item being deleted
+  const [itemToDelete, setItemToDelete] = useState(null); 
 
   const [hoveredGardenId, setHoveredGardenId] = useState(null);
 

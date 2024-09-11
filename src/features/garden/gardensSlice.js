@@ -30,7 +30,6 @@ export const updateGarden = createAsyncThunk(
   'gardens/updateGarden',
   async ({ id, formData }, { rejectWithValue }) => {
     try {
-      console.log(formData.get('name'));
       const response = await api.post(`/garden/${id}`, formData);
       return response.data;
     } catch (error) {
