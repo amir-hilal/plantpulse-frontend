@@ -4,6 +4,7 @@ import { FiEdit, FiPlus } from 'react-icons/fi';
 import { GiPlantSeed } from 'react-icons/gi';
 import { useDispatch } from 'react-redux';
 import { deleteGarden } from '../../features/garden/gardensSlice';
+import ConfirmationModal from '../common/ConfirmationModal';
 
 const GardenNav = ({
   gardens,
@@ -13,9 +14,26 @@ const GardenNav = ({
   onEditGarden,
 }) => {
   const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null); // Keep track of the item being deleted
 
   const [hoveredGardenId, setHoveredGardenId] = useState(null);
 
+  const handleDelete = (garden) => {
+    setItemToDelete(garden); // Set the item you want to delete
+    setIsModalOpen(true); // Open the modal
+  };
+  const handleConfirmDelete = () => {
+    dispatch(deleteGarden(itemToDelete.id));
+
+    setIsModalOpen(false);
+    setItemToDelete(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setItemToDelete(null);
+  };
   return (
     <div className="text-xs lg:text-base mt-5 m-0 h-screen w-full">
       <ul className="list-none p-0 m-0 pl-2">
@@ -65,8 +83,8 @@ const GardenNav = ({
                       : 'bg-secondary'
                   }`}
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering onSelectGarden
-                    dispatch(deleteGarden(garden.id)); // Dispatch the delete action
+                    e.stopPropagation();
+                    handleDelete(garden); // Prevent triggering onSelectGarden
                   }}
                 >
                   <FaRegTrashCan className="text-xl " />
@@ -76,6 +94,12 @@ const GardenNav = ({
           </li>
         ))}
       </ul>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        message={`Are you sure you want to delete?`}
+      />
     </div>
   );
 };
