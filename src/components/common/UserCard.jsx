@@ -133,7 +133,7 @@ const UserCard = ({ user, isOwner, status }) => {
   };
 
   return (
-    <div className="user-card border-round-lg p-3 shadow-1 mb-4 bg-white">
+    <div className="user-card border-round-lg p-3 shadow-card mb-4 bg-white">
       <div className="flex align-items-center mb-2">
         <img
           src={user.profile_photo_url}
