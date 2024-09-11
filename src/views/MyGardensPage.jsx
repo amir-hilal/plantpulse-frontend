@@ -207,7 +207,10 @@ const MyGardensPage = () => {
 
         {/* Add Plant Modal */}
         {isPlantModalOpen && (
-          <AddPlantModal onClose={() => setPlantModalOpen(false)} />
+          <AddPlantModal
+            onClose={() => setPlantModalOpen(false)}
+            gardenId={selectedGardenId}
+          />
         )}
       </div>
 

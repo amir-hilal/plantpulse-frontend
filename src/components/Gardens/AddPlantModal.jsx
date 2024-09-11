@@ -6,7 +6,7 @@ import Select from 'react-select'; // Import react-select
 import { toast } from 'react-toastify';
 import { addNewPlant } from '../../features/plant/plantsSlice';
 
-const AddPlantModal = ({ onClose }) => {
+const AddPlantModal = ({ onClose, gardenId }) => {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [name, setName] = useState('');
@@ -181,6 +181,7 @@ const AddPlantModal = ({ onClose }) => {
     formData.append('watering', watering);
     formData.append('health_status', healthStatus);
     formData.append('height', height);
+    formData.append('garden_id', gardenId);
     if (file) {
       formData.append('file', file);
     }
