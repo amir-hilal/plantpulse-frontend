@@ -114,7 +114,7 @@ const ProfilePage = () => {
               <p className="m-0 text-primary">Add new post...</p>
             </div>
           )}
-          <div className="mt-2 flex flex-column justify-content-center">
+          <div className="mt-2 flex p-3 flex-column justify-content-center">
             {posts.length > 0
               ? posts.map((post) => <PostCard key={post.id} post={post} />)
               : !postsLoading && !!posts && <p className='text-center text-secondary'>No posts yet...</p>}
