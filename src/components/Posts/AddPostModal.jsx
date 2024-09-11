@@ -131,7 +131,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
               placeholder="What's on your mind..."
               value={content}
               onChange={handleContentChange}
-              className="mt-2 bg-tint-5 text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary h-6rem"
+              className="mt-2  text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary h-6rem"
               required
             />
           </div>

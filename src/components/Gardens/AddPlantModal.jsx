@@ -23,8 +23,8 @@ const AddPlantModal = ({ onClose }) => {
     const { name, value } = e.target;
 
     const limits = {
-      ageDays: 7,
-      ageWeeks: 52,
+      ageDays: 6,
+      ageWeeks: 51,
       watering: { min: 1, max: 7 },
     };
 
@@ -84,7 +84,7 @@ const AddPlantModal = ({ onClose }) => {
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
-      <div className="relative bg-white border-round-xl p-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-hidden">
+      <div className="relative bg-white border-round-xl p-3 md:p-6 w-11   lg:w-8 shadow-4 overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-0 right-0 mt-3 mr-3 cursor-pointer bg-transparent border-none"
@@ -97,9 +97,9 @@ const AddPlantModal = ({ onClose }) => {
           onSubmit={handleSubmit}
           className="formgrid  grid ml-0 mr-0 w-full"
         >
-          <div className="flex justify-content-between w-full">
+          <div className="flex justify-content-between w-full flex-wrap">
             <div className="field col-3  flex flex-column p-0 ">
-              <label htmlFor="age">Plant Name</label>
+              <label htmlFor="age" className='text-xs md:text-base'>Plant Name</label>
 
               <input
                 type="text"
@@ -107,22 +107,22 @@ const AddPlantModal = ({ onClose }) => {
                 placeholder="Name"
                 value={plantData.name}
                 onChange={handleInputChange}
-                className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                className="p-2 text-xs md:text-base border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               />
             </div>
 
-            <div className="field col-4  flex p-0  flex-column">
-              <label htmlFor="age" className="pl-2">
+            <div className="field col-6 sm:col-4  flex p-0  flex-column">
+              <label htmlFor="age" className="pl-2 text-xs md:text-base">
                 Age
               </label>
-              <div className="flex pl-2 pr-2 justify-content-between">
+              <div className="flex pl-1 sm:pl-2 pr-1 sm:pr-2 justify-content-between">
                 <input
                   type="number"
                   name="ageDays"
                   placeholder="Days"
                   value={plantData.ageDays}
                   onChange={handleInputChange}
-                  className="w-5rem p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
+                  className="w-4rem sm:w-5rem text-xs md:text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
                   min="0"
                   max="6" // Limiting days to 6
                 />
@@ -132,7 +132,7 @@ const AddPlantModal = ({ onClose }) => {
                   placeholder="Weeks"
                   value={plantData.ageWeeks}
                   onChange={handleInputChange}
-                  className="w-5rem p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
+                  className="w-4rem sm:w-5rem text-xs md:text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary "
                   min="0"
                   max="51" // Limiting weeks to 51
                 />
@@ -142,13 +142,13 @@ const AddPlantModal = ({ onClose }) => {
                   placeholder="Years"
                   value={plantData.ageYears}
                   onChange={handleInputChange}
-                  className="w-5rem p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                  className="w-4rem sm:w-5rem text-xs md:text-base p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
                 />
               </div>
             </div>
 
             <div className="field col-3 flex flex-column p-0 ">
-              <label htmlFor="category">Category</label>
+              <label htmlFor="category"  className='text-xs md:text-base'>Category</label>
 
               <input
                 type="text"
@@ -156,7 +156,7 @@ const AddPlantModal = ({ onClose }) => {
                 placeholder="Category"
                 value={plantData.category}
                 onChange={handleInputChange}
-                className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                className="p-2 border-1 text-xs md:text-base border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               />
             </div>
           </div>
@@ -175,49 +175,53 @@ const AddPlantModal = ({ onClose }) => {
           </div>
 
           <div className="flex justify-content-between w-full mb-3">
-            <div className="col-6  p-0 pr-2">
+            <div className="col-3  p-0">
               <input
                 type="number"
                 name="watering"
                 placeholder="Watering Frequency (per week, 1-7)"
                 value={plantData.watering}
                 onChange={handleInputChange}
-                className="p-2 w-full border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                className="p-2 text-xs md:text-base w-full border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
                 min="1"
                 max="7" // Limiting days to 6
               />
             </div>
 
-            <div className="col-6  p-0 pl-2">
+            <div className="col-3  p-0">
               <input
-                type="text"
+                type="number"
                 name="height"
                 placeholder="Height"
                 value={plantData.height}
                 onChange={handleInputChange}
-                className="p-2 w-full border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                className="p-2 w-full text-xs md:text-base border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
               />
             </div>
-          </div>
-          <div className="flex justify-content-between w-full mb-3">
-            <div className="col-12 mb-3 p-0">
-              <input
-                type="text"
+            <div className="col-3  p-0">
+              <select
                 name="healthStatus"
-                placeholder="Health Status"
                 value={plantData.healthStatus}
                 onChange={handleInputChange}
-                className="p-2 w-full border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
-              />
+                className="p-2 w-full border-1 text-xs md:text-base border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+              >
+                <option value="" disabled>
+                  Select Health Status
+                </option>
+                <option value="Healthy">Healthy</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Unhealthy">Unhealthy</option>
+                <option value="Critical">Critical</option>
+              </select>
             </div>
           </div>
 
-          <div className="flex flex-column mb-1">
+          <div className="flex flex-column w-full">
             <div className="flex flex-column align-items-center">
               <label
                 htmlFor="file-upload"
-                className="text-center cursor-pointer border-dotted border-2 border-primary w-full"
-                style={{ padding: filePreview ? '1rem' : '7rem' }} // Conditional padding
+                className="text-center  cursor-pointer border-dotted border-2 border-primary w-full"
+                style={{ padding: filePreview ? '1rem' : '6rem' }} // Conditional padding
               >
                 <input
                   id="file-upload"
@@ -237,7 +241,7 @@ const AddPlantModal = ({ onClose }) => {
                   'Drag & drop files or Browse'
                 )}
               </label>
-              <small className="text-center mt-2">
+              <small className="text-center mt-2 text-xs md:text-base">
                 Supported formats: JPEG, PNG, JPG, GIF
               </small>
             </div>
