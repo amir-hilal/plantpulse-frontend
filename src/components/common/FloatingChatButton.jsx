@@ -5,7 +5,7 @@ import floraIcon from '../../assets/svg/Icons/floraIcon.svg';
 import api from '../../services/api'; // Import the API instance
 const FloatingChatButton = ({ onClick, isChatOpen }) => {
   const [currentTemp, setCurrentTemp] = useState(null);
-
+  const [currentLocation, setCurrentLocation] = useState(null);
   useEffect(() => {
     const fetchWeather = async () => {
       try {
@@ -17,8 +17,8 @@ const FloatingChatButton = ({ onClick, isChatOpen }) => {
               const response = await api.get('/weather', {
                 params: { lat: latitude, lon: longitude },
               });
-
               setCurrentTemp(response.data.main.temp);
+              setCurrentLocation(response.data.name)
             } catch (error) {
               // Handle API-specific errors here
               toast.error('Failed to fetch weather data.');
@@ -58,7 +58,7 @@ const FloatingChatButton = ({ onClick, isChatOpen }) => {
               <p className="m-0">Ask Flora</p>
               {/* Display current temperature if available */}
               {currentTemp !== null && (
-                <p className="text-xs m-0">{Math.floor(currentTemp)}°C</p>
+                  <p className="text-xs m-0">{currentLocation}, {Math.floor(currentTemp)}°C</p>
               )}
             </div>
             <img src={floraIcon} alt="flora" height={35} className="ml-1" />
