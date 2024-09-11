@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../services/api'; 
+import api from '../../services/api';
 
 // Async thunk for fetching gardens
 export const fetchGardens = createAsyncThunk(
@@ -31,7 +31,7 @@ export const updateGarden = createAsyncThunk(
   async ({ id, formData }, { rejectWithValue }) => {
     try {
       console.log(formData.get('name'));
-      const response = await api.put(`/garden/${id}`, formData);
+      const response = await api.post(`/garden/${id}`, formData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
