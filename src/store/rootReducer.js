@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux';
 import authReducer from '../features/auth/authSlice';
+import commentReducer from '../features/community/commentsSlice';
 import friendsReducer from '../features/community/friendsSlice';
 import postsReducer from '../features/community/postsSlice'; // Import the posts slice
+import gardenReducer from '../features/garden/gardensSlice';
+import plantReducer from '../features/plant/plantsSlice';
+import timelinesReducer from '../features/plant/timelinesSlice';
+import tutorialsReducer from '../features/tutorials/tutorialsSlice';
 import uiReducer from '../features/ui/uiSlice';
 import usersReducer from '../features/users/usersSlice';
-import commentReducer from '../features/community/commentsSlice';
-import plantReducer from '../features/plant/plantsSlice';
-import gardenReducer from '../features/garden/gardensSlice';
-import timelinesReducer from '../features/plant/timelinesSlice'
 const rootReducer = combineReducers({
   auth: authReducer,
   posts: postsReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   plants: plantReducer,
   gardens: gardenReducer,
   timelines: timelinesReducer,
+  tutorials: tutorialsReducer,
 });
 
 export default rootReducer;

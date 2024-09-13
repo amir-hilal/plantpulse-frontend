@@ -105,14 +105,7 @@ function App() {
                     </Guard>
                   }
                 />
-                <Route
-                  path={routes.tutorials}
-                  element={
-                    <Guard authRequired={false} redirectPath={routes.home}>
-                      <Tutorials />
-                    </Guard>
-                  }
-                />
+                <Route path={routes.tutorials} element={<Tutorials />} />
                 {/* <Route path="/home" element={<HomePage />} />
                   <Route path="/plant-details" element={<PlantDetailsPage />} />
                   <Route
