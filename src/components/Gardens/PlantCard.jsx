@@ -66,20 +66,20 @@ const PlantCard = ({ plant }) => {
           >
             {isHovered && (
               <button
-                className="border-round-lg text-secondary border-none surface-300 hover:surface-400 h-full text-xs cursor-pointer"
+                className="border-round-xl text-secondary border-none surface-300 hover:surface-400 h-full text-xs cursor-pointer"
                 onClick={handleOpenTimeline}
               >
                 See Timeline
               </button>
             )}
-            <div className=" border-round-lg text-secondary align-self-end border-none surface-300 px-2 flex align-items-center cursor-pointer">
+            <div className=" border-round-xl text-secondary align-self-end border-none surface-300 px-2 flex align-items-center cursor-pointer">
               <img src={wateringCan} alt="watering" className="mr-2" />
               <span className="text-secondary">T, 10AM</span>
             </div>
           </div>
           {isHovered && (
             <button
-              className="mt-2 w-3rem bg-error hover:bg-red-700 border-none text-white p-2 border-round-lg cursor-pointer"
+              className="mt-2 w-3rem bg-error hover:bg-red-700 border-none text-white p-2 border-round-xl cursor-pointer"
               onClick={handleDelete}
             >
               <FaTrash />
@@ -90,28 +90,29 @@ const PlantCard = ({ plant }) => {
         <div>
           {/* Plant Name and Details */}
           <div className="flex flex-column mt-5">
-            <div className="flex justify-content-between mb-2">
+            <div className="flex justify-content-between mb-3">
               <span
-                className={`px-2 py-1 border-round-sm ${getHealthStatusBackground(
+                className={`px-3 py-2 border-round-xl text-xs ${getHealthStatusBackground(
                   plant.health_status
                 )}`}
               >
                 {plant.health_status}
               </span>
-              <span className="px-2 py-1 border-round-sm bg-gray-200 text-black">
+              <span className="px-3 py-2 border-round-xl  text-xs bg-gray-200 text-black">
                 {plant.category}
               </span>
             </div>
 
-            <div className=" mb-2 flex justify-content-between align-items-start">
-              <h2 className="text-left text-lg font-bold m-0">{plant.name}</h2>{' '}
-              <span className="text-right text-sm w-6rem">
+            <div className=" mb-1 flex justify-content-between align-items-center">
+              <h2 className="text-left text-base font-bold m-0">{plant.name}</h2>{' '}
+              <span className="text-right text-xs w-auto">
                 Last Time Watered
               </span>
             </div>
-            <div className=" mb-2 flex justify-content-between align-items-start">
+            <div className=" mb-2 flex justify-content-between text-grey-blue align-items-start">
               <p className="text-left m-0">{plant.formatted_age}</p>{' '}
-              <span className="text-right text-sm w-6rem">
+              <span className="text-right text-xs w-6rem">
+                9 march
                 {plant.last_watered}
               </span>
             </div>

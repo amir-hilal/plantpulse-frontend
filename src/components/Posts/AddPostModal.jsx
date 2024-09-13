@@ -98,12 +98,12 @@ const AddPostModal = ({ isOpen, onClose }) => {
           <div className="flex flex-column mb-1">
             <div className="flex flex-column align-items-center">
               <label
-                htmlFor="file-upload"
+                htmlFor="post-file-upload"
                 className="text-center cursor-pointer border-dotted border-2 border-primary w-full"
                 style={{ padding: filePreview ? '1rem' : '7rem' }} // Conditional padding
               >
                 <input
-                  id="file-upload"
+                  id="post-file-upload"
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
@@ -117,7 +117,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
                     style={{ maxHeight: '200px', maxWidth: '100%' }} // Limit height and width
                   />
                 ) : (
-                  'Drag & drop files or Browse'
+                  'Drag & drop iamge or Browse'
                 )}
               </label>
               <small className="text-center mt-2">
