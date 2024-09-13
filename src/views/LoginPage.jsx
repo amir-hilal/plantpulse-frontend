@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
+import GoogleLoginButton from '../components/common/GoogleLoginButton';
 import { login } from '../features/auth/authSlice';
 import api from '../services/api';
 
@@ -109,6 +110,8 @@ const LoginPage = () => {
             </p>
           </div>
         </form>
+        <p>or</p>
+        <GoogleLoginButton />
       </div>
       <ToastContainer />
     </div>
