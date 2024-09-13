@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
-import TutorialCard from '../components/TutorialCard';
+import TutorialCard from '../components/common/TutorialCard';
 import {
   fetchTutorials,
   resetTutorials,

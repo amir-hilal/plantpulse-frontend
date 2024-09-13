@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../services/api';
-import { toast } from 'react-toastify';
+import api from '../../services/api';
 
 // Async thunk to fetch tutorials with pagination
 export const fetchTutorials = createAsyncThunk(
@@ -14,7 +13,6 @@ export const fetchTutorials = createAsyncThunk(
     }
   }
 );
-
 
 const tutorialsSlice = createSlice({
   name: 'tutorials',
@@ -67,9 +65,7 @@ const tutorialsSlice = createSlice({
       .addCase(fetchTutorials.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
-
-
+      });
   },
 });
 

@@ -16,6 +16,7 @@ import MyGardensPage from './views/MyGardensPage';
 import PostDetailsPage from './views/PostDetailsPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
+import Tutorials from './views/TutorialsPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -104,9 +105,16 @@ function App() {
                     </Guard>
                   }
                 />
+                <Route
+                  path={routes.tutorials}
+                  element={
+                    <Guard authRequired={false} redirectPath={routes.home}>
+                      <Tutorials />
+                    </Guard>
+                  }
+                />
                 {/* <Route path="/home" element={<HomePage />} />
                   <Route path="/plant-details" element={<PlantDetailsPage />} />
-                  <Route path="/tutorials" element={<TutorialsPage />} />
                   <Route
                     path="/tutorial-details"
                     element={<TutorialDetailsPage />}
