@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { FaEllipsisH } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const TutorialCard = ({ tutorial }) => {
   const [showPopover, setShowPopover] = useState(false);
-
+  const navigate = useNavigate();
   const togglePopover = () => {
     setShowPopover(!showPopover);
   };
@@ -32,16 +33,15 @@ const TutorialCard = ({ tutorial }) => {
     return duration;
   };
 
-
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(tutorial.video_url);
-    toast.success('YouTube video link copied to clipboard!');
+    const fullUrl = `${window.location.origin}/tutorials/${tutorial.id}`;
+    navigator.clipboard.writeText(fullUrl);
+    toast.success('Link copied to clipboard!');
     setShowPopover(false);
   };
 
-
   const handleViewPost = () => {
-    window.open(tutorial.video_url, '_blank');
+    navigate(`/tutorials/${tutorial.id}`);
   };
 
   return (

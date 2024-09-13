@@ -19,7 +19,9 @@ export const searchTutorials = createAsyncThunk(
   'tutorials/searchTutorials',
   async ({ query, page = 1 }, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/tutorials/search?q=${query}&page=${page}`);
+      const response = await api.get(
+        `/tutorials/search?q=${query}&page=${page}`
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -58,7 +60,9 @@ const tutorialsSlice = createSlice({
 
         const newTutorials = tutorials.filter(
           (newTutorial) =>
-            !state.tutorials.some((existingTutorial) => existingTutorial.id === newTutorial.id)
+            !state.tutorials.some(
+              (existingTutorial) => existingTutorial.id === newTutorial.id
+            )
         );
 
         if (!newTutorials.length) {
