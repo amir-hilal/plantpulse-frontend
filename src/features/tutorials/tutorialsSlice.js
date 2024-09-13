@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../services/api';
+import { toast } from 'react-toastify';
 
 // Fetch tutorials with pagination
 export const fetchTutorials = createAsyncThunk(
@@ -63,6 +64,8 @@ export const addComment = createAsyncThunk(
       const response = await api.post(`/tutorials/${tutorialId}/comments`, {
         comment_text,
       });
+      toast.success('Comment added successfully!');
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

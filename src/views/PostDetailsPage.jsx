@@ -74,9 +74,7 @@ const PostDetailsPage = () => {
     try {
       await dispatch(addComment({ postId: id, comment_text: newComment }));
 
-      // Clear the input after successful comment
       setNewComment('');
-      toast.success('Comment added successfully');
     } catch (error) {
       toast.error('Failed to add comment');
     } finally {

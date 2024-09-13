@@ -24,6 +24,7 @@ export const addComment = createAsyncThunk(
       const response = await api.post(`/posts/details/${postId}/comments`, {
         comment_text,
       });
+      toast.success('Comment added successfully!')
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
