@@ -16,6 +16,7 @@ import MyGardensPage from './views/MyGardensPage';
 import PostDetailsPage from './views/PostDetailsPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
+import TutorialDetailPage from './views/TutorialDetailsPage';
 import Tutorials from './views/TutorialsPage';
 
 function App() {
@@ -106,6 +107,14 @@ function App() {
                   }
                 />
                 <Route path={routes.tutorials} element={<Tutorials />} />
+                <Route
+                  path={routes.tutorial_details(':id')}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <TutorialDetailPage />
+                    </Guard>
+                  }
+                />
                 {/* <Route path="/home" element={<HomePage />} />
                   <Route path="/plant-details" element={<PlantDetailsPage />} />
                   <Route

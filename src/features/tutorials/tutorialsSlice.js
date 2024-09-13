@@ -90,6 +90,20 @@ const tutorialsSlice = createSlice({
   extraReducers: (builder) => {
     // Tutorials fetching
     builder
+      .addCase(fetchTutorialById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchTutorialById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tutorials = [...state.tutorials, action.payload]; // Add the tutorial to the state
+      })
+      .addCase(fetchTutorialById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    builder
       .addCase(fetchTutorials.pending, (state) => {
         state.loading = true;
         state.error = null;

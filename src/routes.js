@@ -4,6 +4,7 @@ const routes = {
   register: '/register',
   myGardens: '/my-gardens',
   tutorials: '/tutorials',
+  tutorial_details: (id = 'id') => `/tutorials/${id}`,
   calendar: '/calendar',
   community_posts: '/community/posts',
   post_details: (id = 'id') => `/community/posts/${id}`,
