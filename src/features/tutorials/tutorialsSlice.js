@@ -55,6 +55,34 @@ export const fetchComments = createAsyncThunk(
   }
 );
 
+// Add a new comment for a tutorial
+export const addComment = createAsyncThunk(
+  'tutorials/addComment',
+  async ({ tutorialId, comment_text }, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/tutorials/${tutorialId}/comments`, {
+        comment_text,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Delete a comment
+export const deleteComment = createAsyncThunk(
+  'tutorials/deleteComment',
+  async (commentId, { rejectWithValue }) => {
+    try {
+      await api.delete(`/tutorials/comments/${commentId}`);
+      return { id: commentId }; // Return commentId to remove from state
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const tutorialsSlice = createSlice({
   name: 'tutorials',
   initialState: {
@@ -180,6 +208,30 @@ const tutorialsSlice = createSlice({
       })
       .addCase(fetchComments.rejected, (state, action) => {
         state.loadingComments = false;
+        state.commentsError = action.payload;
+      });
+    // Add comment
+    builder
+      .addCase(addComment.pending, (state) => {
+        state.loadingComments = true;
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        state.loadingComments = false;
+        state.comments = [action.payload, ...state.comments]; // Add the new comment at the top
+      })
+      .addCase(addComment.rejected, (state, action) => {
+        state.loadingComments = false;
+        state.commentsError = action.payload;
+      });
+
+    // Delete comment
+    builder
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.comments = state.comments.filter(
+          (comment) => comment.id !== action.payload.id
+        );
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
         state.commentsError = action.payload;
       });
   },

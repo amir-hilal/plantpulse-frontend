@@ -152,7 +152,7 @@ const PostDetailsPage = () => {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Leave a comment..."
-              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+              className="text-xs md:text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
               disabled={commentSubmitting}
               rows={1}
               style={{ resize: 'none', overflow: 'hidden' }}
@@ -164,7 +164,7 @@ const PostDetailsPage = () => {
 
             <button
               type="submit"
-              className="bg-primary text-white border-round w-2rem p-1 px-2 pb-2 absolute right-0 m-1 hover:bg-primary-reverse border-none"
+              className="bg-primary text-white border-round-lg w-2rem p-1 px-2 pb-2 absolute right-0 my-1 mx-2 hover:bg-primary-reverse border-none"
               disabled={commentSubmitting}
             >
               {commentSubmitting ? (
