@@ -29,6 +29,32 @@ export const searchTutorials = createAsyncThunk(
   }
 );
 
+export const fetchTutorialById = createAsyncThunk(
+  'tutorials/fetchTutorialById',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/tutorials/${id}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchComments = createAsyncThunk(
+  'tutorials/fetchComments',
+  async ({ tutorialId, page = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(
+        `/tutorials/${tutorialId}/comments?page=${page}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const tutorialsSlice = createSlice({
   name: 'tutorials',
   initialState: {
@@ -38,6 +64,14 @@ const tutorialsSlice = createSlice({
     hasMore: true,
     currentPage: 1,
     noMoreTutorials: false,
+
+    // Comments states
+    comments: [],
+    loadingComments: false,
+    commentsError: null,
+    commentsHasMore: true,
+    commentsCurrentPage: 1,
+    noMoreComments: false,
   },
   reducers: {
     resetTutorials(state) {
@@ -46,10 +80,16 @@ const tutorialsSlice = createSlice({
       state.hasMore = true;
       state.noMoreTutorials = false;
     },
+    resetComments(state) {
+      state.comments = [];
+      state.commentsCurrentPage = 1;
+      state.commentsHasMore = true;
+      state.noMoreComments = false;
+    },
   },
   extraReducers: (builder) => {
+    // Tutorials fetching
     builder
-      // Fetch tutorials
       .addCase(fetchTutorials.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -77,8 +117,10 @@ const tutorialsSlice = createSlice({
       .addCase(fetchTutorials.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
-      // Search tutorials
+      });
+
+    // Search tutorials
+    builder
       .addCase(searchTutorials.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -95,9 +137,40 @@ const tutorialsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
+
+    // Comments fetching
+    builder
+      .addCase(fetchComments.pending, (state) => {
+        state.loadingComments = true;
+        state.commentsError = null;
+      })
+      .addCase(fetchComments.fulfilled, (state, action) => {
+        state.loadingComments = false;
+        const { data: comments, next_page_url: nextPageUrl } = action.payload;
+
+        const newComments = comments.filter(
+          (newComment) =>
+            !state.comments.some(
+              (existingComment) => existingComment.id === newComment.id
+            )
+        );
+
+        if (!newComments.length) {
+          state.noMoreComments = true;
+        } else {
+          state.comments = [...state.comments, ...newComments];
+        }
+
+        state.commentsHasMore = !!nextPageUrl;
+        state.commentsCurrentPage += 1;
+      })
+      .addCase(fetchComments.rejected, (state, action) => {
+        state.loadingComments = false;
+        state.commentsError = action.payload;
+      });
   },
 });
 
-export const { resetTutorials } = tutorialsSlice.actions;
+export const { resetTutorials, resetComments } = tutorialsSlice.actions;
 
 export default tutorialsSlice.reducer;
