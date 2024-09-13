@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import GoogleAuthFailure from './components/common/GoogleAuthFailure';
+import GoogleAuthSuccess from './components/common/GoogleAuthSuccess';
 import Guard from './components/common/Guard';
 import { initializeUser } from './features/auth/authSlice';
 import MainLayout from './MainLayout';
@@ -44,6 +46,8 @@ function App() {
             </Guard>
           }
         />
+        <Route path="/auth/google/callback" element={<GoogleAuthSuccess />} />
+        <Route path="/auth/google/failure" element={<GoogleAuthFailure />} />
         <Route
           path={routes.register}
           element={

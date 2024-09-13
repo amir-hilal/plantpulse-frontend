@@ -22,7 +22,8 @@ const PostCard = ({ post }) => {
     navigate(`/profile/${post.author_username}`);
   };
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`/community/posts/${post.id}`);
+    const fullUrl = `${window.location.origin}/community/posts/${post.id}`;
+    navigator.clipboard.writeText(fullUrl);
     toast.success('Post link copied to clipboard!');
     setShowPopover(false);
   };
@@ -32,8 +33,8 @@ const PostCard = ({ post }) => {
   };
 
   const handleDelete = (post) => {
-    setItemToDelete(post); // Set the item you want to delete
-    setIsModalOpen(true); // Open the modal
+    setItemToDelete(post);
+    setIsModalOpen(true); 
   };
 
   const handleConfirmDelete = () => {
@@ -77,14 +78,14 @@ const PostCard = ({ post }) => {
           {showPopover && (
             <div className="absolute right-0 mt-2 surface-100  border-round shadow-2 p-2  w-8rem">
               <button
-                className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-light-grey text-left"
+                className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-primary-reverse text-left"
                 onClick={handleCopyLink}
               >
                 Copy Post Link
               </button>
               {isOwner && (
                 <button
-                  className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-light-grey"
+                  className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-primary-reverse"
                   onClick={() => handleDelete(post)}
                 >
                   Delete
