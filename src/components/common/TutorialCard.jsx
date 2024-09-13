@@ -22,30 +22,30 @@ const TutorialCard = ({ tutorial }) => {
 
   const formatDuration = (duration) => {
     if (!duration) {
-      return 'N/A'; // Return 'N/A' or any default value if duration is undefined or invalid
+      return 'N/A';
     }
 
     const parts = duration.split(':');
     if (parts.length === 3 && parts[0] === '00') {
-      return `${parts[1]}:${parts[2]}`; // Only minutes and seconds
+      return `${parts[1]}:${parts[2]}`;
     }
-    return duration; // Keep original format if hours are present
+    return duration;
   };
 
-  // Handles copying the YouTube link
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(tutorial.video_url);
     toast.success('YouTube video link copied to clipboard!');
     setShowPopover(false);
   };
 
-  // Redirects to the YouTube video
+
   const handleViewPost = () => {
     window.open(tutorial.video_url, '_blank');
   };
 
   return (
-    <div className="col-12 md:col-4 lg:col-3 md:m-3 cursor-pointer">
+    <div className="col-12 md:col-4 lg:col-3 md:m-3 lg:m-0 cursor-pointer">
       <div>
         {/* Display YouTube Thumbnail */}
         <div className="relative mb-1">

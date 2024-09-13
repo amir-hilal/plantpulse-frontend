@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { debounce } from 'lodash';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import TutorialCard from '../components/common/TutorialCard';
 import {
   fetchTutorials,
   resetTutorials,
+  searchTutorials,  // Create a searchTutorials action in your Redux slice
 } from '../features/tutorials/tutorialsSlice';
 
 const Tutorials = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   const dispatch = useDispatch();
   const { tutorials, loading, currentPage, hasMore } = useSelector(
     (state) => state.tutorials
@@ -16,42 +19,72 @@ const Tutorials = () => {
   const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
-    dispatch(resetTutorials());
-    dispatch(fetchTutorials(1));
-  }, [dispatch]);
+    if (!searchQuery) {
+      // If no search query, reset tutorials and fetch all
+      dispatch(resetTutorials());
+      dispatch(fetchTutorials(1));
+    } else {
+      // Debounced search to avoid excessive requests
+      const debouncedSearch = debounce(() => {
+        dispatch(resetTutorials());
+        dispatch(searchTutorials({ query: searchQuery, page: 1 }));
+      }, 1000);
+      debouncedSearch();
+
+      return () => {
+        debouncedSearch.cancel();
+      };
+    }
+  }, [dispatch, searchQuery]);
 
   // Handle infinite scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop !==
-          document.documentElement.offsetHeight ||
-        fetching
-      ) {
-        return;
-      }
-      if (hasMore && !loading) {
-        setFetching(true);
-        dispatch(fetchTutorials(currentPage)).then(() => {
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight ||
+      fetching
+    ) {
+      return;
+    }
+    if (hasMore && !loading) {
+      setFetching(true);
+      const nextPage = currentPage + 1;
+      if (!searchQuery) {
+        dispatch(fetchTutorials(nextPage)).then(() => {
+          setFetching(false);
+        });
+      } else {
+        dispatch(searchTutorials({ query: searchQuery, page: nextPage })).then(() => {
           setFetching(false);
         });
       }
-    };
+    }
+  }, [dispatch, fetching, currentPage, hasMore, loading, searchQuery]);
 
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [fetching, currentPage, hasMore, loading, dispatch]);
+  }, [handleScroll]);
 
   // Determine if the content is empty
   const isEmpty = !loading && tutorials.length === 0;
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
-    <div className="flex flex-column justify-content-center mt-4">
-      <div className="w-full">
+    <div className="flex flex-column justify-content-center mt-3 px-8">
+      <div className="w-full flex justify-content-between mb-3 align-items-center">
         <h2 className="text-center m-0">Gardening Tutorials</h2>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search for tutorials"
+          className="py-2 pr-8 pl-6 surface-100 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+        />
       </div>
 
       {isEmpty && (
@@ -60,7 +93,7 @@ const Tutorials = () => {
         </div>
       )}
 
-      <div className="lg:gap-1 grid grid-nogutter p-0 justify-content-between p-3">
+      <div className="lg:gap-1 grid grid-nogutter p-0 justify-content-between">
         {tutorials.map((tutorial) => (
           <TutorialCard key={tutorial.id} tutorial={tutorial} />
         ))}

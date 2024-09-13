@@ -1,13 +1,26 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
-// Async thunk to fetch tutorials with pagination
+// Fetch tutorials with pagination
 export const fetchTutorials = createAsyncThunk(
   'tutorials/fetchTutorials',
   async ({ page = 1 }, { rejectWithValue }) => {
     try {
       const response = await api.get(`/tutorials?page=${page}`);
-      return response.data; // Assuming the API returns data in a pagination format
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Search tutorials by query
+export const searchTutorials = createAsyncThunk(
+  'tutorials/searchTutorials',
+  async ({ query, page = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/tutorials/search?q=${query}&page=${page}`);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -23,7 +36,6 @@ const tutorialsSlice = createSlice({
     hasMore: true,
     currentPage: 1,
     noMoreTutorials: false,
-    nextPageUrl: null,
   },
   reducers: {
     resetTutorials(state) {
@@ -31,11 +43,11 @@ const tutorialsSlice = createSlice({
       state.currentPage = 1;
       state.hasMore = true;
       state.noMoreTutorials = false;
-      state.nextPageUrl = null;
     },
   },
   extraReducers: (builder) => {
     builder
+      // Fetch tutorials
       .addCase(fetchTutorials.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -44,12 +56,9 @@ const tutorialsSlice = createSlice({
         state.loading = false;
         const { data: tutorials, next_page_url: nextPageUrl } = action.payload;
 
-        // Filter out duplicate tutorials
         const newTutorials = tutorials.filter(
           (newTutorial) =>
-            !state.tutorials.some(
-              (existingTutorial) => existingTutorial.id === newTutorial.id
-            )
+            !state.tutorials.some((existingTutorial) => existingTutorial.id === newTutorial.id)
         );
 
         if (!newTutorials.length) {
@@ -59,10 +68,26 @@ const tutorialsSlice = createSlice({
         }
 
         state.hasMore = !!nextPageUrl;
-        state.nextPageUrl = nextPageUrl;
         state.currentPage += 1;
       })
       .addCase(fetchTutorials.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Search tutorials
+      .addCase(searchTutorials.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchTutorials.fulfilled, (state, action) => {
+        state.loading = false;
+        const { data: tutorials, next_page_url: nextPageUrl } = action.payload;
+
+        state.tutorials = tutorials;
+        state.hasMore = !!nextPageUrl;
+        state.currentPage += 1;
+      })
+      .addCase(searchTutorials.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
