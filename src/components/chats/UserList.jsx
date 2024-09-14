@@ -7,18 +7,22 @@ const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
 
   return (
     <div>
-      <h3 style={styles.header}>Chats</h3>
+      <h3 className="m-0" style={styles.header}>
+        Chats
+      </h3>
       {/* Search bar */}
-      <input
-        type="text"
-        placeholder="Search for friends..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={styles.searchInput}
-      />
+
+      <div className="px-2">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search for friends..."
+          className="py-2 pl-6 w-full surface-100 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+        />
+      </div>
 
       <ul style={styles.list}>
-        <h4 style={styles.sectionHeader}>Chatted Friends</h4>
         {chattedFriends.length > 0 ? (
           chattedFriends.map((user) => (
             <li
@@ -28,39 +32,53 @@ const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
             >
               <div style={styles.userAvatar}>
                 <img
-                  src={user.profile_photo_url || 'https://via.placeholder.com/50'}
+                  src={
+                    user.profile_photo_url || 'https://via.placeholder.com/50'
+                  }
                   alt={user.first_name}
                   style={styles.avatar}
                 />
               </div>
               <div>
-                <h4 style={styles.userName}>{user.first_name} {user.last_name}</h4>
+                <h4 style={styles.userName}>
+                  {user.first_name} {user.last_name}
+                </h4>
                 <p style={styles.lastMessage}>Last message here...</p>
               </div>
               <span style={styles.time}>10 min</span>
             </li>
           ))
         ) : (
-          <p>No chatted friends found.</p>
+          <p className="px-2">No chatted friends found.</p>
         )}
 
-        <h4 style={styles.sectionHeader}>Other Friends</h4>
+        <h4
+          className="px-2 mb-0 mt-4 text-light-grey text-xs"
+          style={styles.sectionHeader}
+        >
+          Other Friends...
+        </h4>
         {notChattedFriends.length > 0 ? (
           notChattedFriends.map((user) => (
             <li
               key={user.id}
               style={styles.listItem}
               onClick={() => onUserSelect(user)}
+              className="justify-content-between"
             >
               <div style={styles.userAvatar}>
                 <img
-                  src={user.profile_photo_url || 'https://via.placeholder.com/50'}
+                  src={
+                    user.profile_photo_url || 'https://via.placeholder.com/50'
+                  }
                   alt={user.first_name}
                   style={styles.avatar}
                 />
               </div>
               <div>
-                <h4 style={styles.userName}>{user.first_name} {user.last_name}</h4>
+                <h4 style={styles.userName}>
+                  {user.first_name} {user.last_name}
+                </h4>
                 <p style={styles.lastMessage}>Start a new chat...</p>
               </div>
               <span style={styles.time}>No chat history</span>
@@ -77,28 +95,17 @@ const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
 const styles = {
   header: {
     padding: '10px',
-    backgroundColor: '#f4f4f4',
+    backgroundColor: '#ffff',
     textAlign: 'center',
-    borderBottom: '1px solid #ccc',
   },
-  searchInput: {
-    padding: '8px',
-    width: '100%',
-    boxSizing: 'border-box',
-    border: '1px solid #ccc',
-    marginBottom: '10px',
-  },
+
   list: {
     listStyleType: 'none',
     padding: 0,
   },
   sectionHeader: {
-    padding: '10px',
-    backgroundColor: '#eaeaea',
-    textAlign: 'left',
     fontSize: '14px',
-    fontWeight: 'bold',
-    color: '#555',
+    fontWeight: 'normal',
   },
   listItem: {
     display: 'flex',
@@ -118,15 +125,19 @@ const styles = {
   userName: {
     margin: 0,
     fontWeight: 'bold',
+    fontSize: '14px',
   },
   lastMessage: {
     margin: 0,
     color: '#888',
+    fontSize: '8px',
   },
   time: {
     marginLeft: 'auto',
-    fontSize: '12px',
+    fontSize: '8px',
     color: '#aaa',
+    width: 'auto',
+    textAlign: 'right',
   },
 };
 

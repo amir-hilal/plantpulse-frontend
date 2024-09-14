@@ -22,7 +22,7 @@ const ChatsPage = () => {
 
     // Fetch conversations to determine which friends have been chatted with
     api
-      .get('/chats/conversations')
+      .get('/chats/users/conversations')
       .then((response) => {
         const conversations = response.data;
 
@@ -97,7 +97,6 @@ const styles = {
   },
   userList: {
     width: '25%',
-    borderRight: '1px solid #ccc',
   },
   chatWindow: {
     width: '75%',
