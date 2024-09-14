@@ -8,8 +8,10 @@ import Guard from './components/common/Guard';
 import { initializeUser } from './features/auth/authSlice';
 import MainLayout from './MainLayout';
 import routes from './routes';
+import ChatsPage from './views/ChatsPage';
 import CommunityPostsPage from './views/CommunityPostsPage';
 import ConnectPage from './views/ConnectPage';
+import HomePage from './views/HomePage';
 import LandingPage from './views/LandingPage';
 import LoginPage from './views/LoginPage';
 import MyGardensPage from './views/MyGardensPage';
@@ -18,7 +20,6 @@ import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
 import TutorialDetailPage from './views/TutorialDetailsPage';
 import Tutorials from './views/TutorialsPage';
-import ChatsPage from './views/ChatsPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -65,7 +66,7 @@ function App() {
           element={
             <MainLayout>
               <Routes>
-                <Route path={routes.home} element={<LandingPage />} />
+                <Route path={routes.landing} element={<LandingPage />} />
                 <Route
                   path={routes.profile(':username')}
                   element={
@@ -126,9 +127,17 @@ function App() {
                   }
                 />
 
-                {/* <Route path="/home" element={<HomePage />} />
-                  <Route path="/plant-details" element={<PlantDetailsPage />} />
+                <Route
+                  path={routes.home}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <HomePage />
+                    </Guard>
+                  }
+                />
+                {/*
 
+<Route path="/plant-details" element={<PlantDetailsPage />} />
                   <Route path="/calendar" element={<CalendarPage />} />
                   */}
               </Routes>

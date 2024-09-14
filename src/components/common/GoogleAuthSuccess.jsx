@@ -26,7 +26,7 @@ const GoogleAuthSuccess = () => {
 
           // Notify success and navigate to a protected route
           toast.success('Logged in successfully!');
-          navigate('/dashboard');
+          navigate('/home');
         })
         .catch((error) => {
           console.error('Google login failed:', error);
