@@ -7,7 +7,7 @@ const ChatWindow = ({ selectedUser }) => {
   const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
-    // Fetch chat messages between the current user and the selected user
+    setMessages([]);
     api
       .get(`/chats/${selectedUser.id}`) // Use the custom API instance
       .then((response) => {
@@ -33,10 +33,10 @@ const ChatWindow = ({ selectedUser }) => {
       .post('/chats/send', {
         receiver_id: selectedUser.id,
         message: newMessage,
-      }) // Use the custom API instance to send the message
+      })
       .then((response) => {
         setMessages((prevMessages) => [...prevMessages, response.data]);
-        setNewMessage(''); // Clear the input field
+        setNewMessage(''); 
       })
       .catch((error) => {
         console.error('Error sending message:', error); // Error handling is managed by the interceptor
