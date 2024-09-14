@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'; // Assuming you are using dayjs for formatting timestamps
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import Loading from 'react-loading';
 import api from '../../services/api';
@@ -9,17 +9,52 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1); // To handle pagination
+  const [hasMore, setHasMore] = useState(true); // Track if more messages are available
+  const messagesEndRef = useRef(null); // To auto-scroll to the bottom
+  const containerRef = useRef(null); // To detect scroll position for loading more
 
+  // Function to scroll to the bottom
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Load older messages when scrolling up
+  const loadMoreMessages = () => {
+    if (hasMore && !loading) {
+      setLoading(true);
+      api
+        .get(`/chats/${selectedUser.id}?page=${page + 1}`)
+        .then((response) => {
+          const newMessages = response.data.data.reverse(); // Reverse the messages to show newest at the bottom
+          setMessages((prevMessages) => [...newMessages, ...prevMessages]);
+          setHasMore(response.data.next_page_url !== null); // Check if more pages are available
+          setPage((prevPage) => prevPage + 1);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching more messages:', error);
+          setLoading(false);
+        });
+    }
+  };
+
+  // Fetch initial messages and set up real-time messaging
   useEffect(() => {
-    // Refetch messages only when selected user changes
     setMessages([]);
     setLoading(true);
+    setPage(1); // Reset pagination to the first page
+    setHasMore(true); // Reset pagination state
 
+    // Fetch the initial messages
     api
-      .get(`/chats/${selectedUser.id}`)
+      .get(`/chats/${selectedUser.id}?page=1`)
       .then((response) => {
-        setMessages(response.data);
+        setMessages(response.data.data.reverse()); // Reverse the messages to show newest at the bottom
+        setHasMore(response.data.next_page_url !== null); // Check if more pages are available
         setLoading(false);
+        // Scroll to the bottom after the messages have been loaded
+        setTimeout(scrollToBottom, 100); // Delay to ensure all messages are rendered before scrolling
       })
       .catch((error) => {
         console.error('Error fetching messages:', error);
@@ -29,16 +64,18 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     // Set up echo listener for real-time messages
     const channel = echo.private(`chat.${selectedUser.id}`);
     channel.listen('MessageSent', (e) => {
+      console.log('Message received:', e);
       setMessages((prevMessages) => [...prevMessages, e.message]);
       updateLastMessage(selectedUser.id, e.message); // Update last message on receive
+      scrollToBottom(); // Scroll to the bottom on new message
     });
 
-    // Cleanup on component unmount or user change
     return () => {
-      echo.leave(`chat.${selectedUser.id}`);
+      echo.leave(`chat.${selectedUser.id}`); // Clean up channel listener on user change
     };
   }, [selectedUser, updateLastMessage]);
 
+  // Send a new message
   const handleSendMessage = () => {
     api
       .post('/chats/send', {
@@ -46,19 +83,20 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
         message: newMessage,
       })
       .then((response) => {
-        // Append the new message to the current messages without refetching
-        setMessages((prevMessages) => [...prevMessages, response.data]);
+        setMessages((prevMessages) => [...prevMessages, response.data]); // Append new message
         updateLastMessage(selectedUser.id, response.data); // Update last message on send
         setNewMessage(''); // Clear input field
         onFirstChat(selectedUser.id); // Notify the first chat
+        scrollToBottom(); // Scroll to the bottom after sending a message
       })
       .catch((error) => {
         console.error('Error sending message:', error);
       });
   };
 
+  // Format timestamps for messages
   const formatTimestamp = (timestamp) => {
-    return dayjs(timestamp).format('h:mm A'); // You can adjust the format to your needs
+    return dayjs(timestamp).format('h:mm A');
   };
 
   return (
@@ -75,36 +113,45 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
           {selectedUser.first_name} {selectedUser.last_name}
         </h3>
       </div>
-      <div style={styles.messageContainer}>
-        {loading ? (
-          <div className="flex justify-content-center w-full h-30rem align-items-center">
-            <Loading type="spin" color="#019444" height={50} width={50} />
+      <div
+        style={styles.messageContainer}
+        ref={containerRef}
+        onScroll={(e) => {
+          if (e.target.scrollTop === 0 && hasMore && !loading) {
+            loadMoreMessages(); // Load older messages when scrolling to the top
+          }
+        }}
+      >
+        {loading && page > 1 && (
+          <div style={styles.loadingIndicator}>
+            <Loading type="spin" color="#019444" height={30} width={30} />
           </div>
-        ) : (
-          messages.map((msg, index) => (
+        )}
+        {/* Display messages */}
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            style={
+              msg.sender_id === selectedUser.id
+                ? styles.receivedMessageContainer
+                : styles.sentMessageContainer
+            }
+          >
             <div
-              key={index}
               style={
                 msg.sender_id === selectedUser.id
-                  ? styles.receivedMessageContainer
-                  : styles.sentMessageContainer
+                  ? styles.receivedMessage
+                  : styles.sentMessage
               }
             >
-              <div
-                style={
-                  msg.sender_id === selectedUser.id
-                    ? styles.receivedMessage
-                    : styles.sentMessage
-                }
-              >
-                {msg.message}
-                <div style={styles.timestamp}>
-                  {formatTimestamp(msg.created_at)}
-                </div>
+              {msg.message}
+              <div style={styles.timestamp}>
+                {formatTimestamp(msg.created_at)}
               </div>
             </div>
-          ))
-        )}
+          </div>
+        ))}
+        <div ref={messagesEndRef} /> {/* Scroll to this div */}
       </div>
       <div style={styles.inputContainer}>
         <input
@@ -164,6 +211,12 @@ const styles = {
     flex: 1,
     padding: '10px',
     overflowY: 'scroll',
+    position: 'relative',
+  },
+  loadingIndicator: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '10px', // Space between spinner and messages
   },
   receivedMessageContainer: {
     display: 'flex',

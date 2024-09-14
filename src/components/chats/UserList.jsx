@@ -1,9 +1,9 @@
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime'; // Import relative time plugin
 import React from 'react';
 import { RiMessage3Line } from 'react-icons/ri';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';  // Import relative time plugin
 
-dayjs.extend(relativeTime);  // Use relative time for time difference calculations
+dayjs.extend(relativeTime); // Use relative time for time difference calculations
 
 const UserList = ({
   users,
@@ -46,7 +46,7 @@ const UserList = ({
         <h3 className="m-0" style={styles.header}>
           Chats
         </h3>
-        <RiMessage3Line className='m-3 text-xl ' />
+        <RiMessage3Line className="m-3 text-xl " />
       </div>
 
       {/* Search bar */}
@@ -72,6 +72,7 @@ const UserList = ({
                   user.id === selectedUserId ? '#E8F5E9' : '#fff',
               }}
               onClick={() => onUserSelect(user)}
+              className="justify-content-between"
             >
               <div style={styles.userAvatar}>
                 <img
@@ -82,19 +83,26 @@ const UserList = ({
                   style={styles.avatar}
                 />
               </div>
-              <div>
-                <h4 style={styles.userName}>
-                  {user.first_name} {user.last_name}
-                </h4>
-                <p style={styles.lastMessage}> {getLastMessage(user)}</p>
+              <div className='flex justify-content-between w-full'>
+                <div>
+                  <h4 style={styles.userName}>
+                    {user.first_name} {user.last_name}
+                  </h4>
+                  <p style={styles.lastMessage}> {getLastMessage(user)}</p>
+                </div>
+                <div className="flex flex-column align-items-end">
+                  {/* Notification badge */}
+                  {unreadMessages[user.id] > 0 && (
+                    <span
+                      style={styles.notificationBadge}
+                      className="flex align-items-center justify-content-center"
+                    >
+                      {unreadMessages[user.id]}
+                    </span>
+                  )}
+                  <span style={styles.time}>{getTimeDifference(user)}</span>
+                </div>
               </div>
-              {/* Notification badge */}
-              {unreadMessages[user.id] > 0 && (
-                <span style={styles.notificationBadge}>
-                  {unreadMessages[user.id]}
-                </span>
-              )}
-              <span style={styles.time}>{getTimeDifference(user)}</span>
             </li>
           ))
         ) : (
@@ -200,8 +208,11 @@ const styles = {
     color: '#fff',
     borderRadius: '50%',
     padding: '5px 10px',
+    width: '20px',
+    height: '20px',
     fontSize: '12px',
-    marginLeft: '10px',
+    marginRight: '10px',
+    marginBottom: '5px',
   },
 };
 
