@@ -1,5 +1,9 @@
 import React from 'react';
 import { RiMessage3Line } from 'react-icons/ri';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';  // Import relative time plugin
+
+dayjs.extend(relativeTime);  // Use relative time for time difference calculations
 
 const UserList = ({
   users,
@@ -27,6 +31,15 @@ const UserList = ({
       ? `You: ${message.message}`
       : message.message;
   };
+
+  const getTimeDifference = (user) => {
+    const message = lastMessages[user.id];
+    if (!message || !message.created_at) return '';
+
+    // Calculate the time difference using dayjs and display it as relative time
+    return dayjs(message.created_at).fromNow();
+  };
+
   return (
     <div className="bg-silver h-full">
       <div className="flex justify-content-between align-items-center">
@@ -81,7 +94,7 @@ const UserList = ({
                   {unreadMessages[user.id]}
                 </span>
               )}
-              <span style={styles.time}>10 min</span>
+              <span style={styles.time}>{getTimeDifference(user)}</span>
             </li>
           ))
         ) : (
@@ -153,7 +166,7 @@ const styles = {
   listItem: {
     display: 'flex',
     cursor: 'pointer',
-    padding:'10px',
+    padding: '10px',
     borderBottom: '1px solid #eee',
     alignItems: 'center',
   },
