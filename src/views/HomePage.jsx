@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { FaUsers } from 'react-icons/fa';
+import Loading from 'react-loading'; // You can use any loading spinner component
 import { useDispatch, useSelector } from 'react-redux';
 import MyGardensCarousel from '../components/common/MyGardensCarousel';
 import PostCard from '../components/posts/PostCard';
@@ -9,21 +11,36 @@ import {
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts.posts);
-  const loading = useSelector((state) => state.posts.loading);
-  const error = useSelector((state) => state.posts.error);
   const user = useSelector((state) => state.auth.userProfile);
-
+  const authLoading = useSelector((state) => state.auth.loading);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const posts = useSelector((state) => state.posts.posts);
+  const postsLoading = useSelector((state) => state.posts.loading);
+  const postsError = useSelector((state) => state.posts.error);
+
   useEffect(() => {
-    // Clear previous posts when the component is mounted
-    dispatch(clearPosts());
+    if (user) {
+      dispatch(clearPosts());
+      dispatch(fetchFriendsPosts({ page: 1 }));
+    }
+  }, [dispatch, user]);
 
-    // Fetch the first page of posts
-    dispatch(fetchFriendsPosts({ page: 1 }));
-  }, [dispatch]);
+  // Show loading spinner while user data is being fetched
+  if (authLoading) {
+    return (
+      <div className="flex justify-content-center align-items-center h-full">
+        <Loading type="spin" color="#019444" height={50} width={50} />
+      </div>
+    );
+  }
 
+  // If user is not logged in or user data not available, show a message
+  if (!user) {
+    return <p>Please log in to view the home page.</p>;
+  }
+
+  // Render the homepage after user data is fetched and user is logged in
   return (
     <div className="home-page">
       <section className="flex px-8 my-3 align-items-center justify-content-between">
@@ -44,21 +61,26 @@ const HomePage = () => {
         </div>
       </section>
       {/* Gardens Carousel */}
-      <section className=" px-6 py-2  mx-8 h-20rem bg-tint-5 border-round-xl mb-5">
+      <section className=" px-6 py-2  mx-8 h-21rem bg-tint-5 border-round-xl mb-5">
         <MyGardensCarousel />
       </section>
 
       {/* Community Posts */}
-      <section className=" px-6 py-2  mx-8 h-20rem bg-tint-5 border-round-xl mb-5">
+      <section className=" px-6 py-2  mx-8 h-20rem border-round-xl mb-5">
         <div className="h-full">
-          <h2>Community Posts</h2>
-
-          {loading && <p>Loading posts...</p>}
-          {error && <p>Error loading posts: {error}</p>}
-
-          {!loading && posts.length > 0
+          <div className="flex align-items-center mb-5">
+            <FaUsers className=" w-2rem  text-grey" />{' '}
+            <h4 className="m-0 ml-2 text-md text-grey">Community</h4>
+          </div>
+          {postsLoading && (
+            <div className="flex justify-content-center align-items-center h-full">
+              <Loading type="spin" color="#019444" height={50} width={50} />
+            </div>
+          )}
+          {postsError && <p>Error loading posts: {postsError}</p>}
+          {!postsLoading && posts.length > 0
             ? posts.map((post) => <PostCard key={post.id} post={post} />)
-            : !loading && <p>No posts available</p>}
+            : !postsLoading && <p>No posts available</p>}
         </div>
       </section>
     </div>

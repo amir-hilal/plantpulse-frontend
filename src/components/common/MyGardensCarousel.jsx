@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import { IoIosArrowForward } from 'react-icons/io';
+import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchGardens } from '../../features/garden/gardensSlice';
+
 const MyGardensCarousel = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,13 +15,18 @@ const MyGardensCarousel = () => {
     dispatch(fetchGardens());
   }, [dispatch]);
 
-  if (loading) return <p>Loading gardens...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-content-center align-items-center h-full">
+        <Loading type="spin" color="#019444" height={50} width={50} />
+      </div>
+    );
   if (error) return <p>Error loading gardens: {error}</p>;
 
   const styles = {
     img: {
       borderRadius: '12px',
-    }
+    },
   };
 
   return (
@@ -45,9 +52,29 @@ const MyGardensCarousel = () => {
         onClick={() => navigate(`/my-gardens`)}
       >
         <div
-          style={styles.carouselItems}
-          className="flex w-full overflow-scroll"
+          style={{
+            ...styles.carouselItems,
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#263238 #F0F0F0', // Adjust colors as needed
+          }}
+          className="flex w-full overflow-x-scroll"
         >
+          <style jsx>{`
+            div::-webkit-scrollbar {
+              height: 8px; /* Adjust the scrollbar height */
+            }
+            div::-webkit-scrollbar-thumb {
+              background-color: #263238; /* Color of the scrollbar thumb */
+              border-radius: 10px; /* Rounded corners for the thumb */
+            }
+            div::-webkit-scrollbar-track {
+              background-color: #263238; /* Color of the track */
+              border-radius: 10px; /* Rounded corners for the track */
+            }
+            div::-webkit-scrollbar-button {
+              display: none; /* Hide the arrows */
+            }
+          `}</style>
           {gardens.map((garden) => (
             <div key={garden.id} style={styles.card} className="mr-4">
               <img
