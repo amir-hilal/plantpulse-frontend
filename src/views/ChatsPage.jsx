@@ -15,6 +15,7 @@ const ChatsPage = () => {
   const user = useSelector((state) => state.auth.userProfile);
   const userLoading = useSelector((state) => state.auth.loading);
   const [lastMessages, setLastMessages] = useState({});
+  const [loading, setLoading] = useState(true); // Track loading state
 
   useEffect(() => {
     if (user && user.username) {
@@ -22,11 +23,11 @@ const ChatsPage = () => {
     }
 
     if (user) {
+      setLoading(true); // Start loading
       api
         .get('/chats/users/conversations')
         .then((response) => {
           const conversations = response.data;
-
 
           const chattedFriendsMap = {};
           const lastMessagesMap = {};
@@ -49,10 +50,11 @@ const ChatsPage = () => {
           // Update the chattedFriends array and lastMessages state
           setChattedFriends(Object.keys(chattedFriendsMap));
           setLastMessages(lastMessagesMap);
-
+          setLoading(false); // Stop loading
         })
         .catch((error) => {
           console.error('Error fetching conversations:', error);
+          setLoading(false); // Stop loading on error
         });
     }
   }, [dispatch, user]);
@@ -70,17 +72,20 @@ const ChatsPage = () => {
       ...friend,
       hasChatted: chattedFriends.includes(friend.id),
     }));
+
   const handleFirstChat = (userId) => {
     if (!chattedFriends.includes(userId)) {
       setChattedFriends((prev) => [...prev, userId]);
     }
   };
+
   // Sorting the friends based on chatted status
   const sortedFriends = filteredFriends.sort((a, b) => {
     return a.hasChatted === b.hasChatted ? 0 : a.hasChatted ? -1 : 1;
   });
 
-  if (userLoading) {
+  // Show loading spinner while users are being fetched
+  if (userLoading || loading) {
     return (
       <div style={styles.loadingContainer}>
         <Loading type="spin" color="#019444" height={50} width={50} />
