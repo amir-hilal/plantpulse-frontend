@@ -57,7 +57,7 @@ const LoginPage = () => {
         className="logo mb-6 cursor-pointer"
         onClick={() => navigate('/')}
       />
-      <div className=" flex flex-column align-items-center bg-tint-5 border-round-3xl w-9 md:w-6 lg:w-4 p-4">
+      <div className=" flex flex-column align-items-center bg-tint-5 border-round-3xl w-9 md:w-6 xl:w-4 p-4">
         <div className="flex flex-column align-items-center w-10">
           <h2 className="text-center text-secondary">Log in to PlantPulse</h2>
         </div>
