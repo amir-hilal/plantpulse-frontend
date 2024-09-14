@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import toast
 
-const apiEndpoint = 'http://127.0.0.1:8000/api';
+const apiEndpoint = process.env.REACT_APP_API_URL;
 
 const api = axios.create({
-  baseURL: apiEndpoint
+  baseURL: apiEndpoint,
 });
 
 // Request interceptor
