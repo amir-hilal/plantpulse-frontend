@@ -85,7 +85,7 @@ const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
             </li>
           ))
         ) : (
-          <p>No other friends found.</p>
+          <p className="px-2 mb-0 mt-4 text-light-grey text-xs">No other friends found.</p>
         )}
       </ul>
     </div>

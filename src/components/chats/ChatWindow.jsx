@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../../services/api'; // Import the custom API instance
 import echo from '../../services/echo';
 
-const ChatWindow = ({ selectedUser }) => {
+const ChatWindow = ({ selectedUser, onFirstChat }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
@@ -36,10 +36,12 @@ const ChatWindow = ({ selectedUser }) => {
       })
       .then((response) => {
         setMessages((prevMessages) => [...prevMessages, response.data]);
-        setNewMessage(''); 
+        setNewMessage('');
+        // Call the callback to notify the first chat
+        onFirstChat(selectedUser.id);
       })
       .catch((error) => {
-        console.error('Error sending message:', error); // Error handling is managed by the interceptor
+        console.error('Error sending message:', error);
       });
   };
 

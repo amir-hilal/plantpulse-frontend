@@ -42,7 +42,7 @@ const ChatsPage = () => {
   }, [dispatch, user]);
 
   const handleUserSelect = (user) => {
-    setSelectedUser(user); // Set the selected user when clicked
+    setSelectedUser(user);
   };
 
   // Filter friends based on the search term and determine if they have been chatted with
@@ -54,7 +54,11 @@ const ChatsPage = () => {
       ...friend,
       hasChatted: chattedFriends.includes(friend.id),
     }));
-
+  const handleFirstChat = (userId) => {
+    if (!chattedFriends.includes(userId)) {
+      setChattedFriends((prev) => [...prev, userId]);
+    }
+  };
   // Sorting the friends based on chatted status
   const sortedFriends = filteredFriends.sort((a, b) => {
     return a.hasChatted === b.hasChatted ? 0 : a.hasChatted ? -1 : 1;
@@ -80,7 +84,10 @@ const ChatsPage = () => {
       </div>
       <div style={styles.chatWindow}>
         {selectedUser ? (
-          <ChatWindow selectedUser={selectedUser} />
+          <ChatWindow
+            selectedUser={selectedUser}
+            onFirstChat={handleFirstChat}
+          />
         ) : (
           <div style={styles.placeholder}>Select a user to start chatting</div>
         )}
