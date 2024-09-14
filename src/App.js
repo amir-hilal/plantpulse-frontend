@@ -18,6 +18,7 @@ import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
 import TutorialDetailPage from './views/TutorialDetailsPage';
 import Tutorials from './views/TutorialsPage';
+import ChatsPage from './views/ChatsPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -115,16 +116,21 @@ function App() {
                     </Guard>
                   }
                 />
+
+                <Route
+                  path={routes.community_chats}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <ChatsPage />
+                    </Guard>
+                  }
+                />
+
                 {/* <Route path="/home" element={<HomePage />} />
                   <Route path="/plant-details" element={<PlantDetailsPage />} />
-                  <Route
-                    path="/tutorial-details"
-                    element={<TutorialDetailsPage />}
-                  />
-                  <Route path="/community" element={<CommunityPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
+
                   <Route path="/calendar" element={<CalendarPage />} />
-                  <Route path="/chats" element={<ChatsPage />} /> */}
+                  */}
               </Routes>
             </MainLayout>
           }
