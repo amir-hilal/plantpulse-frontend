@@ -179,7 +179,7 @@ const ChatModal = ({ isOpen, onClose }) => {
       className={`chat-modal surface-50 ${isOpen ? 'slide-in' : 'slide-out'}`}
     >
       <div className="h-10rem">
-        <div className="bg-secondary text-tint-5 py-2 px-4 flex justify-content-between align-items-center sm:border-round-top-xl">
+        <div className="bg-secondary-light text-tint-5 py-2 px-4 flex justify-content-between align-items-center sm:border-round-top-xl">
           <span>
             <h4 className="m-0">Hi I'm Flora 👋,</h4>
             <p className="m-0">How can I Help you?</p>

@@ -44,7 +44,7 @@ const FloatingChatButton = ({ onClick, isChatOpen }) => {
       } `}
     >
       <button
-        className="h-3rem  bg-secondary border-round-3xl border-none text-white p-3 rounded-full shadow-lg transition duration-300 flex align-items-center cursor-pointer"
+        className="h-3rem  bg-secondary-light border-round-3xl border-none text-white p-3 rounded-full shadow-lg transition duration-300 flex align-items-center cursor-pointer"
         onClick={onClick}
       >
         {/* Conditional rendering based on whether chat is open */}
