@@ -1,4 +1,5 @@
 import React from 'react';
+import { RiMessage3Line } from 'react-icons/ri';
 
 const UserList = ({
   users,
@@ -27,10 +28,14 @@ const UserList = ({
       : message.message;
   };
   return (
-    <div>
-      <h3 className="m-0" style={styles.header}>
-        Chats
-      </h3>
+    <div className="bg-silver h-full">
+      <div className="flex justify-content-between align-items-center">
+        <h3 className="m-0" style={styles.header}>
+          Chats
+        </h3>
+        <RiMessage3Line className='m-3 text-xl ' />
+      </div>
+
       {/* Search bar */}
 
       <div className="px-2">
@@ -51,7 +56,7 @@ const UserList = ({
               style={{
                 ...styles.listItem,
                 backgroundColor:
-                  user.id === selectedUserId ? '#C8E6C9' : '#fff',
+                  user.id === selectedUserId ? '#E8F5E9' : '#fff',
               }}
               onClick={() => onUserSelect(user)}
             >
@@ -96,7 +101,7 @@ const UserList = ({
               style={{
                 ...styles.listItem,
                 backgroundColor:
-                  user.id === selectedUserId ? '#C8E6C9' : '#fff',
+                  user.id === selectedUserId ? '#E8F5E9' : '#fff',
               }}
               onClick={() => onUserSelect(user)}
               className="justify-content-between"
@@ -116,7 +121,7 @@ const UserList = ({
                 </h4>
                 <p style={styles.lastMessage}>Start a new chat...</p>
               </div>
-              <span style={styles.time}>No chat history</span>
+              <span></span>
             </li>
           ))
         ) : (
@@ -132,7 +137,7 @@ const UserList = ({
 const styles = {
   header: {
     padding: '10px',
-    backgroundColor: '#ffff',
+    backgroundColor: '#0000',
     textAlign: 'center',
   },
 
@@ -147,9 +152,8 @@ const styles = {
   },
   listItem: {
     display: 'flex',
-    padding: '10px',
-    borderRadius: '17px',
     cursor: 'pointer',
+    padding:'10px',
     borderBottom: '1px solid #eee',
     alignItems: 'center',
   },
