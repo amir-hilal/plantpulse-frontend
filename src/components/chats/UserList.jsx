@@ -39,7 +39,7 @@ const UserList = ({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search for friends..."
-          className="py-2 pl-6 w-full surface-100 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+          className="py-2 pl-6 w-full surface-100 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary"
         />
       </div>
 
@@ -48,7 +48,11 @@ const UserList = ({
           chattedFriendsList.map((user) => (
             <li
               key={user.id}
-              style={styles.listItem}
+              style={{
+                ...styles.listItem,
+                backgroundColor:
+                  user.id === selectedUserId ? '#C8E6C9' : '#fff',
+              }}
               onClick={() => onUserSelect(user)}
             >
               <div style={styles.userAvatar}>
@@ -89,7 +93,11 @@ const UserList = ({
           notChattedFriendsList.map((user) => (
             <li
               key={user.id}
-              style={styles.listItem}
+              style={{
+                ...styles.listItem,
+                backgroundColor:
+                  user.id === selectedUserId ? '#C8E6C9' : '#fff',
+              }}
               onClick={() => onUserSelect(user)}
               className="justify-content-between"
             >
@@ -131,6 +139,7 @@ const styles = {
   list: {
     listStyleType: 'none',
     padding: 0,
+    marginTop: '10px',
   },
   sectionHeader: {
     fontSize: '14px',
@@ -139,6 +148,7 @@ const styles = {
   listItem: {
     display: 'flex',
     padding: '10px',
+    borderRadius: '17px',
     cursor: 'pointer',
     borderBottom: '1px solid #eee',
     alignItems: 'center',
@@ -167,6 +177,14 @@ const styles = {
     color: '#aaa',
     width: 'auto',
     textAlign: 'right',
+  },
+  notificationBadge: {
+    backgroundColor: 'red',
+    color: '#fff',
+    borderRadius: '50%',
+    padding: '5px 10px',
+    fontSize: '12px',
+    marginLeft: '10px',
   },
 };
 
