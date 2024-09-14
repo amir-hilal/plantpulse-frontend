@@ -25,6 +25,7 @@ const MainLayout = ({ children }) => {
   // Condition to check if the current route is home or landing page
   const showFooter =
     location.pathname === routes.home || location.pathname === routes.landing;
+  const noChatButtonPages = location.pathname === routes.community_chats;
 
   return (
     <>
@@ -38,10 +39,13 @@ const MainLayout = ({ children }) => {
         <main>{children}</main>
         {showFooter && <Footer />}
       </div>
-      <FloatingChatButton
-        onClick={() => setChatOpen(!isChatOpen)}
-        isChatOpen={isChatOpen}
-      />{' '}
+      {!noChatButtonPages && (
+        <FloatingChatButton
+          onClick={() => setChatOpen(!isChatOpen)}
+          isChatOpen={isChatOpen}
+        />
+      )}
+
       <ChatModal isOpen={isChatOpen} onClose={() => setChatOpen(false)} />
     </>
   );
