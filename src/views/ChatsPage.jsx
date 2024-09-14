@@ -5,6 +5,7 @@ import ChatWindow from '../components/chats/ChatWindow';
 import UserList from '../components/chats/UserList';
 import { fetchFriendsByUsername } from '../features/community/friendsSlice';
 import api from '../services/api';
+import echo from '../services/echo';
 
 const ChatsPage = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const ChatsPage = () => {
   const userLoading = useSelector((state) => state.auth.loading);
   const [lastMessages, setLastMessages] = useState({});
   const [loading, setLoading] = useState(true); // Track loading state
+  const [unreadMessages, setUnreadMessages] = useState({});
 
   useEffect(() => {
     if (user && user.username) {
@@ -61,9 +63,35 @@ const ChatsPage = () => {
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
+    setUnreadMessages((prev) => ({ ...prev, [user.id]: 0 }));
   };
 
-  // Filter friends based on the search term and determine if they have been chatted with
+  const updateLastMessage = (userId, message) => {
+    setLastMessages((prev) => ({
+      ...prev,
+      [userId]: message,
+    }));
+  };
+
+  useEffect(() => {
+    if (user && user.id) {
+      const channel = echo.private(`chat.${user.id}`);
+
+      channel.listen('MessageSent', (e) => {
+        if (e.sender_id !== selectedUser?.id) {
+          setUnreadMessages((prev) => ({
+            ...prev,
+            [e.sender_id]: (prev[e.sender_id] || 0) + 1,
+          }));
+        }
+      });
+
+      return () => {
+        echo.leave(`chat.${user.id}`);
+      };
+    }
+  }, [selectedUser, user]);
+
   const filteredFriends = friends
     .filter((friend) =>
       friend.first_name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -104,6 +132,8 @@ const ChatsPage = () => {
           lastMessages={lastMessages}
           currentUserId={user?.id}
           chattedFriends={chattedFriends}
+          selectedUserId={selectedUser?.id}
+          unreadMessages={unreadMessages}
         />
       </div>
       <div style={styles.chatWindow}>
@@ -111,6 +141,7 @@ const ChatsPage = () => {
           <ChatWindow
             selectedUser={selectedUser}
             onFirstChat={handleFirstChat}
+            updateLastMessage={updateLastMessage}
           />
         ) : (
           <div style={styles.placeholder}>Select a user to start chatting</div>

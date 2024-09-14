@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import api from '../../services/api'; // Import the custom API instance
+import Loading from 'react-loading';
+import api from '../../services/api';
 import echo from '../../services/echo';
 
-const ChatWindow = ({ selectedUser, onFirstChat }) => {
+const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setMessages([]);
+    setLoading(true); // Start loading
     api
-      .get(`/chats/${selectedUser.id}`) // Use the custom API instance
+      .get(`/chats/${selectedUser.id}`)
       .then((response) => {
         setMessages(response.data);
+        setLoading(false); // Stop loading after messages are fetched
       })
       .catch((error) => {
-        console.error('Error fetching messages:', error); // Error handling is managed by the interceptor
+        console.error('Error fetching messages:', error);
+        setLoading(false); // Stop loading on error
       });
 
-    // Set up real-time message listener
     const channel = echo.private(`chat.${selectedUser.id}`);
     channel.listen('MessageSent', (e) => {
       setMessages((prevMessages) => [...prevMessages, e.message]);
+      updateLastMessage(selectedUser.id, e.message); // Update last message on receive
     });
 
     return () => {
-      echo.leave(`chat.${selectedUser.id}`); // Leave the channel when the component is unmounted
+      echo.leave(`chat.${selectedUser.id}`);
     };
-  }, [selectedUser]);
+  }, [selectedUser, updateLastMessage]);
 
   const handleSendMessage = () => {
     api
@@ -36,6 +41,7 @@ const ChatWindow = ({ selectedUser, onFirstChat }) => {
       })
       .then((response) => {
         setMessages((prevMessages) => [...prevMessages, response.data]);
+        updateLastMessage(selectedUser.id, response.data); // Update last message on send
         setNewMessage('');
         // Call the callback to notify the first chat
         onFirstChat(selectedUser.id);
@@ -53,18 +59,24 @@ const ChatWindow = ({ selectedUser, onFirstChat }) => {
         </h3>
       </div>
       <div style={styles.messageContainer}>
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            style={
-              msg.sender_id === selectedUser.id
-                ? styles.receivedMessage
-                : styles.sentMessage
-            }
-          >
-            {msg.message}
+        {loading ? (
+          <div className="flex justify-content-center w-full h-30rem align-items-center">
+            <Loading type="spin" color="#019444" height={50} width={50} />
           </div>
-        ))}
+        ) : (
+          messages.map((msg, index) => (
+            <div
+              key={index}
+              style={
+                msg.sender_id === selectedUser.id
+                  ? styles.receivedMessage
+                  : styles.sentMessage
+              }
+            >
+              {msg.message}
+            </div>
+          ))
+        )}
       </div>
       <div style={styles.inputContainer}>
         <input

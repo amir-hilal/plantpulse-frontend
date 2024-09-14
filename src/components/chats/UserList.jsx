@@ -8,20 +8,20 @@ const UserList = ({
   lastMessages,
   currentUserId,
   chattedFriends,
+  selectedUserId,
+  unreadMessages,
 }) => {
-  // Sort friends based on whether they have been chatted with
-  const chattedFriendsList = users.filter(
-    (user) => chattedFriends.includes(String(user.id)) // convert user.id to string
+  const chattedFriendsList = users.filter((user) =>
+    chattedFriends.includes(String(user.id))
   );
   const notChattedFriendsList = users.filter(
-    (user) => !chattedFriends.includes(String(user.id)) // convert user.id to string
+    (user) => !chattedFriends.includes(String(user.id))
   );
 
   const getLastMessage = (user) => {
     const message = lastMessages[user.id];
     if (!message) return 'No message yet...';
 
-    // Check if the message was sent by the current user
     return message.sender_id === currentUserId
       ? `You: ${message.message}`
       : message.message;
@@ -66,6 +66,12 @@ const UserList = ({
                 </h4>
                 <p style={styles.lastMessage}> {getLastMessage(user)}</p>
               </div>
+              {/* Notification badge */}
+              {unreadMessages[user.id] > 0 && (
+                <span style={styles.notificationBadge}>
+                  {unreadMessages[user.id]}
+                </span>
+              )}
               <span style={styles.time}>10 min</span>
             </li>
           ))
