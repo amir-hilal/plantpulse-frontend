@@ -11,25 +11,29 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Refetch messages only when selected user changes
     setMessages([]);
-    setLoading(true); // Start loading
+    setLoading(true);
+
     api
       .get(`/chats/${selectedUser.id}`)
       .then((response) => {
         setMessages(response.data);
-        setLoading(false); // Stop loading after messages are fetched
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching messages:', error);
-        setLoading(false); // Stop loading on error
+        setLoading(false);
       });
 
+    // Set up echo listener for real-time messages
     const channel = echo.private(`chat.${selectedUser.id}`);
     channel.listen('MessageSent', (e) => {
       setMessages((prevMessages) => [...prevMessages, e.message]);
       updateLastMessage(selectedUser.id, e.message); // Update last message on receive
     });
 
+    // Cleanup on component unmount or user change
     return () => {
       echo.leave(`chat.${selectedUser.id}`);
     };
@@ -42,11 +46,11 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
         message: newMessage,
       })
       .then((response) => {
+        // Append the new message to the current messages without refetching
         setMessages((prevMessages) => [...prevMessages, response.data]);
         updateLastMessage(selectedUser.id, response.data); // Update last message on send
-        setNewMessage('');
-        // Call the callback to notify the first chat
-        onFirstChat(selectedUser.id);
+        setNewMessage(''); // Clear input field
+        onFirstChat(selectedUser.id); // Notify the first chat
       })
       .catch((error) => {
         console.error('Error sending message:', error);
@@ -110,7 +114,14 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
           placeholder="Type a message..."
           style={styles.input}
           className="appearance-none outline-none focus:border-primary"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
         />
+
         <button
           onClick={handleSendMessage}
           style={styles.sendButton}

@@ -8,7 +8,6 @@ import logo from '../assets/images/Logo_black.png';
 import GoogleLoginButton from '../components/common/GoogleLoginButton';
 import { login } from '../features/auth/authSlice';
 import api from '../services/api';
-
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -110,8 +109,12 @@ const LoginPage = () => {
             </p>
           </div>
         </form>
-        <p>or</p>
-        <GoogleLoginButton />
+        <div className="flex w-full align-items-center justify-content-center w-10">
+          <hr className="w-5" />
+          <p className="m-0">or</p>
+          <hr className="w-5" />
+        </div>
+        <GoogleLoginButton/>
       </div>
       <ToastContainer />
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import googleIcon from '../../assets/svg/Icons/googleIconColored.svg'
 
 const GoogleLoginButton = () => {
   const handleGoogleLogin = () => {
@@ -9,8 +10,9 @@ const GoogleLoginButton = () => {
   return (
     <button
       onClick={handleGoogleLogin}
-      className="bg-info border-round-lg border-none p-3 h-3rem mt-3 text-xs md:text-base w-full flex align-items-center justify-content-center cursor-pointer"
+      className="bg-white border-round-lg border-solid border-300 p-3 h-3rem mt-3 text-xs md:text-base w-10 flex align-items-center justify-content-center cursor-pointer"
     >
+      <img src={googleIcon} alt="google" width={42} className='pr-3'/>
       Continue with Google
     </button>
   );

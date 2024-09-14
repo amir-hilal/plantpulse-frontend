@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/images/Logo_black.png';
+import GoogleLoginButton from '../components/common/GoogleLoginButton';
 import { login } from '../features/auth/authSlice';
 import api from '../services/api';
 
@@ -65,7 +66,7 @@ const RegisterPage = () => {
       <img
         src={logo}
         alt="PlantPulse"
-        className="logo mb-6 cursor-pointer"
+        className="logo mb-3 cursor-pointer"
         onClick={() => navigate('/')}
       />
       <div className=" flex flex-column align-items-center bg-tint-5 border-round-3xl w-9 md:w-6 lg:w-4 p-4">
@@ -157,6 +158,12 @@ const RegisterPage = () => {
             </p>
           </div>
         </form>
+        <div className="flex w-full align-items-center justify-content-center w-10">
+          <hr className="w-5" />
+          <p className="m-0">or</p>
+          <hr className="w-5" />
+        </div>
+        <GoogleLoginButton />
       </div>
       <ToastContainer />
     </div>
