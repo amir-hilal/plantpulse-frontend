@@ -1,10 +1,31 @@
 import React from 'react';
 
-const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
+const UserList = ({
+  users,
+  onUserSelect,
+  searchTerm,
+  setSearchTerm,
+  lastMessages,
+  currentUserId,
+  chattedFriends,
+}) => {
   // Sort friends based on whether they have been chatted with
-  const chattedFriends = users.filter((user) => user.hasChatted);
-  const notChattedFriends = users.filter((user) => !user.hasChatted);
+  const chattedFriendsList = users.filter(
+    (user) => chattedFriends.includes(String(user.id)) // convert user.id to string
+  );
+  const notChattedFriendsList = users.filter(
+    (user) => !chattedFriends.includes(String(user.id)) // convert user.id to string
+  );
 
+  const getLastMessage = (user) => {
+    const message = lastMessages[user.id];
+    if (!message) return 'No message yet...';
+
+    // Check if the message was sent by the current user
+    return message.sender_id === currentUserId
+      ? `You: ${message.message}`
+      : message.message;
+  };
   return (
     <div>
       <h3 className="m-0" style={styles.header}>
@@ -23,8 +44,8 @@ const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
       </div>
 
       <ul style={styles.list}>
-        {chattedFriends.length > 0 ? (
-          chattedFriends.map((user) => (
+        {chattedFriendsList.length > 0 ? (
+          chattedFriendsList.map((user) => (
             <li
               key={user.id}
               style={styles.listItem}
@@ -43,7 +64,7 @@ const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
                 <h4 style={styles.userName}>
                   {user.first_name} {user.last_name}
                 </h4>
-                <p style={styles.lastMessage}>Last message here...</p>
+                <p style={styles.lastMessage}> {getLastMessage(user)}</p>
               </div>
               <span style={styles.time}>10 min</span>
             </li>
@@ -58,8 +79,8 @@ const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
         >
           Other Friends...
         </h4>
-        {notChattedFriends.length > 0 ? (
-          notChattedFriends.map((user) => (
+        {notChattedFriendsList.length > 0 ? (
+          notChattedFriendsList.map((user) => (
             <li
               key={user.id}
               style={styles.listItem}
@@ -85,7 +106,9 @@ const UserList = ({ users, onUserSelect, searchTerm, setSearchTerm }) => {
             </li>
           ))
         ) : (
-          <p className="px-2 mb-0 mt-4 text-light-grey text-xs">No other friends found.</p>
+          <p className="px-2 mb-0 mt-4 text-light-grey text-xs">
+            No other friends found.
+          </p>
         )}
       </ul>
     </div>

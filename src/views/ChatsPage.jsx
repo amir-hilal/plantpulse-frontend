@@ -4,41 +4,57 @@ import { useDispatch, useSelector } from 'react-redux';
 import ChatWindow from '../components/chats/ChatWindow';
 import UserList from '../components/chats/UserList';
 import { fetchFriendsByUsername } from '../features/community/friendsSlice';
-import api from '../services/api'; // Custom API instance
+import api from '../services/api';
 
 const ChatsPage = () => {
   const dispatch = useDispatch();
-  const friends = useSelector((state) => state.friends.friends); // Getting friends from the store
-  const [searchTerm, setSearchTerm] = useState(''); // Search term for filtering friends
-  const [selectedUser, setSelectedUser] = useState(null); // Stores the selected user
-  const [chattedFriends, setChattedFriends] = useState([]); // Store friends that have been chatted with
-  const user = useSelector((state) => state.auth.userProfile); // Current user profile
-  const userLoading = useSelector((state) => state.auth.loading); // Loading state for user profile
+  const friends = useSelector((state) => state.friends.friends);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [chattedFriends, setChattedFriends] = useState([]);
+  const user = useSelector((state) => state.auth.userProfile);
+  const userLoading = useSelector((state) => state.auth.loading);
+  const [lastMessages, setLastMessages] = useState({});
 
   useEffect(() => {
     if (user && user.username) {
       dispatch(fetchFriendsByUsername({ username: user.username }));
     }
 
-    // Fetch conversations to determine which friends have been chatted with
-    api
-      .get('/chats/users/conversations')
-      .then((response) => {
-        const conversations = response.data;
+    if (user) {
+      api
+        .get('/chats/users/conversations')
+        .then((response) => {
+          const conversations = response.data;
 
-        // Map the conversations to chatted friends IDs
-        const chattedIds = conversations.map((conversation) => {
-          return conversation.user_one_id === user.id
-            ? conversation.user_two_id
-            : conversation.user_one_id;
+
+          const chattedFriendsMap = {};
+          const lastMessagesMap = {};
+
+          conversations.forEach((conversation) => {
+            const friendId =
+              conversation.user_one_id === user.id
+                ? conversation.user_two_id
+                : conversation.user_one_id;
+
+            // Set the friend ID as chatted friend
+            chattedFriendsMap[friendId] = true;
+
+            // Add last message if available
+            if (conversation.last_message) {
+              lastMessagesMap[friendId] = conversation.last_message;
+            }
+          });
+
+          // Update the chattedFriends array and lastMessages state
+          setChattedFriends(Object.keys(chattedFriendsMap));
+          setLastMessages(lastMessagesMap);
+
+        })
+        .catch((error) => {
+          console.error('Error fetching conversations:', error);
         });
-
-        setChattedFriends(chattedIds);
-      })
-      .catch((error) => {
-        // Handle errors through the interceptor
-        console.error('Error fetching conversations:', error);
-      });
+    }
   }, [dispatch, user]);
 
   const handleUserSelect = (user) => {
@@ -80,6 +96,9 @@ const ChatsPage = () => {
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           onUserSelect={handleUserSelect}
+          lastMessages={lastMessages}
+          currentUserId={user?.id}
+          chattedFriends={chattedFriends}
         />
       </div>
       <div style={styles.chatWindow}>
