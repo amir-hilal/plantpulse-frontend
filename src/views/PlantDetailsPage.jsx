@@ -27,6 +27,7 @@ const PlantDetailsPage = () => {
     hasMore,
     page,
   } = useSelector((state) => state.timelines);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [postMessage, setPostMessage] = useState('');
   const [loadingPost, setLoadingPost] = useState(false);
@@ -53,21 +54,31 @@ const PlantDetailsPage = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
+  };
+
   useEffect(() => {
     // Scroll to bottom after the initial fetch or a new message
-    if (!timelineLoading && timelines.length) {
+    if (!timelineLoading && timelines.length && timelineRef.current) {
       timelineRef.current.scrollTop = timelineRef.current.scrollHeight;
     }
   }, [timelineLoading, timelines]);
-
   const handlePostMessage = async () => {
-    if (!postMessage) return;
+    if (!postMessage && !selectedImage) return;
     setLoadingPost(true);
+
+    const formData = new FormData();
+    formData.append('plant_id', id); // Append plant_id to FormData
+    formData.append('description', postMessage);
+    if (selectedImage) {
+      formData.append('image', selectedImage);
+    }
+
     try {
-      await dispatch(
-        addTimelineEvent({ plantId: id, message: postMessage })
-      ).unwrap();
+      await dispatch(addTimelineEvent({ plant_id: id, formData })).unwrap();
       setPostMessage('');
+      setSelectedImage(null);
       toast.success('Update added successfully');
     } catch (error) {
       toast.error('Failed to post update');
@@ -191,7 +202,7 @@ const PlantDetailsPage = () => {
             }
           }}
         />
-
+        <input type="file" onChange={handleImageChange} accept="image/*" />
         <button
           onClick={handlePostMessage}
           style={styles.sendButton}

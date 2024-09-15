@@ -16,16 +16,23 @@ export const fetchTimelines = createAsyncThunk(
     }
   }
 );
-
-// Add a new timeline event for the plant
 export const addTimelineEvent = createAsyncThunk(
   'timelines/addTimelineEvent',
-  async ({ plantId, message }, { rejectWithValue }) => {
+  async ({ plant_id, formData }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/plants/${plantId}/timelines`, {
-        message,
-      });
-      return response.data;
+      const response = await api.post(
+        `/plants/${plant_id}/timelines`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Important for handling FormData
+          },
+        }
+      );
+
+      // Include both the user message and the assistant's response
+      const { timeline, assistant_response } = response.data;
+      return { timeline, assistant_response };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -66,13 +73,21 @@ const timelinesSlice = createSlice({
       .addCase(addTimelineEvent.pending, (state) => {
         state.loading = true;
       })
+
       .addCase(addTimelineEvent.fulfilled, (state, action) => {
         state.loading = false;
-        state.timelines.push(action.payload); // Add new timeline event
-      })
-      .addCase(addTimelineEvent.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+
+        const timeline = action.payload?.timeline;
+        if (timeline && timeline.description) {
+          state.timelines.push(timeline); // Add the new timeline event
+        }
+
+        if (action.payload?.assistant_response) {
+          state.timelines.push({
+            description: action.payload.assistant_response,
+            isAssistantResponse: true, // Mark it as a response from GPT-4
+          });
+        }
       });
   },
 });
