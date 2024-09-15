@@ -8,19 +8,17 @@ const WateringSchedules = () => {
   const { schedules, loading, error } = useSelector((state) => state.watering);
 
   useEffect(() => {
-    // Only dispatch the fetch action if not loading and schedules are empty
-    if (!loading && schedules.length === 0) {
-      dispatch(fetchWateringSchedules());
-    }
-  }, [loading, dispatch, schedules.length]);
+    dispatch(fetchWateringSchedules());
+  }, [dispatch]);
 
   return (
     <div>
-      <h2>Watering Schedules</h2>
-
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      {!loading && !error && (
+      {!loading && !error && schedules.length === 0 && (
+        <p>No watering schedules available.</p>
+      )}
+      {!loading && !error && schedules.length > 0 && (
         <ul>
           {schedules.map((schedule) => (
             <li key={schedule.id}>

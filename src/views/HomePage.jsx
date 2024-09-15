@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
+import { IoTimeOutline } from 'react-icons/io5';
 import Loading from 'react-loading'; // You can use any loading spinner component
 import { useDispatch, useSelector } from 'react-redux';
 import MyGardensCarousel from '../components/common/MyGardensCarousel';
@@ -66,7 +67,11 @@ const HomePage = () => {
         <MyGardensCarousel />
       </section>
 
-      {/* Community Posts */}
+      <div className="flex align-items-center mb-3  px-2 md:px-4 lg:px-8">
+        <IoTimeOutline className=" w-2rem  text-grey" />{' '}
+        <h4 className="m-0 ml-2 text-md text-grey">Watering Schedules</h4>
+      </div>
+      {/* Watering Schedule */}
       <section className="  px-2 md:px-4 lg:px-8 py-2  mx-2 md:mx-4 lg:mx-8 h-21rem bg-tint-5 border-round-xl mb-5">
         <WateringSchedules />
       </section>
