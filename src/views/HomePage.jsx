@@ -69,7 +69,7 @@ const HomePage = () => {
 
       <div className="flex align-items-center mb-3  px-2 md:px-4 lg:px-8">
         <IoTimeOutline className=" w-2rem  text-grey" />{' '}
-        <h4 className="m-0 ml-2 text-md text-grey">Watering Schedules</h4>
+        <h4 className="m-0 ml-2 text-md text-grey">Today's Watering Schedule</h4>
       </div>
       {/* Watering Schedule */}
       <section className="  px-2 md:px-4 lg:px-4 py-4  mx-2 md:mx-4 lg:mx-8 h-21rem bg-tint-5 border-round-xl mb-5 overflow-x-auto">

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import watringIcon from '../../assets/svg/Icons/watering.svg';
 import {
-  fetchWateringSchedules,
+  fetchTodayWateringSchedules,
   toggleWateringStatus,
 } from '../../features/watering/wateringSlice';
 
@@ -14,7 +14,7 @@ const WateringSchedules = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchWateringSchedules());
+    dispatch(fetchTodayWateringSchedules());
   }, [dispatch]);
 
   const handleToggleStatus = (plantId, eventId) => {

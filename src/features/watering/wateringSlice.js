@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
 // Thunk to fetch watering schedules from the backend
-export const fetchWateringSchedules = createAsyncThunk(
+export const fetchTodayWateringSchedules = createAsyncThunk(
   'watering/fetchSchedules',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/users/watering-schedules`);
+      const response = await api.get(`/users/watering-schedules/today`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -40,14 +40,14 @@ const wateringSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchWateringSchedules.pending, (state) => {
+      .addCase(fetchTodayWateringSchedules.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchWateringSchedules.fulfilled, (state, action) => {
+      .addCase(fetchTodayWateringSchedules.fulfilled, (state, action) => {
         state.loading = false;
         state.schedules = action.payload;
       })
-      .addCase(fetchWateringSchedules.rejected, (state, action) => {
+      .addCase(fetchTodayWateringSchedules.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch schedules';
       })

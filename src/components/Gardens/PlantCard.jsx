@@ -74,7 +74,12 @@ const PlantCard = ({ plant }) => {
             )}
             <div className=" border-round-xl text-secondary align-self-end border-none surface-300 px-2 flex align-items-center cursor-pointer">
               <img src={wateringCan} alt="watering" className="mr-2" />
-              <span className="text-secondary">T, 10AM</span>
+              <span className="text-secondary">
+                {new Intl.DateTimeFormat('en-GB', {
+                  day: '2-digit',
+                  month: 'short',
+                }).format(new Date(plant.next_time_to_water))}
+              </span>
             </div>
           </div>
           {isHovered && (
@@ -104,7 +109,9 @@ const PlantCard = ({ plant }) => {
             </div>
 
             <div className=" mb-1 flex justify-content-between align-items-center">
-              <h2 className="text-left text-base font-bold m-0">{plant.name}</h2>{' '}
+              <h2 className="text-left text-base font-bold m-0">
+                {plant.name}
+              </h2>{' '}
               <span className="text-right text-xs w-auto">
                 Last Time Watered
               </span>
@@ -112,7 +119,7 @@ const PlantCard = ({ plant }) => {
             <div className=" mb-2 flex justify-content-between text-grey-blue align-items-start">
               <p className="text-left m-0">{plant.formatted_age}</p>{' '}
               <span className="text-right text-xs w-6rem">
-                9 march
+                {plant.last_watered ? plant.last_watered : 'none'}
                 {plant.last_watered}
               </span>
             </div>
