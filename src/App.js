@@ -20,6 +20,7 @@ import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
 import TutorialDetailPage from './views/TutorialDetailsPage';
 import Tutorials from './views/TutorialsPage';
+import PlantDetailsPage from './views/PlantDetailsPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -139,6 +140,15 @@ function App() {
                   element={
                     <Guard authRequired={true} redirectPath={routes.home}>
                       <HomePage />
+                    </Guard>
+                  }
+                />
+
+                <Route
+                  path={routes.PlantDetailsPage(':id')}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <PlantDetailsPage />
                     </Guard>
                   }
                 />
