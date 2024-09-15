@@ -47,9 +47,9 @@ const WateringSchedules = () => {
   return (
     <div className="h-full">
       {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
+      {error && <p className='m-0'>Error: {error}</p>}
       {!loading && !error && sortedSchedules.length === 0 && (
-        <p>No watering schedules available.</p>
+        <p className='m-0'>No watering schedules available.</p>
       )}
       {!loading && !error && sortedSchedules.length > 0 && (
         <ul className="flex p-0 m-0 h-full">

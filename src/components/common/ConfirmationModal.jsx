@@ -6,7 +6,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center"
+      className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center z-1001"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
     >
       <div className="relative bg-white border-round-xl p-6 w-11 sm:w-8 md:w-6 lg:w-4 shadow-4 overflow-hidden">

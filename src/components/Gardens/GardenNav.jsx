@@ -24,6 +24,9 @@ const GardenNav = ({
     setIsModalOpen(true); // Open the modal
   };
   const handleConfirmDelete = () => {
+    if (itemToDelete.id === selectedGardenId) {
+      onSelectGarden(null);
+    }
     dispatch(deleteGarden(itemToDelete.id));
 
     setIsModalOpen(false);

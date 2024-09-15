@@ -238,7 +238,7 @@ const AddPlantModal = ({ onClose, gardenId }) => {
                 type="number"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                className="p-2 border-1 w-9rem md:w-6rem lg:w-9rem border-solid surface-border border-round appearance-none outline-none focus:border-primary"
                 placeholder="Enter age"
                 required
               />
@@ -247,7 +247,8 @@ const AddPlantModal = ({ onClose, gardenId }) => {
                 onChange={handleAgeUnitChange}
                 options={ageOptions}
                 styles={customStyles}
-                className="ml-2"
+                className="ml-2 w-9rem md:w-6rem lg:w-9rem"
+
                 placeholder="Select age unit"
               />
             </div>
@@ -271,7 +272,7 @@ const AddPlantModal = ({ onClose, gardenId }) => {
                 onChange={handleHealthStatusChange}
                 options={healthStatusOptions}
                 styles={customStyles}
-                className="w-9rem"
+                className="w-9rem md:w-6rem lg:w-9rem"
                 placeholder="Select health status"
                 required
               />{' '}
@@ -279,7 +280,7 @@ const AddPlantModal = ({ onClose, gardenId }) => {
                 type="number"
                 value={height}
                 onChange={(e) => setHeight(e.target.value)}
-                className="p-2 ml-2 w-10rem border-1 border-solid surface-border border-round"
+                className="p-2 ml-2 w-9rem md:w-6rem lg:w-9rem border-1 border-solid surface-border border-round"
                 placeholder="Enter height in cm"
               />
             </div>
