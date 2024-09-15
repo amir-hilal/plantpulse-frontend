@@ -49,8 +49,13 @@ const timelinesSlice = createSlice({
       })
       .addCase(fetchTimelines.fulfilled, (state, action) => {
         state.loading = false;
-        // Append new timelines to the existing ones
-        state.timelines = [...state.timelines, ...action.payload.data];
+
+        const newTimelines = action.payload.data.filter(
+          (newTimeline) =>
+            !state.timelines.some((timeline) => timeline.id === newTimeline.id)
+        );
+
+        state.timelines = [...state.timelines, ...newTimelines]; // Append new timelines
         state.page += 1;
         state.hasMore = action.payload.current_page < action.payload.last_page;
       })

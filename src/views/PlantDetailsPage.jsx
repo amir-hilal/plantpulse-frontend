@@ -25,10 +25,12 @@ const PlantDetailsPage = () => {
     timelines,
     loading: timelineLoading,
     hasMore,
+    page,
   } = useSelector((state) => state.timelines);
 
   const [postMessage, setPostMessage] = useState('');
   const [loadingPost, setLoadingPost] = useState(false);
+  const [fetching, setFetching] = useState(false); // Track whether a fetch request is ongoing
   const timelineRef = useRef(null); // Ref for the timeline container
 
   useEffect(() => {
@@ -36,9 +38,18 @@ const PlantDetailsPage = () => {
     dispatch(fetchTimelines({ plantId: id, page: 1 })); // Fetch the first page of timelines
   }, [dispatch, id]);
 
-  const handleScroll = (e) => {
-    if (timelineRef.current.scrollTop === 0 && hasMore && !timelineLoading) {
-      dispatch(fetchTimelines({ plantId: id })); // Fetch more timelines when user scrolls to the top
+  const handleScroll = () => {
+    // Debounce the scroll event
+    if (
+      timelineRef.current.scrollTop === 0 &&
+      hasMore &&
+      !timelineLoading &&
+      !fetching
+    ) {
+      setFetching(true); // Prevent multiple simultaneous requests
+      dispatch(fetchTimelines({ plantId: id, page })).finally(() => {
+        setFetching(false); // Reset fetching state once the request completes
+      });
     }
   };
 
@@ -164,7 +175,7 @@ const PlantDetailsPage = () => {
       {/* Chat Input - Fixed at the bottom */}
       <div
         style={styles.inputContainer}
-        className="fixed flex bottom-0 left-0 w-full bg-white px-4 py-2 border-t"
+        className="fixed flex bottom-0 left-0 w-full bg-white px-8 py-2 border-t"
       >
         <input
           type="text"
@@ -200,62 +211,12 @@ const PlantDetailsPage = () => {
   );
 };
 
-
-
 const styles = {
-
-
   profilePic: {
     width: '50px',
     height: '50px',
     borderRadius: '50%',
     marginRight: '10px',
-  },
-
-  messageContainer: {
-    flex: 1,
-    padding: '10px',
-    overflowY: 'scroll',
-    position: 'relative',
-  },
-  loadingIndicator: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '10px', // Space between spinner and messages
-  },
-  receivedMessageContainer: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    marginBottom: '5px',
-  },
-  sentMessageContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginBottom: '10px',
-  },
-  receivedMessage: {
-    backgroundColor: '#237D31',
-    padding: '10px',
-    color: '#fff',
-    borderRadius: '15px 15px 15px 2px', 
-    margin: '5px 0',
-    maxWidth: '60%',
-    alignSelf: 'flex-start',
-  },
-  sentMessage: {
-    backgroundColor: '#f3fbfb',
-    color: '#263238',
-    padding: '10px',
-    borderRadius: '15px 15px 2px 15px',
-    margin: '5px 0',
-    maxWidth: '60%',
-    alignSelf: 'flex-end',
-  },
-  timestamp: {
-    fontSize: '10px',
-    color: '#999',
-    marginTop: '5px',
-    textAlign: 'right',
   },
   inputContainer: {
     display: 'flex',
@@ -277,4 +238,5 @@ const styles = {
     cursor: 'pointer',
   },
 };
+
 export default PlantDetailsPage;
