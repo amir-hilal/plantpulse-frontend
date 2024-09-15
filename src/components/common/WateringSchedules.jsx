@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import watringIcon from '../../assets/svg/Icons/watering.svg';
 import {
@@ -12,8 +12,6 @@ const WateringSchedules = () => {
   const { schedules, loading, error, markingDoneById } = useSelector(
     (state) => state.watering
   );
-
-  const [hoveredEventId, setHoveredEventId] = useState(null); // Track the hovered event ID
 
   useEffect(() => {
     dispatch(fetchWateringSchedules());
@@ -36,22 +34,30 @@ const WateringSchedules = () => {
     });
   };
 
+  // Sorting logic:
+  // - First sort by uncompleted (is_done === false) events on the left
+  // - Then within each group (completed or uncompleted), sort by nearest scheduled date
+  const sortedSchedules = schedules.slice().sort((a, b) => {
+    if (a.is_done !== b.is_done) {
+      return a.is_done - b.is_done; // Uncompleted events (false) come first
+    }
+    return new Date(a.scheduled_date) - new Date(b.scheduled_date); // Sort by scheduled date within each group
+  });
+
   return (
     <div className="h-full">
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      {!loading && !error && schedules.length === 0 && (
+      {!loading && !error && sortedSchedules.length === 0 && (
         <p>No watering schedules available.</p>
       )}
-      {!loading && !error && schedules.length > 0 && (
+      {!loading && !error && sortedSchedules.length > 0 && (
         <ul className="flex p-0 m-0 h-full">
-          {schedules.map((schedule) => (
+          {sortedSchedules.map((schedule) => (
             <li
               key={schedule.id}
               style={{ listStyleType: 'none' }}
               className="mr-4 h-full"
-              onMouseEnter={() => setHoveredEventId(schedule.id)} // Track hover state
-              onMouseLeave={() => setHoveredEventId(null)} // Reset hover state
             >
               <div
                 className="h-full flex flex-column align-items-center justify-content-between"
