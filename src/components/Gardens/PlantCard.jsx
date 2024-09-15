@@ -1,23 +1,16 @@
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa'; // Import the trash bin icon
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import wateringCan from '../../assets/svg/Icons/watering.svg';
 import { deletePlant } from '../../features/plant/plantsSlice'; // Action to handle plant deletion
-import {
-  fetchTimelines,
-  openTimelineModal,
-} from '../../features/plant/timelinesSlice';
 import ConfirmationModal from '../common/ConfirmationModal';
 
 const PlantCard = ({ plant }) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false); // To track hover state
   const [isModalOpen, setModalOpen] = useState(false); // To control modal visibility
-
-  const handleOpenTimeline = () => {
-    dispatch(openTimelineModal());
-    dispatch(fetchTimelines(plant.id));
-  };
+  const navigate = useNavigate();
 
   const handleDelete = () => {
     setModalOpen(true); // Show the modal when delete is clicked
@@ -67,7 +60,7 @@ const PlantCard = ({ plant }) => {
             {isHovered && (
               <button
                 className="border-round-xl text-secondary border-none surface-300 hover:surface-400 h-full text-xs cursor-pointer"
-                onClick={handleOpenTimeline}
+                onClick={() => navigate(`/my-gardens/plant/${plant.id}`)}
               >
                 See Timeline
               </button>

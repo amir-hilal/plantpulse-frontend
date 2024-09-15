@@ -13,6 +13,19 @@ export const fetchPlants = createAsyncThunk(
   }
 );
 
+// Fetch plant details
+export const fetchPlantDetails = createAsyncThunk(
+  'plants/fetchPlantDetails',
+  async (plantId, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/plants/${plantId}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const addNewPlant = createAsyncThunk(
   'plants/addNewPlant',
   async (formData, { rejectWithValue }) => {
@@ -46,6 +59,8 @@ const plantsSlice = createSlice({
   name: 'plants',
   initialState: {
     plants: [],
+    plant: {},
+    garden_name: '',
     loading: false,
     error: null,
   },
@@ -85,6 +100,18 @@ const plantsSlice = createSlice({
         );
       })
       .addCase(deletePlant.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchPlantDetails.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchPlantDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.plant = action.payload;
+        state.garden_name = action.payload.garden_name; // Assuming API returns plant details and garden name
+      })
+      .addCase(fetchPlantDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../services/api';
+import api from '../../services/api'; // Assuming you have an API service
 
 export const fetchTimelines = createAsyncThunk(
   'timelines/fetchTimelines',
@@ -13,24 +13,29 @@ export const fetchTimelines = createAsyncThunk(
   }
 );
 
+// Add a new timeline event for the plant
+export const addTimelineEvent = createAsyncThunk(
+  'timelines/addTimelineEvent',
+  async ({ plantId, message }, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/plants/${plantId}/timelines`, {
+        message,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const timelinesSlice = createSlice({
   name: 'timelines',
   initialState: {
     timelines: [],
-    modalOpen: false,
     loading: false,
     error: null,
   },
-  reducers: {
-    openTimelineModal: (state) => {
-      state.modalOpen = true;
-    },
-    closeTimelineModal: (state) => {
-      state.timelines = [];
-
-      state.modalOpen = false;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchTimelines.pending, (state) => {
@@ -43,9 +48,19 @@ const timelinesSlice = createSlice({
       .addCase(fetchTimelines.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(addTimelineEvent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addTimelineEvent.fulfilled, (state, action) => {
+        state.loading = false;
+        state.timelines.push(action.payload); // Add new timeline event
+      })
+      .addCase(addTimelineEvent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
-export const { openTimelineModal, closeTimelineModal } = timelinesSlice.actions;
 
 export default timelinesSlice.reducer;
