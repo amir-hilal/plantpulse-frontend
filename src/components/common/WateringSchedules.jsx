@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWateringSchedules } from './wateringSlice'; // Import the action
+import { fetchWateringSchedules } from '../../features/watering/wateringSlice';
 
-const WateringSchedules = ({ plantId }) => {
+const WateringSchedules = () => {
   const dispatch = useDispatch();
 
   const { schedules, loading, error } = useSelector((state) => state.watering);
 
   useEffect(() => {
-    // Fetch the watering schedules when the component mounts
+    // Only dispatch the fetch action if not loading and schedules are empty
     if (!loading && schedules.length === 0) {
-      dispatch(fetchWateringSchedules(plantId));
+      dispatch(fetchWateringSchedules());
     }
-  }, [loading, dispatch, plantId, schedules]);
+  }, [loading, dispatch, schedules.length]);
 
   return (
     <div>
@@ -24,7 +24,8 @@ const WateringSchedules = ({ plantId }) => {
         <ul>
           {schedules.map((schedule) => (
             <li key={schedule.id}>
-              Watering scheduled on: {new Date(schedule.scheduled_date).toLocaleDateString()}
+              Watering scheduled on:{' '}
+              {new Date(schedule.scheduled_date).toLocaleDateString()}
               {schedule.is_done ? ' (Completed)' : ' (Pending)'}
             </li>
           ))}

@@ -3,6 +3,7 @@ import { FaUsers } from 'react-icons/fa';
 import Loading from 'react-loading'; // You can use any loading spinner component
 import { useDispatch, useSelector } from 'react-redux';
 import MyGardensCarousel from '../components/common/MyGardensCarousel';
+import WateringSchedules from '../components/common/WateringSchedules';
 import PostCard from '../components/posts/PostCard';
 import {
   clearPosts,
@@ -63,6 +64,11 @@ const HomePage = () => {
       {/* Gardens Carousel */}
       <section className="  px-2 md:px-4 lg:px-8 py-2  mx-2 md:mx-4 lg:mx-8 h-21rem bg-tint-5 border-round-xl mb-5">
         <MyGardensCarousel />
+      </section>
+
+      {/* Community Posts */}
+      <section className="  px-2 md:px-4 lg:px-8 py-2  mx-2 md:mx-4 lg:mx-8 h-21rem bg-tint-5 border-round-xl mb-5">
+        <WateringSchedules />
       </section>
 
       {/* Community Posts */}

@@ -1,12 +1,12 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import api from '../../services/api';
 
 // Thunk to fetch watering schedules from the backend
 export const fetchWateringSchedules = createAsyncThunk(
   'watering/fetchSchedules',
   async (plantId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/plants/${plantId}/watering-events`);
+      const response = await api.get(`/users/watering-schedules`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
