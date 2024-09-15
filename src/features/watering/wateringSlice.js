@@ -14,9 +14,9 @@ export const fetchWateringSchedules = createAsyncThunk(
   }
 );
 
-// Thunk to mark watering event as done
-export const markWateringAsDone = createAsyncThunk(
-  'watering/markAsDone',
+// Thunk to toggle watering event completion status
+export const toggleWateringStatus = createAsyncThunk(
+  'watering/toggleStatus',
   async ({ plantId, eventId }, { rejectWithValue }) => {
     try {
       const response = await api.put(
@@ -51,11 +51,11 @@ const wateringSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Failed to fetch schedules';
       })
-      .addCase(markWateringAsDone.pending, (state, action) => {
+      .addCase(toggleWateringStatus.pending, (state, action) => {
         const { eventId } = action.meta.arg;
         state.markingDoneById[eventId] = true; // Set marking to true for this specific event
       })
-      .addCase(markWateringAsDone.fulfilled, (state, action) => {
+      .addCase(toggleWateringStatus.fulfilled, (state, action) => {
         const { eventId, updatedEvent } = action.payload;
         state.markingDoneById[eventId] = false; // Set marking to false after done
         // Update the specific event in the schedules
@@ -63,7 +63,7 @@ const wateringSlice = createSlice({
           schedule.id === eventId ? updatedEvent : schedule
         );
       })
-      .addCase(markWateringAsDone.rejected, (state, action) => {
+      .addCase(toggleWateringStatus.rejected, (state, action) => {
         const { eventId } = action.meta.arg;
         state.markingDoneById[eventId] = false; // Reset marking state on failure
         state.error = action.payload || 'Failed to mark as done';
