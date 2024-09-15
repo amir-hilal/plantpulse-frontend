@@ -1,15 +1,29 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import watringIcon from '../../assets/svg/Icons/watering.svg';
-import { fetchWateringSchedules } from '../../features/watering/wateringSlice';
+import {
+  fetchWateringSchedules,
+  markWateringAsDone,
+} from '../../features/watering/wateringSlice';
+
 const WateringSchedules = () => {
   const dispatch = useDispatch();
 
-  const { schedules, loading, error } = useSelector((state) => state.watering);
+  const { schedules, loading, error, markingDoneById } = useSelector(
+    (state) => state.watering
+  );
 
   useEffect(() => {
     dispatch(fetchWateringSchedules());
   }, [dispatch]);
+
+  const handleMarkAsDone = (plantId, eventId) => {
+    dispatch(markWateringAsDone({ plantId, eventId }));
+  };
+
+  const navigateToPlantDetails = (plantId) => {
+    // Logic to navigate to plant details
+  };
 
   return (
     <div className="h-full">
@@ -32,9 +46,10 @@ const WateringSchedules = () => {
                   border: '1px solid #ddd',
                   borderRadius: '8px',
                   padding: '20px',
-                  backgroundColor: '#F0F9F4',
+                  backgroundColor: schedule.is_done ? '#e0e0e0' : '#F0F9F4', // Lower opacity for completed schedules
                   width: '200px',
                   textAlign: 'center',
+                  opacity: schedule.is_done ? 0.6 : 1, // Reduce opacity when completed
                 }}
               >
                 <div className="flex justify-content-between w-full align-items-start">
@@ -61,20 +76,24 @@ const WateringSchedules = () => {
                 {/* Mark as done */}
                 {!schedule.is_done ? (
                   <button
-                    onClick={() => alert('done')}
+                    onClick={() =>
+                      handleMarkAsDone(schedule.plant_id, schedule.id)
+                    }
+                    disabled={markingDoneById[schedule.id]} // Disable button while loading for this specific event
                     className="text-primary text-sm bg-transparent border-none hover:text-grey py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
                   >
-                    Mark as done
+                    {markingDoneById[schedule.id]
+                      ? 'Marking...'
+                      : 'Mark as done'}
                   </button>
                 ) : (
-                  <div className="text-grey mb-2">Completed</div>
+                  <div className="text-grey">Completed</div>
                 )}
 
                 {/* See Plant Details button */}
                 <button
                   className=" text-sm bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-3  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
-
-                  // onClick={() => navigateToPlantDetails(schedule.id)} // Logic to go to plant details
+                  onClick={() => navigateToPlantDetails(schedule.plant_id)} // Logic to go to plant details
                 >
                   See Plant Details
                 </button>
