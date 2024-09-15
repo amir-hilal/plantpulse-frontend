@@ -17,6 +17,20 @@ const WateringSchedules = () => {
     dispatch(fetchWateringSchedules());
   }, [dispatch]);
 
+  // Sorting logic:
+  // 1. Uncompleted events come first
+  // 2. Sort by closest scheduled_date within each group
+  const sortedSchedules = schedules
+    .slice() // Make a shallow copy to avoid mutating the original array
+    .sort((a, b) => {
+      // Sort by completed status first (uncompleted first)
+      if (a.is_done !== b.is_done) {
+        return a.is_done - b.is_done; // uncompleted (false = 0) comes before completed (true = 1)
+      }
+      // If both are completed or uncompleted, sort by the scheduled date (closest first)
+      return new Date(a.scheduled_date) - new Date(b.scheduled_date);
+    });
+
   const handleMarkAsDone = (plantId, eventId) => {
     dispatch(markWateringAsDone({ plantId, eventId }));
   };
@@ -25,16 +39,25 @@ const WateringSchedules = () => {
     // Logic to navigate to plant details
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short', // "Sun"
+      day: 'numeric', // "15"
+      month: 'short', // "Sep"
+    });
+  };
+
   return (
     <div className="h-full">
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      {!loading && !error && schedules.length === 0 && (
+      {!loading && !error && sortedSchedules.length === 0 && (
         <p>No watering schedules available.</p>
       )}
-      {!loading && !error && schedules.length > 0 && (
+      {!loading && !error && sortedSchedules.length > 0 && (
         <ul className="flex p-0 m-0 h-full">
-          {schedules.map((schedule) => (
+          {sortedSchedules.map((schedule) => (
             <li
               key={schedule.id}
               style={{ listStyleType: 'none' }}
@@ -49,7 +72,7 @@ const WateringSchedules = () => {
                   backgroundColor: schedule.is_done ? '#e0e0e0' : '#F0F9F4', // Lower opacity for completed schedules
                   width: '200px',
                   textAlign: 'center',
-                  opacity: schedule.is_done ? 0.6 : 1, // Reduce opacity when completed
+                  opacity: schedule.is_done ? 0.7 : 1, // Reduce opacity when completed
                 }}
               >
                 <div className="flex justify-content-between w-full align-items-start">
@@ -58,20 +81,12 @@ const WateringSchedules = () => {
 
                   <div>
                     <p className="m-0">
-                      {new Date(schedule.scheduled_date).toLocaleTimeString(
-                        [],
-                        {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        }
-                      )}
+                      {formatDate(schedule.scheduled_date)}{' '}
                     </p>
 
                     <h3 className="mt-2">{schedule.plant_name}</h3>
                   </div>
                 </div>
-
-                {/* Display the scheduled time and plant name */}
 
                 {/* Mark as done */}
                 {!schedule.is_done ? (
