@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { IoIosSend } from 'react-icons/io';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -20,9 +21,11 @@ const PlantDetailsPage = () => {
     garden_name,
     loading: plantLoading,
   } = useSelector((state) => state.plants);
-  const { timelines, loading: timelineLoading, hasMore } = useSelector(
-    (state) => state.timelines
-  );
+  const {
+    timelines,
+    loading: timelineLoading,
+    hasMore,
+  } = useSelector((state) => state.timelines);
 
   const [postMessage, setPostMessage] = useState('');
   const [loadingPost, setLoadingPost] = useState(false);
@@ -159,22 +162,37 @@ const PlantDetailsPage = () => {
       </div>
 
       {/* Chat Input - Fixed at the bottom */}
-      <div className="fixed flex bottom-0 left-0 w-full bg-white px-4 py-2 border-t">
-        <textarea
-          className="w-full border p-2 border-round"
+      <div
+        style={styles.inputContainer}
+        className="fixed flex bottom-0 left-0 w-full bg-white px-4 py-2 border-t"
+      >
+        <input
+          type="text"
           value={postMessage}
           onChange={(e) => setPostMessage(e.target.value)}
           placeholder="Write an update..."
+          style={styles.input}
+          className="appearance-none outline-none focus:border-primary"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handlePostMessage();
+            }
+          }}
         />
+
         <button
-          className="mt-2 bg-primary text-white py-2 px-4 border-round cursor-pointer"
           onClick={handlePostMessage}
+          style={styles.sendButton}
           disabled={loadingPost}
+          className={`${
+            loadingPost ? 'surface-700 cursor-auto' : ' cursor-pointer'
+          }`}
         >
           {loadingPost ? (
             <Loading type="spin" color="#019444" height={20} width={20} />
           ) : (
-            'Post Update'
+            <IoIosSend className="text-lg" />
           )}
         </button>
       </div>
@@ -182,4 +200,81 @@ const PlantDetailsPage = () => {
   );
 };
 
+
+
+const styles = {
+
+
+  profilePic: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    marginRight: '10px',
+  },
+
+  messageContainer: {
+    flex: 1,
+    padding: '10px',
+    overflowY: 'scroll',
+    position: 'relative',
+  },
+  loadingIndicator: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '10px', // Space between spinner and messages
+  },
+  receivedMessageContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    marginBottom: '5px',
+  },
+  sentMessageContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginBottom: '10px',
+  },
+  receivedMessage: {
+    backgroundColor: '#237D31',
+    padding: '10px',
+    color: '#fff',
+    borderRadius: '15px 15px 15px 2px', 
+    margin: '5px 0',
+    maxWidth: '60%',
+    alignSelf: 'flex-start',
+  },
+  sentMessage: {
+    backgroundColor: '#f3fbfb',
+    color: '#263238',
+    padding: '10px',
+    borderRadius: '15px 15px 2px 15px',
+    margin: '5px 0',
+    maxWidth: '60%',
+    alignSelf: 'flex-end',
+  },
+  timestamp: {
+    fontSize: '10px',
+    color: '#999',
+    marginTop: '5px',
+    textAlign: 'right',
+  },
+  inputContainer: {
+    display: 'flex',
+    padding: '10px',
+  },
+  input: {
+    flex: 1,
+    padding: '10px',
+    borderRadius: '18px',
+    border: '1px solid #ccc',
+    marginRight: '10px',
+  },
+  sendButton: {
+    padding: '10px',
+    backgroundColor: '#263238',
+    color: '#fff',
+    borderRadius: '50%',
+    border: 'none',
+    cursor: 'pointer',
+  },
+};
 export default PlantDetailsPage;
