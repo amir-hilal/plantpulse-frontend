@@ -3,9 +3,13 @@ import api from '../../services/api'; // Assuming you have an API service
 
 export const fetchTimelines = createAsyncThunk(
   'timelines/fetchTimelines',
-  async (plantId, { rejectWithValue }) => {
+  async ({ plantId, page }, { rejectWithValue, getState }) => {
     try {
-      const response = await api.get(`/plants/${plantId}/timelines`);
+      const state = getState();
+      const currentPage = state.timelines.page || 1;
+      const response = await api.get(
+        `/plants/${plantId}/timelines?page=${page || currentPage}`
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -34,6 +38,8 @@ const timelinesSlice = createSlice({
     timelines: [],
     loading: false,
     error: null,
+    page: 1,
+    hasMore: true,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -43,7 +49,10 @@ const timelinesSlice = createSlice({
       })
       .addCase(fetchTimelines.fulfilled, (state, action) => {
         state.loading = false;
-        state.timelines = action.payload;
+        // Append new timelines to the existing ones
+        state.timelines = [...state.timelines, ...action.payload.data];
+        state.page += 1;
+        state.hasMore = action.payload.current_page < action.payload.last_page;
       })
       .addCase(fetchTimelines.rejected, (state, action) => {
         state.loading = false;

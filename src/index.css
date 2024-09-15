@@ -416,6 +416,10 @@ code {
   font-size: 45px !important;
 }
 
+.h-37rem{
+  height: 37rem;
+}
+
 .min-h-10 {
   min-height: 250px;
 }
