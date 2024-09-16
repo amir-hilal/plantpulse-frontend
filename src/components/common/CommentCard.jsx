@@ -12,7 +12,7 @@ const CommentCard = ({ comment, handleDelete,userId }) => {
   return (
     <div className="flex align-items-start mb-3">
       <img
-        src={comment.user.profile_photo_url}
+        src={comment.user.profile_photo_url }
         alt={comment.user.username}
         className="w-3rem h-3rem border-circle mr-2"
       />

@@ -37,7 +37,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
           : '',
         gender: userProfile.gender || '',
         about: userProfile.about || '',
-        profile_photo_url: userProfile.profile_photo_url || '',
+        profile_photo_url: userProfile.profile_photo_url || 'https://via.placeholder.com/50',
       });
     } else {
       document.body.classList.remove('overflow-hidden');

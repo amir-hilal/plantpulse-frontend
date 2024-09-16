@@ -50,7 +50,7 @@ const CommunityPostsPage = () => {
     );
   }
   if (!user) {
-    return <p>Please log in to view the community posts.</p>;
+    return <p className='flex align-items-center justify-content-center h-30rem w-full'>Please log in to view the community posts.</p>;
   }
 
   return (

@@ -39,7 +39,7 @@ const HomePage = () => {
 
   // If user is not logged in or user data not available, show a message
   if (!user) {
-    return <p>Please log in to view the home page.</p>;
+    return <p className='flex align-items-center justify-content-center h-30rem w-full'>Please log in to view the home page.</p>;
   }
 
   // Render the homepage after user data is fetched and user is logged in

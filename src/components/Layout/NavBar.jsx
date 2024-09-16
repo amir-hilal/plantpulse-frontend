@@ -195,7 +195,7 @@ const NavBar = () => {
             <i className="pt-1 pi pi-bell text-white text-2xl mr-4 cursor-pointer"></i>
             {userProfile.profile_photo_url ? (
               <img
-                src={userProfile.profile_photo_url}
+                src={userProfile.profile_photo_url || 'https://via.placeholder.com/50'}
                 alt="Profile"
                 className="h-2rem w-2rem border-circle cursor-pointer"
                 onClick={() => navigate(routes.profile(userProfile.username))}
@@ -248,8 +248,8 @@ const NavBar = () => {
                 <i className="pt-1 pi pi-bell text-white text-2xl mr-3 cursor-pointer"></i>
                 {userProfile.profile_photo_url ? (
                   <img
-                    src={userProfile.profile_photo_url}
-                    alt="Profile"
+                    src={userProfile.profile_photo_url || 'https://via.placeholder.com/50'}
+                    alt='profile'
                     className="h-2rem w-2rem border-circle cursor-pointer"
                     onClick={() => {
                       navigate(routes.profile(userProfile.username));
