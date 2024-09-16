@@ -60,7 +60,7 @@ export const updatePlant = createAsyncThunk(
   'plants/updatePlant',
   async ({ id, formData }, { rejectWithValue }) => {
     try {
-      const response = await api.put(`/api/plants/${id}`, formData, {
+      const response = await api.post(`/plants/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

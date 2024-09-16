@@ -12,10 +12,10 @@ const EditPlantModal = ({ onClose, plant }) => {
     plant.image_url || null
   ); // Existing image as preview
   const [name, setName] = useState(plant.name);
-  const [category, setCategory] = useState(plant.category);
+  const [category, setCategory] = useState({ label: plant.category, value: plant.category });
   const [description, setDescription] = useState(plant.description || '');
   const [watering, setWatering] = useState(plant.watering_frequency);
-  const [healthStatus, setHealthStatus] = useState(plant.health_status);
+  const [healthStatus, setHealthStatus] = useState({ value: plant.health_status, label: plant.health_status });
   const [height, setHeight] = useState(plant.height || '');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -141,11 +141,11 @@ const EditPlantModal = ({ onClose, plant }) => {
   };
 
   const handleCategoryChange = (selectedOption) => {
-    setCategory(selectedOption.label);
+    setCategory(selectedOption);
   };
 
   const handleHealthStatusChange = (selectedOption) => {
-    setHealthStatus(selectedOption.value);
+    setHealthStatus(selectedOption);
   };
 
   const handleSubmit = async (e) => {
@@ -154,13 +154,13 @@ const EditPlantModal = ({ onClose, plant }) => {
 
     const formData = new FormData();
     formData.append('name', name);
-    formData.append('category', category);
+    formData.append('category', category.label);
     formData.append('description', description);
     formData.append('watering_frequency', watering);
-    formData.append('health_status', healthStatus);
+    formData.append('health_status', healthStatus.value);
     formData.append('height', height);
     if (file) {
-      formData.append('image', file); // Only append if a new image is uploaded
+      formData.append('file', file); 
     }
 
     try {
@@ -206,6 +206,7 @@ const EditPlantModal = ({ onClose, plant }) => {
           </div>
           <div className="flex flex-column md:flex-row justify-content-between mb-3">
             <Select
+              value={category}
               options={categories.map((cat) => ({
                 value: cat.id,
                 label: cat.name,
@@ -217,9 +218,7 @@ const EditPlantModal = ({ onClose, plant }) => {
             />
             <div className="flex justify-content-between w-auto sm:col-5 p-0">
               <Select
-                value={healthStatusOptions.find(
-                  (option) => option.value === healthStatus
-                )}
+                value={healthStatus}
                 onChange={handleHealthStatusChange}
                 options={healthStatusOptions}
                 styles={customStyles}
