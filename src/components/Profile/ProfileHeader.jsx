@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
+import Loading from 'react-loading';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AddFriendIcon from '../../assets/svg/Icons/Add user.svg';
 import CheckIcon from '../../assets/svg/Icons/Check.svg';
@@ -8,15 +10,15 @@ import ClockIcon from '../../assets/svg/Icons/Clock.svg';
 import CloseIcon from '../../assets/svg/Icons/Close.svg';
 import RemoveIcon from '../../assets/svg/Icons/delete.svg';
 import MessageIcon from '../../assets/svg/Icons/Message square.svg';
-import routes from '../../routes'
-import {logout} from '../../features/auth/authSlice'
-import { useNavigate } from 'react-router-dom';
+
+import { logout, updateCoverPhoto } from '../../features/auth/authSlice';
 import {
   acceptFriendRequest,
   declineFriendRequest,
   removeFriend,
   sendFriendRequest,
 } from '../../features/community/friendsSlice';
+import routes from '../../routes';
 import EditProfileModal from './EditProfileModal';
 const ProfileHeader = ({
   user_id,
@@ -38,6 +40,29 @@ const ProfileHeader = ({
   const dispatch = useDispatch();
   const [currentStatus, setCurrentStatus] = useState(relationship_status);
   const navigate = useNavigate();
+  const [isUploadingCover, setIsUploadingCover] = useState(false);
+
+  const handleCoverFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      setIsUploadingCover(true);
+      const formData = new FormData();
+      formData.append('file', file);
+      dispatch(updateCoverPhoto({ id: user_id, formData }))
+        .unwrap()
+        .then(() => {
+          toast.success('Cover photo updated successfully');
+        })
+        .catch(() => {
+          toast.error('Failed to update cover photo');
+        })
+        .finally(() => {
+          setIsUploadingCover(false);
+        });
+    }
+  };
+
   const handleSendRequest = () => {
     dispatch(sendFriendRequest(user_id))
       .then(() => {
@@ -151,10 +176,34 @@ const ProfileHeader = ({
         }}
       >
         {isOwner && (
-          <button className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round-lg py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-content-center align-items-center">
-            <span className="hidden sm:block">Edit Cover Photo</span>
-            <FaEdit className="block sm:hidden text-xl" />
-          </button>
+          <label
+            htmlFor="cover-photo-upload"
+            className="absolute bottom-0 right-0 mb-3 mr-4 sm:mb-3 sm:mr-6 sm:w-9rem bg-white text-primary border-solid border-white border-round-lg py-2 hover:bg-primary hover:border-primary hover:text-primary cursor-pointer flex justify-content-center align-items-center"
+          >
+            {isUploadingCover ? (
+              // Show loader when uploading
+              <div className="flex justify-content-center align-items-center">
+                <Loading type="spin" color="#019444" height={20} width={20} />
+              </div>
+            ) : (
+              // Show Edit icon when not uploading
+              <>
+                <span className="hidden sm:block text-sm text-center">
+                  Edit Cover Photo
+                </span>
+                <FaEdit className="block sm:hidden text-xl" />
+              </>
+            )}
+          </label>
+        )}
+        {isOwner && (
+          <input
+            id="cover-photo-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleCoverFileChange}
+            className="hidden"
+          />
         )}
       </div>
 

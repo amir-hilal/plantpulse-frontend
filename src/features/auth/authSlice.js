@@ -23,6 +23,18 @@ export const initializeUser = createAsyncThunk(
   }
 );
 
+export const updateCoverPhoto = createAsyncThunk(
+  'profile/updateCoverPhoto',
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/profile/update-cover-photo/${id}`, formData);
+      return response.data; // Assuming the server returns the updated profile with the new cover photo URL
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -51,7 +63,17 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.userProfile = null;
         state.loading = false;
-      });
+      })
+      .addCase(updateCoverPhoto.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateCoverPhoto.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userProfile.cover_photo_url = action.payload.cover_photo_url; // Update cover photo URL
+      })
+      .addCase(updateCoverPhoto.rejected, (state, action) => {
+        state.loading = false;
+      });;
   },
 });
 
