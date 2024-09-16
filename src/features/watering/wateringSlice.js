@@ -29,10 +29,24 @@ export const toggleWateringStatus = createAsyncThunk(
   }
 );
 
+// Thunk to fetch weekly watering schedules from the backend
+export const fetchWeekWateringSchedules = createAsyncThunk(
+  'watering/fetchWeekSchedules',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/users/watering-schedules/week`); // Assuming you have this API endpoint
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const wateringSlice = createSlice({
   name: 'watering',
   initialState: {
     schedules: [],
+    weekSchedules: [], // New state for week schedules
     loading: false,
     markingDoneById: {}, // Track marking done state per event
     error: null,
@@ -67,6 +81,17 @@ const wateringSlice = createSlice({
         const { eventId } = action.meta.arg;
         state.markingDoneById[eventId] = false; // Reset marking state on failure
         state.error = action.payload?.message || 'Failed to mark as done'; // Store the error message
+      })
+      .addCase(fetchWeekWateringSchedules.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchWeekWateringSchedules.fulfilled, (state, action) => {
+        state.loading = false;
+        state.weekSchedules = action.payload; // Store the week schedules
+      })
+      .addCase(fetchWeekWateringSchedules.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch week schedules';
       });
   },
 });
