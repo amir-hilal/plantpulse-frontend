@@ -113,7 +113,6 @@ const PlantCard = ({ plant }) => {
               <p className="text-left m-0">{plant.formatted_age}</p>{' '}
               <span className="text-right text-xs w-6rem">
                 {plant.last_watered ? plant.last_watered : 'none'}
-                {plant.last_watered}
               </span>
             </div>
           </div>
