@@ -200,7 +200,9 @@ const EditPlantModal = ({ onClose, plant }) => {
               placeholder="Enter plant name"
               required
             />
-            <div className="flex justify-content-between w-auto sm:col-5 p-0 "></div>
+            <div className="flex justify-content-between align-items-center w-auto sm:col-5 p-0 ">
+              <p className='m-0'>{ plant.formatted_age}</p>
+            </div>
           </div>
           <div className="flex flex-column md:flex-row justify-content-between mb-3">
             <Select

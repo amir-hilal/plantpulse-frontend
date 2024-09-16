@@ -132,7 +132,10 @@ const PlantDetailsPage = () => {
           <h3 className="ml-2 my-0"> / {plant.plant.name}</h3>
         </div>
         <div className="flex align-items-center">
-          <span className="px-3 py-2 border-round-xl bg-gray-200 text-black">
+          <span className="px-3 py-2 border-round-xl bg-gray-300 text-black">
+            {plant.plant.formatted_age}
+          </span>
+          <span className="px-3 py-2 border-round-xl bg-gray-300 text-black ml-2">
             {plant.plant.category}
           </span>
           <span
