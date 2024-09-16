@@ -24,6 +24,7 @@ const PlantDetailsPage = () => {
   const {
     timelines,
     loading: timelineLoading,
+    loadingMore,
     hasMore,
     page,
   } = useSelector((state) => state.timelines);
@@ -159,8 +160,15 @@ const PlantDetailsPage = () => {
         ref={timelineRef}
         onScroll={handleScroll}
       >
+        {loadingMore && (
+          <div className="flex justify-content-center mb-4">
+            <Loading type="spin" color="#019444" height={30} width={30} />
+          </div>
+        )}
         {timelineLoading ? (
-          <Loading type="spin" color="#019444" />
+          <div className="flex justify-content-center align-items-center h-screen">
+            <Loading type="spin" color="#019444" height={50} width={50} />
+          </div>
         ) : (
           timelines
             .slice()

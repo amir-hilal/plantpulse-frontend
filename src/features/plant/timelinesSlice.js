@@ -44,6 +44,7 @@ const timelinesSlice = createSlice({
   initialState: {
     timelines: [],
     loading: false,
+    loadingMore: false, // For fetching additional pages
     error: null,
     page: 1,
     hasMore: true,
@@ -51,11 +52,16 @@ const timelinesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTimelines.pending, (state) => {
-        state.loading = true;
+      .addCase(fetchTimelines.pending, (state, action) => {
+        if (action.meta.arg.page === 1) {
+          state.loading = true;
+        } else {
+          state.loadingMore = true;
+        }
       })
       .addCase(fetchTimelines.fulfilled, (state, action) => {
         state.loading = false;
+        state.loadingMore = false;
 
         const newTimelines = action.payload.data.filter(
           (newTimeline) =>
@@ -68,6 +74,7 @@ const timelinesSlice = createSlice({
       })
       .addCase(fetchTimelines.rejected, (state, action) => {
         state.loading = false;
+        state.loadingMore = false;
         state.error = action.payload;
       })
       .addCase(addTimelineEvent.pending, (state) => {
