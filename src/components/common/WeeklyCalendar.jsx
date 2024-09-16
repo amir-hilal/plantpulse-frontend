@@ -46,12 +46,13 @@ const WeeklyCalendar = () => {
           {weekSchedulesByDay.map(({ day, schedules }, index) => (
             <div
               key={day}
-              className={`col-12 md:col-2 p-2 ${
-                index !== weekSchedulesByDay.length - 1 ? 'border-right' : ''
-              }`}
+              className={`col-12 md:col-2 p-2 flex`}
               style={{ borderColor: '#ccc', borderRightWidth: '1px' }}
             >
-              <div className="day-column text-center">
+              <div
+                className={`day-column text-center  `}
+                style={{ borderColor: '#ccc' }}
+              >
                 <p className="font-bold">{format(day, 'EEE')}</p>
                 <p className="text-dark-grey">{format(day, 'MMM d')}</p>
                 {schedules.length === 0 ? (
@@ -66,25 +67,34 @@ const WeeklyCalendar = () => {
                         opacity: schedule.is_done ? 0.8 : 1,
                       }}
                     >
-                      <div className="flex justify-content-between w-full align-items-start border-round-xl shadow-1 p-2">
-                        <img src={watringIcon} alt="watering" className="w-4" />
-                        <div>
-                          <h3 className="mt-2">{schedule.plant_name}</h3>
-
-                          <button
-                            onClick={() =>
-                              navigate(`/my-gardens/plant/${schedule.plant_id}`)
-                            }
-                            className="text-xs bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-2 flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
-                          >
-                            See Plant Details
-                          </button>
+                      <div className="flex flex-column justify-content-between w-full border-round-xl shadow-1 p-2 h-8rem">
+                        <div className="flex justify-content-between align-items-center mb-2">
+                          <img
+                            src={watringIcon}
+                            alt="watering"
+                            className="w-4"
+                          />
+                          <h3 className="m-2">{schedule.plant_name}</h3>
                         </div>
+                        <button
+                          onClick={() =>
+                            navigate(`/my-gardens/plant/${schedule.plant_id}`)
+                          }
+                          className="text-xs bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-2 flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
+                        >
+                          See Plant Details
+                        </button>
                       </div>
                     </div>
                   ))
                 )}
               </div>
+              {index !== weekSchedulesByDay.length - 1 && (
+                <div
+                  className="h-full surface-400 ml-3"
+                  style={{ width: '1px' }}
+                ></div>
+              )}
             </div>
           ))}
         </div>
