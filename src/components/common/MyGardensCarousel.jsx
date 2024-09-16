@@ -24,8 +24,22 @@ const MyGardensCarousel = () => {
   if (error) return <p>Error loading gardens: {error}</p>;
 
   const styles = {
+    card: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
     img: {
       borderRadius: '12px',
+    },
+    placeholderImg: {
+      width: '170px',
+      height: '170px',
+      borderRadius: '10px', // Matches the border-radius of the image
+      backgroundColor: '#e0e0e0', // Placeholder color (you can adjust this)
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   };
 
@@ -77,13 +91,17 @@ const MyGardensCarousel = () => {
           `}</style>
           {gardens.map((garden) => (
             <div key={garden.id} style={styles.card} className="mr-4">
-              <img
-                src={garden.image_url}
-                alt={garden.name}
-                style={styles.img}
-                width={170}
-                height={170}
-              />
+              {garden.image_url ? (
+                <img
+                  src={garden.image_url}
+                  alt={garden.name}
+                  style={styles.img}
+                  width={170}
+                  height={170}
+                />
+              ) : (
+                <div style={styles.placeholderImg}></div>
+              )}
               <h3>{garden.name}</h3>
             </div>
           ))}
