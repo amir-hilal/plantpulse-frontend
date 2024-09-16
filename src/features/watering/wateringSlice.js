@@ -66,7 +66,7 @@ const wateringSlice = createSlice({
       .addCase(toggleWateringStatus.rejected, (state, action) => {
         const { eventId } = action.meta.arg;
         state.markingDoneById[eventId] = false; // Reset marking state on failure
-        state.error = action.payload || 'Failed to mark as done';
+        state.error = action.payload?.message || 'Failed to mark as done'; // Store the error message
       });
   },
 });

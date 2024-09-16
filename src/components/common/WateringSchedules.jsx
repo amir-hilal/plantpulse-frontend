@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import watringIcon from '../../assets/svg/Icons/watering.svg';
 import {
   fetchTodayWateringSchedules,
@@ -18,7 +20,13 @@ const WateringSchedules = () => {
   }, [dispatch]);
 
   const handleToggleStatus = (plantId, eventId) => {
-    dispatch(toggleWateringStatus({ plantId, eventId }));
+    dispatch(toggleWateringStatus({ plantId, eventId }))
+      .unwrap()
+      .catch((err) => {
+        toast.error(error);
+        // Handle the error on the client side if necessary
+        console.error('Error toggling status:', err);
+      });
   };
 
   const navigateToPlantDetails = (plantId) => {
@@ -46,12 +54,15 @@ const WateringSchedules = () => {
 
   return (
     <div className="h-full">
-      {loading && <p>Loading...</p>}
-      {error && <p className='m-0'>Error: {error}</p>}
-      {!loading && !error && sortedSchedules.length === 0 && (
-        <p className='m-0'>No watering schedules available.</p>
+      {loading && (
+        <div className="flex justify-content-center align-items-center h-full">
+          <Loading type="spin" color="#019444" height={50} width={50} />
+        </div>
       )}
-      {!loading && !error && sortedSchedules.length > 0 && (
+      {!loading && sortedSchedules.length === 0 && (
+        <p className="m-0">No watering schedules available.</p>
+      )}
+      {!loading && sortedSchedules.length > 0 && (
         <ul className="flex p-0 m-0 h-full">
           {sortedSchedules.map((schedule) => (
             <li
