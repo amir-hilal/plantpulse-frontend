@@ -1,5 +1,8 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import image1 from '../assets/images/1.jpg';
+import image2 from '../assets/images/2.jpg';
+import image3 from '../assets/images/3.jpg';
 import image from '../assets/images/landingpage-person.png';
 import Carousel from '../components/common/Carousel';
 import HowItWorks from '../components/common/HowItWorks/HowItWorks';
@@ -58,6 +61,45 @@ const LandingPage = () => {
       <hr />
       <section className=" py-4" ref={howItWorksRef}>
         <HowItWorks />
+      </section>
+      <h2 className='text-center text-secondary mb-6'>What our Users Say</h2>
+      <section className="flex justify-content-around">
+        <div className="flex flex-column align-items-center">
+          {' '}
+          <img
+            src={image1}
+            alt="person 1"
+            className="border-circle w-6rem h-6rem shadow-lg"
+          />
+          <h3 className='pb-0 text-secondary'>Jhon Doe</h3>
+          <p className="text-sm text-grey mt-0">
+            <i>"Made life so much easier"</i>
+          </p>
+        </div>
+        <div className="flex flex-column align-items-center">
+          {' '}
+          <img
+            src={image2}
+            alt="person 1"
+            className="border-circle w-6rem h-6rem shadow-lg"
+          />
+          <h3 className='pb-0 text-secondary'>Dora A. Garcia</h3>
+          <p className="text-sm text-grey mt-0">
+            <i>"My garden is looking better now"</i>
+          </p>
+        </div>{' '}
+        <div className="flex flex-column align-items-center">
+          {' '}
+          <img
+            src={image3}
+            alt="person 1"
+            className="border-circle w-6rem h-6rem shadow-lg"
+          />
+          <h3 className='pb-0 text-secondary'>Janina R. Parkison</h3>
+          <p className="text-sm text-grey mt-0">
+            <i>"My plants are growing fast!"</i>
+          </p>
+        </div>
       </section>
     </div>
   );
