@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IoIosAttach, IoIosSend } from 'react-icons/io';
+import { IoIosAttach, IoIosCloseCircle, IoIosSend } from 'react-icons/io';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -59,6 +59,10 @@ const PlantDetailsPage = () => {
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]);
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
   };
 
   useEffect(() => {
@@ -163,7 +167,7 @@ const PlantDetailsPage = () => {
       </div>
 
       <div
-        className="timeline-container flex-grow overflow-y-auto  mb-3 mx-2 md:mx-4 lg:mx-8 lg:px-4"
+        className="timeline-container flex-grow overflow-y-auto   mx-2 md:mx-4 lg:mx-8 lg:px-4"
         ref={timelineRef}
         onScroll={handleScroll}
       >
@@ -198,12 +202,13 @@ const PlantDetailsPage = () => {
         )}
       </div>
 
+      {/* chat input and image */}
       <div
         style={styles.inputContainer}
         className="fixed flex bottom-0 left-0 w-full rounded-full py-2 px-2 md:px-4 lg:px-8 justify-content-center items-center"
       >
-        <div className='w-8 relative flex align-items-center'>
-          <label className=" absolute left-0 text-lg ml-4 cursor-pointer">
+        <div className="flex-grow w-8 relative flex align-items-center border border-gray-300 rounded-full">
+          <label className="absolute left-0 text-lg ml-4 cursor-pointer">
             <input
               type="file"
               onChange={handleImageChange}
@@ -213,12 +218,29 @@ const PlantDetailsPage = () => {
             <IoIosAttach className="text-xl" />
           </label>
 
+          {/* Image Preview */}
+          {selectedImage && (
+            <div className="ml-10 flex items-center relative">
+              <img
+                src={URL.createObjectURL(selectedImage)}
+                alt="Preview"
+                className="rounded-full"
+                style={styles.imagePreview}
+              />
+              <IoIosCloseCircle
+                className="absolute -top-2 -right-2 text-xl cursor-pointer"
+                style={styles.removeIcon}
+                onClick={handleRemoveImage}
+              />
+            </div>
+          )}
+
           <input
             type="text"
             style={styles.input}
             value={postMessage}
             onChange={(e) => setPostMessage(e.target.value)}
-            placeholder="Ask About Plant Name..."
+            placeholder="Ask about your plant..."
             className="appearance-none pl-6 outline-none flex-grow ml-2 bg-transparent placeholder-gray-500"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -258,6 +280,11 @@ const PlantDetailsPage = () => {
 };
 
 const styles = {
+  inputContainer: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+  },
   profilePic: {
     width: '50px',
     height: '50px',
@@ -267,10 +294,12 @@ const styles = {
 
   input: {
     padding: '10px',
-    width:'100%',
+    width: '100%',
     borderRadius: '18px',
     border: '1px solid #ccc',
-    marginRight: '10px',
+    outline: 'none',
+    backgroundColor: 'transparent',
+    marginLeft: '10px',
   },
   sendButton: {
     padding: '10px',
@@ -279,6 +308,18 @@ const styles = {
     borderRadius: '50%',
     border: 'none',
     cursor: 'pointer',
+  },
+  imagePreview: {
+    width: '80px',
+    height: '80px',
+    objectFit: 'cover',
+    borderRadius: '5px',
+    marginLeft: '10px',
+  },
+  removeIcon: {
+    color: 'red',
+    top: '-5px',
+    right: '-5px',
   },
 };
 
