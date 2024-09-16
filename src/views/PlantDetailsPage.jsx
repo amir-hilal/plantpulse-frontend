@@ -167,7 +167,7 @@ const PlantDetailsPage = () => {
       </div>
 
       <div
-        className="timeline-container flex-grow overflow-y-auto   mx-2 md:mx-4 lg:mx-8 lg:px-4"
+        className="timeline-container flex flex-column overflow-y-auto mx-2 md:mx-4 lg:mx-8 lg:px-4"
         ref={timelineRef}
         onScroll={handleScroll}
       >
@@ -187,9 +187,13 @@ const PlantDetailsPage = () => {
             .map((event, index) => (
               <div
                 key={index}
-                className="timeline-event border-round p-2 mb-2 shadow-1"
+                className={`timeline-event p-2 mb-2 shadow-1 ${
+                  event.source === 'user'
+                    ? 'surface-100 max-w-29rem align-self-end border-round-xl p-2' // For user messages, use a bubble with background tint
+                    : 'bg-transparent w-full' // For non-user messages, keep background transparent
+                }`}
+                style={event.source === 'user' ? { width: 'fit-content' } : {}} // Inline style for user messages
               >
-                <p>{event.description}</p>
                 {event.image_path && (
                   <img
                     src={event.image_path}
@@ -197,6 +201,7 @@ const PlantDetailsPage = () => {
                     className="border-round"
                   />
                 )}
+                <p>{event.description}</p>
               </div>
             ))
         )}
