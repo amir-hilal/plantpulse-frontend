@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import wateringCan from '../assets/svg/Icons/watering.svg';
+import EditPlantModal from '../components/Gardens/EditPlantModal';
 import { fetchPlantDetails } from '../features/plant/plantsSlice';
 import {
   addTimelineEvent,
@@ -14,6 +15,9 @@ import {
 const PlantDetailsPage = () => {
   const { id } = useParams(); // Get plant ID from route
   const dispatch = useDispatch();
+
+  // State for modal visibility
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Control modal visibility
 
   // Separate loading states
   const {
@@ -41,16 +45,15 @@ const PlantDetailsPage = () => {
   }, [dispatch, id]);
 
   const handleScroll = () => {
-    // Debounce the scroll event
     if (
       timelineRef.current.scrollTop === 0 &&
       hasMore &&
       !timelineLoading &&
       !fetching
     ) {
-      setFetching(true); // Prevent multiple simultaneous requests
+      setFetching(true);
       dispatch(fetchTimelines({ plantId: id, page })).finally(() => {
-        setFetching(false); // Reset fetching state once the request completes
+        setFetching(false);
       });
     }
   };
@@ -60,17 +63,17 @@ const PlantDetailsPage = () => {
   };
 
   useEffect(() => {
-    // Scroll to bottom after the initial fetch or a new message
     if (!timelineLoading && timelines.length && timelineRef.current) {
       timelineRef.current.scrollTop = timelineRef.current.scrollHeight;
     }
   }, [timelineLoading, timelines]);
+
   const handlePostMessage = async () => {
     if (!postMessage && !selectedImage) return;
     setLoadingPost(true);
 
     const formData = new FormData();
-    formData.append('plant_id', id); // Append plant_id to FormData
+    formData.append('plant_id', id);
     formData.append('description', postMessage);
     if (selectedImage) {
       formData.append('image', selectedImage);
@@ -88,7 +91,6 @@ const PlantDetailsPage = () => {
     }
   };
 
-  // Background color based on health status
   const getHealthStatusBackground = (status) => {
     switch (status) {
       case 'Healthy':
@@ -113,7 +115,6 @@ const PlantDetailsPage = () => {
   }
 
   if (!plant || !plant.plant) {
-    // Fallback for when plant data isn't available yet
     return (
       <div className="flex justify-content-center align-items-center h-screen">
         Plant data not available.
@@ -122,9 +123,8 @@ const PlantDetailsPage = () => {
   }
 
   return (
-    <div className="relative flex flex-column h-37rem">
-      {/* Plant Info - Fixed at the top */}
-      <div className="flex justify-content-between align-items-center p-4 ">
+    <div className="relative flex flex-column h-37rem w-full">
+      <div className="flex justify-content-between align-items-center p-4 bg-tint-5">
         <div className="flex align-items-center">
           <Link to="/my-gardens" className="text-primary">
             {garden_name || 'Garden'}
@@ -152,11 +152,16 @@ const PlantDetailsPage = () => {
             </span>
           </div>
         </div>
+        <button
+          onClick={() => setIsEditModalOpen(true)}
+          className=" h-full bg-primary border-none  hover:bg-primary-reverse text-white py-2 px-4 border-round-xl ml-4"
+        >
+          Edit Plant
+        </button>
       </div>
 
-      {/* Timeline - Scrollable */}
       <div
-        className="timeline-container flex-grow overflow-y-auto px-4 mb-5"
+        className="timeline-container flex-grow overflow-y-auto  mb-3 mx-2 md:mx-4 lg:mx-8 lg:px-4"
         ref={timelineRef}
         onScroll={handleScroll}
       >
@@ -172,11 +177,11 @@ const PlantDetailsPage = () => {
         ) : (
           timelines
             .slice()
-            .reverse() // Reverse the order of events so the latest is at the bottom
+            .reverse()
             .map((event, index) => (
               <div
                 key={index}
-                className="timeline-event border-round p-2 mb-2 shadow-2"
+                className="timeline-event border-round p-2 mb-2 shadow-1"
               >
                 <p>{event.description}</p>
                 {event.image_path && (
@@ -191,10 +196,9 @@ const PlantDetailsPage = () => {
         )}
       </div>
 
-      {/* Chat Input - Fixed at the bottom */}
       <div
         style={styles.inputContainer}
-        className="fixed flex bottom-0 left-0 w-full bg-white px-8 py-2 border-t"
+        className="fixed flex bottom-0 left-0 w-full bg-white  py-2 px-2 md:px-4 lg:px-8 justify-content-center"
       >
         <input
           type="text"
@@ -226,6 +230,13 @@ const PlantDetailsPage = () => {
           )}
         </button>
       </div>
+
+      {isEditModalOpen && (
+        <EditPlantModal
+          plant={plant.plant}
+          onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
@@ -237,12 +248,8 @@ const styles = {
     borderRadius: '50%',
     marginRight: '10px',
   },
-  inputContainer: {
-    display: 'flex',
-    padding: '10px',
-  },
+
   input: {
-    flex: 1,
     padding: '10px',
     borderRadius: '18px',
     border: '1px solid #ccc',

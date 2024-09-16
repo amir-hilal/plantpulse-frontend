@@ -55,6 +55,27 @@ export const deletePlant = createAsyncThunk(
   }
 );
 
+// Define the async thunk for updating a plant
+export const updatePlant = createAsyncThunk(
+  'plants/updatePlant',
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const response = await api.put(`/api/plants/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 const plantsSlice = createSlice({
   name: 'plants',
   initialState: {
@@ -67,6 +88,7 @@ const plantsSlice = createSlice({
   reducers: {
     clearPlants: (state) => {
       state.plants = [];
+      state.plant = null;
     },
   },
   extraReducers: (builder) => {
@@ -114,6 +136,22 @@ const plantsSlice = createSlice({
       .addCase(fetchPlantDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(updatePlant.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updatePlant.fulfilled, (state, action) => {
+        state.loading = false;
+        state.plant = action.payload; // Update the plant details in the state
+        const index = state.plants.findIndex((p) => p.id === action.payload.id);
+        if (index !== -1) {
+          state.plants[index] = action.payload; // Update the specific plant in the plants array
+        }
+      })
+      .addCase(updatePlant.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Something went wrong';
       });
   },
 });
