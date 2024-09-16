@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IoIosSend } from 'react-icons/io';
+import { IoIosAttach, IoIosSend } from 'react-icons/io';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -11,7 +11,6 @@ import {
   addTimelineEvent,
   fetchTimelines,
 } from '../features/plant/timelinesSlice';
-
 const PlantDetailsPage = () => {
   const { id } = useParams(); // Get plant ID from route
   const dispatch = useDispatch();
@@ -201,35 +200,49 @@ const PlantDetailsPage = () => {
 
       <div
         style={styles.inputContainer}
-        className="fixed flex bottom-0 left-0 w-full bg-white  py-2 px-2 md:px-4 lg:px-8 justify-content-center"
+        className="fixed flex bottom-0 left-0 w-full rounded-full py-2 px-2 md:px-4 lg:px-8 justify-content-center items-center"
       >
-        <input
-          type="text"
-          value={postMessage}
-          onChange={(e) => setPostMessage(e.target.value)}
-          placeholder="Write an update..."
-          style={styles.input}
-          className="appearance-none outline-none focus:border-primary"
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              handlePostMessage();
-            }
-          }}
-        />
-        <input type="file" onChange={handleImageChange} accept="image/*" />
+        <div className='w-8 relative flex align-items-center'>
+          <label className=" absolute left-0 text-lg ml-4 cursor-pointer">
+            <input
+              type="file"
+              onChange={handleImageChange}
+              accept="image/*"
+              className="hidden"
+            />
+            <IoIosAttach className="text-xl" />
+          </label>
+
+          <input
+            type="text"
+            style={styles.input}
+            value={postMessage}
+            onChange={(e) => setPostMessage(e.target.value)}
+            placeholder="Ask About Plant Name..."
+            className="appearance-none pl-6 outline-none flex-grow ml-2 bg-transparent placeholder-gray-500"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handlePostMessage();
+              }
+            }}
+          />
+        </div>
+
         <button
           onClick={handlePostMessage}
           style={styles.sendButton}
           disabled={loadingPost}
           className={`${
-            loadingPost ? 'surface-700 cursor-auto' : ' cursor-pointer'
+            loadingPost
+              ? 'surface-700 cursor-auto rounded-full p-2 mx-2'
+              : 'cursor-pointer rounded-full p-2 mx-2 bg-green-500'
           }`}
         >
           {loadingPost ? (
-            <Loading type="spin" color="#019444" height={20} width={20} />
+            <Loading type="spin" color="#fff" height={20} width={20} />
           ) : (
-            <IoIosSend className="text-lg" />
+            <IoIosSend className="text-xl text-white" />
           )}
         </button>
       </div>
@@ -254,6 +267,7 @@ const styles = {
 
   input: {
     padding: '10px',
+    width:'100%',
     borderRadius: '18px',
     border: '1px solid #ccc',
     marginRight: '10px',
