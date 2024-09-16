@@ -8,6 +8,7 @@ import Guard from './components/common/Guard';
 import { initializeUser } from './features/auth/authSlice';
 import MainLayout from './MainLayout';
 import routes from './routes';
+import CalendarPage from './views/CalendarPage';
 import ChatsPage from './views/ChatsPage';
 import CommunityPostsPage from './views/CommunityPostsPage';
 import ConnectPage from './views/ConnectPage';
@@ -15,12 +16,12 @@ import HomePage from './views/HomePage';
 import LandingPage from './views/LandingPage';
 import LoginPage from './views/LoginPage';
 import MyGardensPage from './views/MyGardensPage';
+import PlantDetailsPage from './views/PlantDetailsPage';
 import PostDetailsPage from './views/PostDetailsPage';
 import ProfilePage from './views/ProfilePage';
 import RegisterPage from './views/RegisterPage';
 import TutorialDetailPage from './views/TutorialDetailsPage';
 import Tutorials from './views/TutorialsPage';
-import PlantDetailsPage from './views/PlantDetailsPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -152,11 +153,15 @@ function App() {
                     </Guard>
                   }
                 />
-                {/*
 
-<Route path="/plant-details" element={<PlantDetailsPage />} />
-                  <Route path="/calendar" element={<CalendarPage />} />
-                  */}
+                <Route
+                  path={routes.calendar}
+                  element={
+                    <Guard authRequired={true} redirectPath={routes.home}>
+                      <CalendarPage />
+                    </Guard>
+                  }
+                />
               </Routes>
             </MainLayout>
           }

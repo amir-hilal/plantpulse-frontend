@@ -34,7 +34,7 @@ const PostCard = ({ post }) => {
 
   const handleDelete = (post) => {
     setItemToDelete(post);
-    setIsModalOpen(true); 
+    setIsModalOpen(true);
   };
 
   const handleConfirmDelete = () => {
@@ -81,7 +81,7 @@ const PostCard = ({ post }) => {
                 className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-primary-reverse text-left"
                 onClick={handleCopyLink}
               >
-                Copy Post Link
+                Copy Link
               </button>
               {isOwner && (
                 <button
