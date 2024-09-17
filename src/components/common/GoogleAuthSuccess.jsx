@@ -19,7 +19,7 @@ const GoogleAuthSuccess = () => {
     if (code) {
       // Send the authorization code as a query parameter in the GET request URL
       axios
-        .get(`http://127.0.0.1:8000/auth/google/callback?code=${code}`)
+        .get(`http://3.28.123.21:8000/auth/google/callback?code=${code}`)
         .then((response) => {
           dispatch(login(response.data.user));
           localStorage.setItem('token', response.data.token);

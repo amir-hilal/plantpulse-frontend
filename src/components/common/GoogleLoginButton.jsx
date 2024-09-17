@@ -4,7 +4,7 @@ import googleIcon from '../../assets/svg/Icons/googleIconColored.svg'
 const GoogleLoginButton = () => {
   const handleGoogleLogin = () => {
     // Redirect to the backend route that initiates Google OAuth login
-    window.location.href = 'http://127.0.0.1:8000/auth/google';
+    window.location.href = 'http://3.28.123.21:8000/auth/google';
   };
 
   return (
