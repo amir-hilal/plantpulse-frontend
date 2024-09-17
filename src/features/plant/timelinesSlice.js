@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../services/api';
 
+// Fetch timelines for a specific plant
 export const fetchTimelines = createAsyncThunk(
   'timelines/fetchTimelines',
   async ({ plantId, page }, { rejectWithValue, getState }) => {
@@ -17,6 +18,7 @@ export const fetchTimelines = createAsyncThunk(
   }
 );
 
+// Add a new timeline event (user message)
 export const addTimelineEvent = createAsyncThunk(
   'timelines/addTimelineEvent',
   async ({ plant_id, formData }, { rejectWithValue }) => {
@@ -51,6 +53,7 @@ const timelinesSlice = createSlice({
   },
   reducers: {
     addTempTimeline: (state, action) => {
+      // Add the user's message at the end (so it appears at the bottom)
       state.timelines.push(action.payload);
     },
   },
@@ -67,12 +70,14 @@ const timelinesSlice = createSlice({
         state.loading = false;
         state.loadingMore = false;
 
+        // Ensure that old messages are added to the beginning of the array
         const newTimelines = action.payload.data.filter(
           (newTimeline) =>
             !state.timelines.some((timeline) => timeline.id === newTimeline.id)
         );
 
-        state.timelines = [...state.timelines, ...newTimelines];
+        // Prepend older messages to the top of the array (for pagination)
+        state.timelines = [...newTimelines, ...state.timelines];
         state.page += 1;
         state.hasMore = action.payload.current_page < action.payload.last_page;
       })
@@ -83,10 +88,9 @@ const timelinesSlice = createSlice({
       })
       .addCase(addTimelineEvent.fulfilled, (state, action) => {
         const { aiResponse } = action.payload;
-        console.log(action.payload)
-
 
         if (aiResponse) {
+          // Add AI response to the end
           state.timelines.push({
             description: aiResponse,
             source: 'ai',

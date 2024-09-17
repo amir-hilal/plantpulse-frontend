@@ -1,3 +1,4 @@
+import { debounce } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { IoIosAttach, IoIosCloseCircle, IoIosSend } from 'react-icons/io';
 import Loading from 'react-loading';
@@ -43,19 +44,24 @@ const PlantDetailsPage = () => {
     dispatch(fetchTimelines({ plantId: id, page: 1 })); // Fetch the first page of timelines
   }, [dispatch, id]);
 
-  const handleScroll = () => {
+  const handleScroll = debounce(() => {
     if (
       timelineRef.current.scrollTop === 0 &&
       hasMore &&
       !timelineLoading &&
       !fetching
     ) {
+      const previousHeight = timelineRef.current.scrollHeight; // Store current scroll height before fetching new data
       setFetching(true);
       dispatch(fetchTimelines({ plantId: id, page })).finally(() => {
         setFetching(false);
+        setTimeout(() => {
+          const newHeight = timelineRef.current.scrollHeight; // Get new scroll height
+          timelineRef.current.scrollTop = newHeight - previousHeight; // Maintain scroll position after new messages are loaded
+        }, 100); // Slight delay to allow for DOM updates
       });
     }
-  };
+  }, 1000);
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]);
@@ -186,29 +192,26 @@ const PlantDetailsPage = () => {
             <Loading type="spin" color="#019444" height={30} width={30} />
           </div>
         )}
-        {timelines
-          .slice()
-          .reverse()
-          .map((event, index) => (
-            <div
-              key={index}
-              className={`timeline-event p-2 mb-2 shadow-1 ${
-                event.source === 'user'
-                  ? 'surface-100 max-w-29rem align-self-end border-round-xl p-2'
-                  : 'bg-transparent w-full'
-              }`}
-              style={event.source === 'user' ? { width: 'fit-content' } : {}} // Inline style for user messages
-            >
-              {event.image_path && (
-                <img
-                  src={event.image_path}
-                  alt="timeline event"
-                  className="border-round"
-                />
-              )}
-              <p>{event.description}</p>
-            </div>
-          ))}
+        {timelines.slice().map((event, index) => (
+          <div
+            key={index}
+            className={`timeline-event p-2 mb-2 shadow-1 ${
+              event.source === 'user'
+                ? 'surface-100 max-w-29rem align-self-end border-round-xl p-2'
+                : 'bg-transparent w-full'
+            }`}
+            style={event.source === 'user' ? { width: 'fit-content' } : {}} // Inline style for user messages
+          >
+            {event.image_path && (
+              <img
+                src={event.image_path}
+                alt="timeline event"
+                className="border-round"
+              />
+            )}
+            <p>{event.description}</p>
+          </div>
+        ))}
 
         {/* AI Typing Indicator */}
         {typing && (
