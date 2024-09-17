@@ -67,6 +67,7 @@ const ChatsPage = () => {
   };
 
   const updateLastMessage = (userId, message) => {
+    console.log(message,'and id:', userId, 'from chat page')
     setLastMessages((prev) => ({
       ...prev,
       [userId]: message,

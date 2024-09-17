@@ -13,27 +13,27 @@ const fetchMessages = (
   scrollToBottom,
   loading
 ) => {
-  if (!selectedUser || loading) return; // Ensure fetch only happens if not loading and we have a user
+  if (!selectedUser || loading) return;
 
-  setLoading(true); // Set loading state
+  setLoading(true);
   api
     .get(`/chats/${selectedUser.id}?page=1`)
     .then((response) => {
       const fetchedMessages = response.data.data.reverse();
-      setMessages(fetchedMessages); // Set messages
-      setHasMore(response.data.next_page_url !== null); // Set if more messages exist
+      setMessages(fetchedMessages);
+      setHasMore(response.data.next_page_url !== null);
       if (fetchedMessages.length > 0) {
         updateLastMessage(
           selectedUser.id,
           fetchedMessages[fetchedMessages.length - 1]
         );
       }
-      setLoading(false); // Stop loading
-      scrollToBottom(); // Scroll to bottom after messages are fetched
+      setLoading(false);
+      scrollToBottom();
     })
     .catch((error) => {
       console.error('Error fetching messages:', error);
-      setLoading(false); // Ensure loading is stopped in case of error
+      setLoading(false);
     });
 };
 
@@ -41,21 +41,28 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false); // New loading state for loading more messages
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const messagesEndRef = useRef(null);
   const containerRef = useRef(null);
+  const scrollPositionRef = useRef(0);
 
-  // Memoize scrollToBottom to avoid re-creating it every render
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  // Clear messages and reset state when switching between users
+  const maintainScrollPosition = useCallback(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop =
+        containerRef.current.scrollHeight - scrollPositionRef.current + 40;
+    }
+  }, []);
+
   useEffect(() => {
-    setMessages([]); // Clear messages
-    setPage(1); // Reset pagination
-    setHasMore(true); // Reset 'hasMore' to true
+    setMessages([]);
+    setPage(1);
+    setHasMore(true);
   }, [selectedUser]);
 
   useEffect(() => {
@@ -75,7 +82,6 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
       }
     };
 
-    // Fetch messages only once when selectedUser changes
     fetchInitialMessages();
 
     const setupRealTimeListener = () => {
@@ -93,7 +99,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
       });
 
       return () => {
-        echo.leave(`chat.${selectedUser.id}`); // Clean up listener
+        echo.leave(`chat.${selectedUser.id}`);
       };
     };
 
@@ -102,26 +108,29 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     return () => {
       cleanupListener();
     };
-  }, [selectedUser?.id]); // Only re-run when selectedUser's id changes
+  }, [selectedUser?.id]);
 
   const loadMoreMessages = useCallback(() => {
-    if (hasMore && !loading && page > 1) {
-      setLoading(true);
+    if (hasMore && !loadingMore) {
+      scrollPositionRef.current =
+        containerRef.current.scrollHeight - containerRef.current.scrollTop+500;
+      setLoadingMore(true); // Set loadingMore to true for loading older messages
       api
-        .get(`/chats/${selectedUser.id}?page=${page + 1}`)
+        .get(`/chats/${selectedUser.id}?page=${page}`)
         .then((response) => {
           const newMessages = response.data.data.reverse();
           setMessages((prevMessages) => [...newMessages, ...prevMessages]);
           setHasMore(response.data.next_page_url !== null);
           setPage((prevPage) => prevPage + 1);
-          setLoading(false);
+          setLoadingMore(false); // Stop loadingMore
+          maintainScrollPosition();
         })
         .catch((error) => {
           console.error('Error fetching more messages:', error);
-          setLoading(false);
+          setLoadingMore(false);
         });
     }
-  }, [hasMore, loading, page, selectedUser.id]);
+  }, [hasMore, loadingMore, page, selectedUser.id, maintainScrollPosition]);
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
@@ -132,7 +141,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
       })
       .then((response) => {
         setMessages((prevMessages) => [...prevMessages, response.data]);
-        updateLastMessage(selectedUser.id, response.data);
+        updateLastMessage(selectedUser.id, response.data.message);
         setNewMessage('');
         onFirstChat(selectedUser.id);
         scrollToBottom();
@@ -164,7 +173,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
         style={styles.messageContainer}
         ref={containerRef}
         onScroll={(e) => {
-          if (e.target.scrollTop === 0 && hasMore && !loading) {
+          if (e.target.scrollTop === 0 && hasMore && !loadingMore) {
             loadMoreMessages(); // Load older messages when scrolling to the top
           }
         }}
@@ -176,6 +185,12 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
         )}
         {!loading && messages.length === 0 && (
           <div style={styles.noMessages}>No messages to display.</div>
+        )}
+        {loadingMore && (
+          <div style={styles.loadingMoreIndicator}>
+            {/* New loading indicator for more messages */}
+            <Loading type="spin" color="#019444" height={30} width={30} />
+          </div>
         )}
         {messages.map((msg, index) => (
           <div
@@ -200,7 +215,8 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} /> {/* Scroll to this div */}
+
+        <div ref={messagesEndRef} />
       </div>
       <div style={styles.inputContainer}>
         <input
@@ -259,6 +275,11 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
+  },
+  loadingMoreIndicator: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '10px',
   },
   noMessages: {
     textAlign: 'center',
