@@ -11,6 +11,7 @@ import {
   addTimelineEvent,
   fetchTimelines,
 } from '../features/plant/timelinesSlice';
+
 const PlantDetailsPage = () => {
   const { id } = useParams(); // Get plant ID from route
   const dispatch = useDispatch();
@@ -18,7 +19,6 @@ const PlantDetailsPage = () => {
   // State for modal visibility
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Control modal visibility
 
-  // Separate loading states
   const {
     plant,
     garden_name,
@@ -26,15 +26,15 @@ const PlantDetailsPage = () => {
   } = useSelector((state) => state.plants);
   const {
     timelines,
-    loading: timelineLoading,
-    loadingMore,
-    hasMore,
+    loading: timelineLoading, // For fetching new timelines
+    loadingMore, // For loading more timelines when scrolling
     page,
+    hasMore,
   } = useSelector((state) => state.timelines);
-  const [selectedImage, setSelectedImage] = useState(null);
 
+  const [selectedImage, setSelectedImage] = useState(null);
   const [postMessage, setPostMessage] = useState('');
-  const [loadingPost, setLoadingPost] = useState(false);
+  const [typing, setTyping] = useState(false); // For AI typing indicator
   const [fetching, setFetching] = useState(false); // Track whether a fetch request is ongoing
   const timelineRef = useRef(null); // Ref for the timeline container
 
@@ -66,14 +66,25 @@ const PlantDetailsPage = () => {
   };
 
   useEffect(() => {
-    if (!timelineLoading && timelines.length && timelineRef.current) {
-      timelineRef.current.scrollTop = timelineRef.current.scrollHeight;
+    if (timelines.length && timelineRef.current) {
+      timelineRef.current.scrollTop = timelineRef.current.scrollHeight; // Keep the scroll at the bottom
     }
-  }, [timelineLoading, timelines]);
+  }, [timelines]);
 
   const handlePostMessage = async () => {
     if (!postMessage && !selectedImage) return;
-    setLoadingPost(true);
+
+    const userTimeline = {
+      description: postMessage,
+      image_path: selectedImage ? URL.createObjectURL(selectedImage) : null,
+      source: 'user',
+    };
+
+    // Immediately append the user's message to the timeline
+    dispatch({ type: 'timelines/addTempTimeline', payload: userTimeline });
+
+    setPostMessage('');
+    setSelectedImage(null);
 
     const formData = new FormData();
     formData.append('plant_id', id);
@@ -83,14 +94,13 @@ const PlantDetailsPage = () => {
     }
 
     try {
+      setTyping(true); // Show typing indicator for AI response
       await dispatch(addTimelineEvent({ plant_id: id, formData })).unwrap();
-      setPostMessage('');
-      setSelectedImage(null);
       toast.success('Update added successfully');
     } catch (error) {
       toast.error('Failed to post update');
     } finally {
-      setLoadingPost(false);
+      setTyping(false); // Hide typing indicator
     }
   };
 
@@ -176,34 +186,36 @@ const PlantDetailsPage = () => {
             <Loading type="spin" color="#019444" height={30} width={30} />
           </div>
         )}
-        {timelineLoading ? (
-          <div className="flex justify-content-center align-items-center h-screen">
-            <Loading type="spin" color="#019444" height={50} width={50} />
+        {timelines
+          .slice()
+          .reverse()
+          .map((event, index) => (
+            <div
+              key={index}
+              className={`timeline-event p-2 mb-2 shadow-1 ${
+                event.source === 'user'
+                  ? 'surface-100 max-w-29rem align-self-end border-round-xl p-2'
+                  : 'bg-transparent w-full'
+              }`}
+              style={event.source === 'user' ? { width: 'fit-content' } : {}} // Inline style for user messages
+            >
+              {event.image_path && (
+                <img
+                  src={event.image_path}
+                  alt="timeline event"
+                  className="border-round"
+                />
+              )}
+              <p>{event.description}</p>
+            </div>
+          ))}
+
+        {/* AI Typing Indicator */}
+        {typing && (
+          <div className="flex justify-content-center align-items-center mb-2">
+            <Loading type="spin" color="#019444" height={30} width={30} />
+            <p className="ml-2">Assistant is typing...</p>
           </div>
-        ) : (
-          timelines
-            .slice()
-            .reverse()
-            .map((event, index) => (
-              <div
-                key={index}
-                className={`timeline-event p-2 mb-2 shadow-1 ${
-                  event.source === 'user'
-                    ? 'surface-100 max-w-29rem align-self-end border-round-xl p-2' // For user messages, use a bubble with background tint
-                    : 'bg-transparent w-full' // For non-user messages, keep background transparent
-                }`}
-                style={event.source === 'user' ? { width: 'fit-content' } : {}} // Inline style for user messages
-              >
-                {event.image_path && (
-                  <img
-                    src={event.image_path}
-                    alt="timeline event"
-                    className="border-round"
-                  />
-                )}
-                <p>{event.description}</p>
-              </div>
-            ))
         )}
       </div>
 
@@ -259,14 +271,14 @@ const PlantDetailsPage = () => {
         <button
           onClick={handlePostMessage}
           style={styles.sendButton}
-          disabled={loadingPost}
+          disabled={typing}
           className={`${
-            loadingPost
+            typing
               ? 'surface-700 cursor-auto rounded-full p-2 mx-2'
               : 'cursor-pointer rounded-full p-2 mx-2 bg-green-500'
           }`}
         >
-          {loadingPost ? (
+          {typing ? (
             <Loading type="spin" color="#fff" height={20} width={20} />
           ) : (
             <IoIosSend className="text-xl text-white" />

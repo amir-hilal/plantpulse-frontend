@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../services/api'; // Assuming you have an API service
+import api from '../../services/api';
 
 export const fetchTimelines = createAsyncThunk(
   'timelines/fetchTimelines',
@@ -16,6 +16,7 @@ export const fetchTimelines = createAsyncThunk(
     }
   }
 );
+
 export const addTimelineEvent = createAsyncThunk(
   'timelines/addTimelineEvent',
   async ({ plant_id, formData }, { rejectWithValue }) => {
@@ -25,14 +26,13 @@ export const addTimelineEvent = createAsyncThunk(
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data', // Important for handling FormData
+            'Content-Type': 'multipart/form-data',
           },
         }
       );
 
-      // Include both the user message and the assistant's response
-      const { timeline, assistant_response } = response.data;
-      return { timeline, assistant_response };
+      const { userTimeline, aiResponse } = response.data;
+      return { userTimeline, aiResponse };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -44,12 +44,16 @@ const timelinesSlice = createSlice({
   initialState: {
     timelines: [],
     loading: false,
-    loadingMore: false, // For fetching additional pages
+    loadingMore: false,
     error: null,
     page: 1,
     hasMore: true,
   },
-  reducers: {},
+  reducers: {
+    addTempTimeline: (state, action) => {
+      state.timelines.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTimelines.pending, (state, action) => {
@@ -68,7 +72,7 @@ const timelinesSlice = createSlice({
             !state.timelines.some((timeline) => timeline.id === newTimeline.id)
         );
 
-        state.timelines = [...state.timelines, ...newTimelines]; // Append new timelines
+        state.timelines = [...state.timelines, ...newTimelines];
         state.page += 1;
         state.hasMore = action.payload.current_page < action.payload.last_page;
       })
@@ -77,26 +81,21 @@ const timelinesSlice = createSlice({
         state.loadingMore = false;
         state.error = action.payload;
       })
-      .addCase(addTimelineEvent.pending, (state) => {
-        state.loading = true;
-      })
-
       .addCase(addTimelineEvent.fulfilled, (state, action) => {
-        state.loading = false;
+        const { aiResponse } = action.payload;
+        console.log(action.payload)
 
-        const timeline = action.payload?.timeline;
-        if (timeline && timeline.description) {
-          state.timelines.push(timeline); // Add the new timeline event
-        }
 
-        if (action.payload?.assistant_response) {
+        if (aiResponse) {
           state.timelines.push({
-            description: action.payload.assistant_response,
-            isAssistantResponse: true, // Mark it as a response from GPT-4
+            description: aiResponse,
+            source: 'ai',
           });
         }
       });
   },
 });
+
+export const { addTempTimeline } = timelinesSlice.actions;
 
 export default timelinesSlice.reducer;
