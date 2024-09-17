@@ -1,8 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import Loading from 'react-loading';
 import api from '../../services/api';
 import echo from '../../services/echo';
+
+const fetchMessages = (
+  selectedUser,
+  setMessages,
+  setLoading,
+  setHasMore,
+  updateLastMessage,
+  scrollToBottom,
+  loading
+) => {
+  if (!selectedUser || loading) return; // Ensure fetch only happens if not loading and we have a user
+
+  setLoading(true); // Set loading state
+  api
+    .get(`/chats/${selectedUser.id}?page=1`)
+    .then((response) => {
+      const fetchedMessages = response.data.data.reverse();
+      setMessages(fetchedMessages); // Set messages
+      setHasMore(response.data.next_page_url !== null); // Set if more messages exist
+      if (fetchedMessages.length > 0) {
+        updateLastMessage(
+          selectedUser.id,
+          fetchedMessages[fetchedMessages.length - 1]
+        );
+      }
+      setLoading(false); // Stop loading
+      scrollToBottom(); // Scroll to bottom after messages are fetched
+    })
+    .catch((error) => {
+      console.error('Error fetching messages:', error);
+      setLoading(false); // Ensure loading is stopped in case of error
+    });
+};
 
 const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const [messages, setMessages] = useState([]);
@@ -13,10 +46,10 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const messagesEndRef = useRef(null);
   const containerRef = useRef(null);
 
-  // Function to scroll to the bottom
-  const scrollToBottom = () => {
+  // Memoize scrollToBottom to avoid re-creating it every render
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   // Clear messages and reset state when switching between users
   useEffect(() => {
@@ -25,9 +58,54 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     setHasMore(true); // Reset 'hasMore' to true
   }, [selectedUser]);
 
-  // Load older messages when scrolling up
-  const loadMoreMessages = () => {
-    if (hasMore && !loading) {
+  useEffect(() => {
+    if (!selectedUser) return;
+
+    const fetchInitialMessages = async () => {
+      if (!loading) {
+        fetchMessages(
+          selectedUser,
+          setMessages,
+          setLoading,
+          setHasMore,
+          updateLastMessage,
+          scrollToBottom,
+          loading
+        );
+      }
+    };
+
+    // Fetch messages only once when selectedUser changes
+    fetchInitialMessages();
+
+    const setupRealTimeListener = () => {
+      const channel = echo.private(`chat.${selectedUser.id}`);
+
+      channel.listen('MessageSent', (e) => {
+        setMessages((prevMessages) => {
+          if (!prevMessages.some((msg) => msg.id === e.message.id)) {
+            return [...prevMessages, e.message];
+          }
+          return prevMessages;
+        });
+        updateLastMessage(selectedUser.id, e.message);
+        scrollToBottom();
+      });
+
+      return () => {
+        echo.leave(`chat.${selectedUser.id}`); // Clean up listener
+      };
+    };
+
+    const cleanupListener = setupRealTimeListener();
+
+    return () => {
+      cleanupListener();
+    };
+  }, [selectedUser?.id]); // Only re-run when selectedUser's id changes
+
+  const loadMoreMessages = useCallback(() => {
+    if (hasMore && !loading && page > 1) {
       setLoading(true);
       api
         .get(`/chats/${selectedUser.id}?page=${page + 1}`)
@@ -43,54 +121,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
           setLoading(false);
         });
     }
-  };
-
-  // useEffect to fetch messages and listen for real-time updates
-  useEffect(() => {
-    const fetchMessages = () => {
-      setLoading(true); // Indicate loading
-      api
-        .get(`/chats/${selectedUser.id}?page=1`)
-        .then((response) => {
-          const fetchedMessages = response.data.data.reverse();
-          setMessages(fetchedMessages);
-          setHasMore(response.data.next_page_url !== null);
-          if (fetchedMessages.length > 0) {
-            updateLastMessage(
-              selectedUser.id,
-              fetchedMessages[fetchedMessages.length - 1]
-            );
-          }
-          setLoading(false); // Stop loading
-          setTimeout(scrollToBottom, 100);
-        })
-        .catch((error) => {
-          console.error('Error fetching messages:', error);
-          setLoading(false); // Stop loading
-        });
-    };
-
-    const setupRealTimeListener = () => {
-      const channel = echo.private(`chat.${selectedUser.id}`);
-      channel.listen('MessageSent', (e) => {
-        setMessages((prevMessages) => [...prevMessages, e.message]);
-        updateLastMessage(selectedUser.id, e.message);
-        scrollToBottom();
-      });
-
-      return () => {
-        echo.leave(`chat.${selectedUser.id}`);
-      };
-    };
-
-    // Fetch initial messages and set up real-time listener
-    fetchMessages();
-    const cleanupListener = setupRealTimeListener();
-
-    return () => {
-      cleanupListener(); // Clean up real-time listener
-    };
-  }, [selectedUser, updateLastMessage]);
+  }, [hasMore, loading, page, selectedUser.id]);
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;

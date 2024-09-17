@@ -87,10 +87,10 @@ const ChatsPage = () => {
       });
 
       return () => {
-        echo.leave(`chat.${user.id}`);
+        echo.leave(`chat.${user.id}`); // Ensure listener is removed on unmount
       };
     }
-  }, [selectedUser, user]);
+  }, [user?.id]); // Only run when the user id changes
 
   const filteredFriends = friends
     .filter((friend) =>
