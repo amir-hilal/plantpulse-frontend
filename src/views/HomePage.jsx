@@ -5,7 +5,7 @@ import Loading from 'react-loading'; // You can use any loading spinner componen
 import { useDispatch, useSelector } from 'react-redux';
 import MyGardensCarousel from '../components/common/MyGardensCarousel';
 import WateringSchedules from '../components/common/WateringSchedules';
-import PostCard from '../components/posts/PostCard';
+import PostCard from '../components/Posts/PostCard';
 import {
   clearPosts,
   fetchFriendsPosts,
