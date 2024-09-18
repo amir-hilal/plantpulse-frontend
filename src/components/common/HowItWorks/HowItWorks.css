@@ -1,0 +1,90 @@
+.grid-container {
+  display: grid;
+  position: relative;
+  justify-content: center;
+}
+
+.step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%; /* Adjust the width as needed */
+  height: 300px;
+  background-color: #f0fdf4;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  margin-bottom: 2rem;
+}
+
+.step.left {
+  grid-column: 1 / 2;
+  justify-self: end;
+  margin-top: -30px;
+  margin-right: 5%;
+}
+
+.step.right {
+  grid-column: 2 / 3;
+  justify-self: start;
+  margin-top: -100px; /* Adjust this value to stagger cards correctly */
+  margin-left: 5%;
+}
+
+.arrow-svg {
+  z-index: 1;
+  width: 30%;
+  position: relative;
+  transform: translate(20%,-70%);
+  grid-column: 1 / span 2;
+  justify-self: center;
+  margin-top: -100px; /* Adjust for better alignment */
+}
+
+.rotate {
+  transform: scale(-1,1) translate(20%,-20%);
+}
+
+@media only screen and (max-width: 1120px) {
+  .arrow-svg {
+    transform: translate(20%,-95%);
+  }
+  .rotate {
+    transform: scale(-1,1) translate(20%,-35%);
+  }
+}
+
+@media only screen and (max-width: 940px) {
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step {
+    max-width: 100vh;
+    width: 70%;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-size: 15px;
+  }
+
+  .step div{
+    width: 100%;
+  }
+
+  .step img{
+    height: 80px;
+  }
+
+  .step.left,
+  .step.right {
+    justify-self: center;
+  }
+
+  .arrow-svg {
+    display: none;
+  }
+}

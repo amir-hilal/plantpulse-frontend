@@ -1,13 +1,616 @@
+
+*{
+  letter-spacing: 1px;
+  box-sizing: border-box;
+}
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Inter', 'source-code-pro', Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+:root {
+  --text-color:#495057;
+  --text-color-secondary:#263238;
+  --border-radius:6px;
+  --primary-color-text:#E8F5E9;
+  --primary-color:#019444;
+  --secondary-color:#263238;
+  --info:#2194f3;
+  --seconday-light: #394c56;
+  --black: #161d21;
+  --dark_grey:#4D4D4D;
+  --grey:#717171;
+  --light_grey:#89939E;
+  --grey_blue:#ABBED1;
+  --silver:#F5F7FA;
+  --white:#FFFFFF;
+
+  --shade_1:#43A046;
+  --shade_2:#388E3B;
+  --shade_3:#237D31;
+  --shade_4:#1B5E1F;
+  --shade_5:#103E13;
+
+
+  --tint_1: #66BB69;
+  --tint_2: #81C784;
+  --tint_3: #A5D6A7;
+  --tint_4: #C8E6C9;
+  --tint_5: #E8F5E9;
+
+
+  --warning:#FBC02D;
+  --error: #E53835;
+  --success:#2E7D31;
+
+  --surface-ground:#eff3f8;
+  --surface-section:#ffffff;
+  --surface-card:#ffffff;
+  --surface-overlay:#ffffff;
+  --surface-border:#dfe7ef;
+  --surface-hover:#f6f9fc;
+  --surface-0: #ffffff;
+  --surface-50: #FAFAFA;
+  --surface-100: #F5F5F5;
+  --surface-200: #EEEEEE;
+  --surface-300: #E0E0E0;
+  --surface-400: #BDBDBD;
+  --surface-500: #9E9E9E;
+  --surface-600: #757575;
+  --surface-700: #616161;
+  --surface-800: #424242;
+  --surface-900: #212121;
+  --blue-50:#f5f9ff;
+  --blue-100:#d0e1fd;
+  --blue-200:#abc9fb;
+  --blue-300:#85b2f9;
+  --blue-400:#609af8;
+  --blue-500:#3b82f6;
+  --blue-600:#326fd1;
+  --blue-700:#295bac;
+  --blue-800:#204887;
+  --blue-900:#183462;
+  --green-50:#f4fcf7;
+  --green-100:#caf1d8;
+  --green-200:#a0e6ba;
+  --green-300:#76db9b;
+  --green-400:#4cd07d;
+  --green-500:#22c55e;
+  --green-600:#1da750;
+  --green-700:#188a42;
+  --green-800:#136c34;
+  --green-900:#0e4f26;
+  --yellow-50:#fefbf3;
+  --yellow-100:#faedc4;
+  --yellow-200:#f6de95;
+  --yellow-300:#f2d066;
+  --yellow-400:#eec137;
+  --yellow-500:#eab308;
+  --yellow-600:#c79807;
+  --yellow-700:#a47d06;
+  --yellow-800:#816204;
+  --yellow-900:#5e4803;
+  --cyan-50:#f3fbfd;
+  --cyan-100:#c3edf5;
+  --cyan-200:#94e0ed;
+  --cyan-300:#65d2e4;
+  --cyan-400:#35c4dc;
+  --cyan-500:#06b6d4;
+  --cyan-600:#059bb4;
+  --cyan-700:#047f94;
+  --cyan-800:#036475;
+  --cyan-900:#024955;
+  --pink-50:#fef6fa;
+  --pink-100:#fad3e7;
+  --pink-200:#f7b0d3;
+  --pink-300:#f38ec0;
+  --pink-400:#f06bac;
+  --pink-500:#ec4899;
+  --pink-600:#c93d82;
+  --pink-700:#a5326b;
+  --pink-800:#822854;
+  --pink-900:#5e1d3d;
+  --indigo-50:#f7f7fe;
+  --indigo-100:#dadafc;
+  --indigo-200:#bcbdf9;
+  --indigo-300:#9ea0f6;
+  --indigo-400:#8183f4;
+  --indigo-500:#6366f1;
+  --indigo-600:#5457cd;
+  --indigo-700:#4547a9;
+  --indigo-800:#363885;
+  --indigo-900:#282960;
+  --teal-50:#f3fbfb;
+  --teal-100:#c7eeea;
+  --teal-200:#9ae0d9;
+  --teal-300:#6dd3c8;
+  --teal-400:#41c5b7;
+  --teal-500:#14b8a6;
+  --teal-600:#119c8d;
+  --teal-700:#0e8174;
+  --teal-800:#0b655b;
+  --teal-900:#084a42;
+  --orange-50:#fff8f3;
+  --orange-100:#feddc7;
+  --orange-200:#fcc39b;
+  --orange-300:#fba86f;
+  --orange-400:#fa8e42;
+  --orange-500:#f97316;
+  --orange-600:#d46213;
+  --orange-700:#ae510f;
+  --orange-800:#893f0c;
+  --orange-900:#642e09;
+  --bluegray-50:#f7f8f9;
+  --bluegray-100:#dadee3;
+  --bluegray-200:#bcc3cd;
+  --bluegray-300:#9fa9b7;
+  --bluegray-400:#818ea1;
+  --bluegray-500:#64748b;
+  --bluegray-600:#556376;
+  --bluegray-700:#465161;
+  --bluegray-800:#37404c;
+  --bluegray-900:#282e38;
+  --purple-50:#fbf7ff;
+  --purple-100:#ead6fd;
+  --purple-200:#dab6fc;
+  --purple-300:#c996fa;
+  --purple-400:#b975f9;
+  --purple-500:#a855f7;
+  --purple-600:#8f48d2;
+  --purple-700:#763cad;
+  --purple-800:#5c2f88;
+  --purple-900:#432263;
+  --red-50:#fff5f5;
+  --red-100:#ffd0ce;
+  --red-200:#ffaca7;
+  --red-300:#ff8780;
+  --red-400:#ff6259;
+  --red-500:#ff3d32;
+  --red-600:#d9342b;
+  --red-700:#b32b23;
+  --red-800:#8c221c;
+  --red-900:#661814;
+  --primary-50:#f5f9ff;
+  --primary-100:#d0e1fd;
+  --primary-200:#abc9fb;
+  --primary-300:#85b2f9;
+  --primary-400:#609af8;
+  --primary-500:#3b82f6;
+  --primary-600:#326fd1;
+  --primary-700:#295bac;
+  --primary-800:#204887;
+  --primary-900:#183462;
+  --gray-50: #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #EEEEEE;
+  --gray-300: #E0E0E0;
+  --gray-400: #BDBDBD;
+  --gray-500: #9E9E9E;
+  --gray-600: #757575;
+  --gray-700: #616161;
+  --gray-800: #424242;
+  --gray-900: #212121;
+  color-scheme: light;
+}
+
+
+/* Background color classes */
+
+.bg-primary{
+  background-color: var(--primary-color) !important;
+  color: var(--tint_5) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color);
+}
+
+.bg-secondary-light{
+  background-color: var(--seconday-light);
+}
+
+.bg-info {
+  background-color: var(--info);
+}
+
+.bg-black {
+  background-color: var(--black);
+}
+
+.bg-dark-grey {
+  background-color: var(--dark_grey);
+}
+
+.bg-grey {
+  background-color: var(--grey);
+}
+
+.bg-light-grey {
+  background-color: var(--light_grey) !important;
+}
+
+.bg-grey-blue {
+  background-color: var(--grey_blue);
+}
+
+.bg-silver {
+  background-color: var(--silver);
+}
+
+.bg-white {
+  background-color: var(--white);
+}
+
+.bg-shade-1 {
+  background-color: var(--shade_1);
+}
+
+.bg-shade-2 {
+  background-color: var(--shade_2);
+}
+
+.bg-shade-3 {
+  background-color: var(--shade_3);
+}
+
+.bg-shade-4 {
+  background-color: var(--shade_4);
+}
+
+.bg-shade-5 {
+  background-color: var(--shade_5);
+}
+
+.bg-tint-1 {
+  background-color: var(--tint_1) !important;
+}
+
+.bg-tint-2 {
+  background-color: var(--tint_2) !important;
+}
+
+.bg-tint-3 {
+  background-color: var(--tint_3) !important;
+}
+
+.bg-tint-4 {
+  background-color: var(--tint_4) !important;
+}
+
+.bg-tint-5 {
+  background-color: var(--tint_5) !important;
+}
+
+.bg-warning {
+  background-color: var(--warning);
+}
+
+.bg-error {
+  background-color: var(--error);
+}
+
+.bg-success {
+  background-color: var(--success);
+}
+
+/* Text color classes */
+
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.text-info {
+  color: var(--info);
+}
+
+.text-black {
+  color: var(--black);
+}
+
+.text-dark-grey {
+  color: var(--dark_grey);
+}
+
+.text-grey {
+  color: var(--grey);
+}
+
+.text-light-grey {
+  color: var(--light_grey);
+}
+
+.text-grey-blue {
+  color: var(--grey_blue);
+}
+
+.text-silver {
+  color: var(--silver);
+}
+
+.text-white {
+  color: var(--white);
+}
+
+.text-shade-1 {
+  color: var(--shade_1);
+}
+
+.text-shade-2 {
+  color: var(--shade_2);
+}
+
+.text-shade-3 {
+  color: var(--shade_3);
+}
+
+.text-shade-4 {
+  color: var(--shade_4);
+}
+
+.text-shade-5 {
+  color: var(--shade_5);
+}
+
+.text-tint-1 {
+  color: var(--tint_1);
+}
+
+.text-tint-2 {
+  color: var(--tint_2);
+}
+
+.text-tint-3 {
+  color: var(--tint_3);
+}
+
+.text-tint-4 {
+  color: var(--tint_4);
+}
+
+.text-tint-5 {
+  color: var(--tint_5);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.font-8{
+  font-size:8px
+}
+.font-10{
+  font-size: 10px;
+}
+.font-12{
+  font-size:12px;
+}
+.font-15{
+  font-size: 15px;
+}
+
+.font-16{
+  font-size: 16px;
+}
+
+.font-20{
+  font-size: 20px;
+}
+
+
+.font-45{
+  font-size: 45px !important;
+}
+
+.h-37rem{
+  height: 39rem;
+}
+
+.min-h-10 {
+  min-height: 250px;
+}
+.min-w-5 {
+  min-width: 125px;
+}
+.border-secondary{
+  border-color: var(--secondary-color);
+}
+
+.p-button{
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius);
+  border: none;
+  color: var(--tint_5);
+  padding: .5rem 0;
+}
+
+.z-50{
+  z-index: 50;
+}
+
+.z-1001{
+  z-index: 1001;
+}
+.main-content {
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.main-content.blurred {
+  filter: blur(5px);
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default; /* Disable interactions with the blurred content */
+}
+
+.profile-picture-position{
+  top:-70px;
+  left:10% !important;
+}
+
+@media only screen and (max-width: 767px) {
+  .profile-picture-position{
+    top:-60px;
+
+    left:38% !important;
+  }
+}
+/* Smooth transition for dropdown */
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease ,opacity 0.3s ease, margin-top .3s ease, padding .3s ease, margin .3s ease;
+  opacity: 0;
+  padding: 0 ;
+  margin: 0 ;
+}
+
+.dropdown-content.show {
+  max-height: 500px;
+  opacity: 1;
+  padding: 0.5rem !important;
+  margin-top: 0.5rem !important;
+
+}
+
+.dropdown-item {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.dropdown-content.show .dropdown-item {
+  opacity: 1;
+}
+
+.translate-x-50{
+  transform: translateX(50%);
+}
+
+.left-36{
+  left: 36%;
+}
+
+
+.dropdown-arrow-position{
+  right:6px;
+  bottom: .8rem;
+}
+
+@media only screen and (max-width: 767px) {
+  .dropdown-arrow-position{
+    right:6px;
+    bottom: .5rem;
+  }
+}
+
+.aspect-ratio-10-16{
+
+  aspect-ratio: 11 / 16 !important;
+}
+
+
+.group:hover .blurry {
+  filter: blur(2px);
+}
+
+.group:hover .edit-icon {
+  opacity: 1 !important;
+}
+
+.scroll-bar-style::-webkit-scrollbar{
+  width: 10px;
+}
+
+.scroll-bar-style::-webkit-scrollbar-thumb {
+  background-color: grey; /* Color of the scrollbar thumb */
+  border-radius: 20px; /* Rounded corners for the thumb */
+}
+
+.scroll-bar-style::-webkit-scrollbar-track {
+  background-color: transparent; /* Hide the track */
+}
+
+/* For Firefox */
+.scroll-bar-style {
+  scrollbar-width: thin; /* Makes scrollbar smaller */
+  scrollbar-color: grey transparent; /* Thumb color (grey) and track color (transparent) */
+}
+
+.scale-1:hover{
+  transform: scale(1.05) !important;
+  transition:  transform .3s ease;
+}
+
+/* Base Chat Modal Styles */
+.chat-modal {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  max-width: 30rem;
+  height: 34rem;
+  margin-bottom: 2rem;
+  margin-right: 2rem;
+  background-color: var(--tint-4);
+  border-radius: 1rem;
+  box-shadow: 50px 100px 200px rgba(0, 0, 0, .3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 1000;
+
+  /* Start Hidden */
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* When chat modal is open (slide-in) */
+.chat-modal.slide-in {
+  opacity: 1 !important;
+  transform: translateY(-10%) !important;
+}
+
+/* For sliding out when modal is closed (optional) */
+.chat-modal.slide-out {
+  opacity: 0 !important;
+  transform: translateY(100%) !important;
+}
+
+/* Responsive Design for Small Screens */
+@media (max-width: 575px) {
+  .chat-modal {
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    margin: 0;
+    bottom: 0;
+    border-radius: 0;
+  }
+  .chat-modal.slide-in {
+    opacity: 1 !important;
+    transform: translateY(0%) !important;
+  }
+
+  .arrow-close-chatbot-modal{
+    display: none;
+  }
+}
+
+
+.shadow-card{
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, .1);
+
 }
