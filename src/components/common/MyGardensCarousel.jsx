@@ -71,7 +71,7 @@ const MyGardensCarousel = () => {
             scrollbarWidth: 'thin',
             scrollbarColor: '#263238 #F0F0F0', // Adjust colors as needed
           }}
-          className="flex w-full overflow-x-scroll"
+          className="flex w-full overflow-x-auto"
         >
           <style jsx>{`
             div::-webkit-scrollbar {

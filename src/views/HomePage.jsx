@@ -68,8 +68,8 @@ const HomePage = () => {
       </section>
 
       <div className="flex align-items-center mb-3  px-2 md:px-4 lg:px-8">
-        <IoTimeOutline className=" w-2rem  text-grey" />{' '}
-        <h4 className="m-0 ml-2 text-md text-grey">Today's Watering Schedule</h4>
+        <IoTimeOutline className=" w-2rem  text-secondary" />{' '}
+        <h4 className="m-0 ml-2 text-md text-secondary">Today's Watering Schedule</h4>
       </div>
       {/* Watering Schedule */}
       <section className="  px-2 md:px-4 lg:px-4 py-4  mx-2 md:mx-4 lg:mx-8 h-21rem bg-tint-5 border-round-xl mb-5 overflow-x-auto">
@@ -80,8 +80,8 @@ const HomePage = () => {
       <section className="  px-2 lg:px-4 py-2  mx-2 md:mx-4 lg:mx-8  border-round-xl mb-5">
         <div className="h-full">
           <div className="flex align-items-center mb-5">
-            <FaUsers className=" w-2rem  text-grey" />{' '}
-            <h4 className="m-0 ml-2 text-md text-grey">Community</h4>
+            <FaUsers className=" w-2rem  text-secondary" />{' '}
+            <h4 className="m-0 ml-2 text-md text-secondary">Community</h4>
           </div>
           {postsLoading && (
             <div className="flex justify-content-center align-items-center h-full">
