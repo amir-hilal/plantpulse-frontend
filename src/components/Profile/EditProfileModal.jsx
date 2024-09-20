@@ -114,7 +114,7 @@ const EditProfileModal = ({ isOpen, onClose, userProfile }) => {
       className="fixed top-0 left-0 w-full h-full flex justify-content-center align-items-center z-50"
       style={{ backgroundColor: 'rgba(22, 29, 33, 0.5)' }}
     >
-      <div className="relative bg-white border-round-xl p-6 w-11 sm:w-8 md:w-8 lg:w-8 shadow-4 overflow-x-auto md:overflow-hidden h-30rem flex justify-content-center align-items-center">
+      <div className="relative bg-white border-round-xl p-6 w-11 sm:w-9 md:w-7 lg:w-6 shadow-4 overflow-x-auto md:overflow-hidden h-37rem sm:h-30rem flex justify-content-center align-items-center">
         <button
           onClick={onClose}
           className="text-secondary bg-transparent absolute top-0 right-0 mt-3 mr-3 cursor-pointer border-none p-0"
