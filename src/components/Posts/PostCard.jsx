@@ -78,14 +78,14 @@ const PostCard = ({ post }) => {
           {showPopover && (
             <div className="absolute right-0 mt-2 surface-100  border-round shadow-2 p-2  w-8rem">
               <button
-                className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-primary-reverse text-left"
+                className="text-sm p-2 w-full border-none bg-transparent cursor-pointer hover:bg-primary-reverse text-left"
                 onClick={handleCopyLink}
               >
                 Copy Link
               </button>
               {isOwner && (
                 <button
-                  className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-primary-reverse"
+                  className="text-sm w-full p-2 border-none bg-transparent cursor-pointer hover:bg-primary-reverse text-left"
                   onClick={() => handleDelete(post)}
                 >
                   Delete

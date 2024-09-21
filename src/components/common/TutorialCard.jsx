@@ -46,7 +46,7 @@ const TutorialCard = ({ tutorial }) => {
 
   return (
     <div className="col-12 md:col-4 lg:col-3 md:m-3 lg:m-0 cursor-pointer">
-      <div>
+      <div className='mb-6'>
         {/* Display YouTube Thumbnail */}
         <div className="relative mb-1">
           <img

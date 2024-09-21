@@ -16,7 +16,7 @@ const AboutSection = ({ profileData, isOwner }) => {
     >
       {profileData.about && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">
-          <p className="text-primary mr-2 my-0">{profileData.about}</p>
+          <p className="text-black mr-2 my-0">{profileData.about}</p>
         </div>
       )}
 
@@ -43,7 +43,7 @@ const AboutSection = ({ profileData, isOwner }) => {
 
       {profileData.address && (
         <div className="flex align-items-center my-2 ml-1 md:ml-0">
-          <FaMapMarkerAlt className="text-primary text-2xl mr-2 " />
+          <FaMapMarkerAlt className="text-primary text-lg md:text-2xl lg:text-3xl mr-2 " />
           <span>{profileData.address}</span>
         </div>
       )}

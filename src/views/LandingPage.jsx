@@ -63,7 +63,7 @@ const LandingPage = () => {
         <HowItWorks />
       </section>
       <h2 className='text-center text-secondary mb-6'>What our Users Say</h2>
-      <section className="flex justify-content-around">
+      <section className="flex justify-content-around mb-6">
         <div className="flex flex-column align-items-center">
           {' '}
           <img

@@ -3,8 +3,8 @@ import logo from '../../assets/images/Logo.png'; // Adjust the path to your logo
 
 const Footer = () => {
     return (
-        <footer className="bg-secondary text-tint-5 py-4">
-            <div className="container mx-auto px-4 flex flex-column md:flex-row justify-content-around  p-4 md:p-7">
+        <footer className="bg-secondary text-tint-5">
+            <div className="container mx-auto px-4 flex flex-column md:flex-row justify-content-around  p-4 md:p-5">
                 <div className="text-center md:text-left mb-6 md:mb-0">
                     <img src={logo} alt="PlantPulse Logo" className="mx-auto md:mx-0 mb-4" style={{ height: '40px' }} />
                     <p className="text-tint-5 text-sm md:text-base">© 2024. All rights reserved</p>
