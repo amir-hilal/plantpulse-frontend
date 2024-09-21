@@ -17,8 +17,8 @@ const Carousel = () => {
     slidesToScroll: 1,
     centerMode: true,
     centerPadding: '0',
-    autoplay: false,
-    autoplaySpeed: 3000,
+    autoplay: true,
+    autoplaySpeed: 2000,
     afterChange: (current) => {
       const slides = document.querySelectorAll('.slick-slide');
       slides.forEach((slide) => (slide.style.transform = 'scale(0.9)'));
