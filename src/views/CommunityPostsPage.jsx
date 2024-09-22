@@ -58,7 +58,7 @@ const CommunityPostsPage = () => {
   }
 
   return (
-    <div className="community-posts-page px-8">
+    <div className="community-posts-page px-1 sm:px-4 md:px-8">
       <div className="flex flex-column my-3">
         <div className="flex align-items-center mb-5">
           <FaUsers className=" w-2rem  text-grey" />{' '}

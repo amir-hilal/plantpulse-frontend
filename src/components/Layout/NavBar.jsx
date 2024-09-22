@@ -234,7 +234,7 @@ const NavBar = () => {
 
       {/* Slide-in Menu */}
       {isMenuOpen && (
-        <div className="fixed top-0 right-0 h-full w-5 bg-secondary-light shadow-lg z-50 p-4 flex flex-column justify-content-start">
+        <div className="fixed top-0 right-0 h-full w-5 bg-secondary-light shadow-lg z-50 p-3 flex flex-column justify-content-start">
           {/* Top Section with Close Button, Bell Icon, and Profile Picture */}
           <div className="flex justify-content-between align-items-center">
             <button
@@ -269,7 +269,7 @@ const NavBar = () => {
               <li key={index} className="mb-4">
                 <button
                   onClick={() => handleNavigation(item.path, item.disabled)}
-                  className={`w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                  className={`w-full text-left bg-transparent px-1 sm:px-2 md:px-4 border-none font-16 cursor-pointer border-round ${
                     item.disabled
                       ? 'text-grey'
                       : 'text-tint-5 hover:bg-tint-5 hover:text-primary'
@@ -285,7 +285,7 @@ const NavBar = () => {
             <li className="mb-4">
               <button
                 onClick={handleCommunityToggle}
-                className="w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary"
+                className="w-full text-left bg-transparent px-1 sm:px-2 md:px-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary flex justify-content-between"
               >
                 Community <i className="pi pi-chevron-down"></i>
               </button>
@@ -308,7 +308,7 @@ const NavBar = () => {
                         onClick={() =>
                           handleNavigation(item.path, item.disabled)
                         }
-                        className={`py-2 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                        className={`py-2 w-full text-left bg-transparent px-1 sm:px-2 md:px-4 border-none font-16 cursor-pointer border-round ${
                           item.disabled
                             ? 'text-grey'
                             : 'text-primary hover:bg-primary hover:text-tint-5'
@@ -327,7 +327,7 @@ const NavBar = () => {
             <li className="mb-4">
               <button
                 onClick={handleUtilitiesToggle}
-                className="w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary"
+                className="w-full text-left bg-transparent px-1 sm:px-2 md:px-4 border-none font-16 cursor-pointer border-round text-tint-5 hover:bg-tint-5 hover:text-primary flex justify-content-between"
               >
                 Utilities <i className="pi pi-chevron-down"></i>
               </button>
@@ -350,7 +350,7 @@ const NavBar = () => {
                         onClick={() =>
                           handleNavigation(item.path, item.disabled)
                         }
-                        className={`py-2 w-full text-left bg-transparent pr-4 pl-4 border-none font-16 cursor-pointer border-round ${
+                        className={`py-2 w-full text-left bg-transparent px-1 sm:px-2 md:px-4 border-none font-16 cursor-pointer border-round ${
                           item.disabled
                             ? 'text-grey'
                             : 'text-primary hover:bg-primary hover:text-tint-5'
