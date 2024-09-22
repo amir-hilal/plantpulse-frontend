@@ -46,8 +46,8 @@ const HomePage = () => {
   return (
     <div className="home-page">
       <section className="flex px-2 md:px-4 lg:px-8 my-3 align-items-center justify-content-between">
-        <h3 className="text-primary">
-          Welcom back,{' '}
+        <h3 className="text-primary text-sm sm:text-base md:text-lg lg:text-xl">
+          Welcome back,{' '}
           <span className="text-secondary">
             {user.first_name} {user.last_name}
           </span>

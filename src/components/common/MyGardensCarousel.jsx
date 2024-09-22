@@ -65,47 +65,62 @@ const MyGardensCarousel = () => {
         className="flex align-items-center justify-content-center w-full"
         onClick={() => navigate(`/my-gardens`)}
       >
-        <div
-          style={{
-            ...styles.carouselItems,
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#263238 #F0F0F0', // Adjust colors as needed
-          }}
-          className="flex w-full overflow-x-auto"
-        >
-          <style jsx>{`
-            div::-webkit-scrollbar {
-              height: 8px; /* Adjust the scrollbar height */
-            }
-            div::-webkit-scrollbar-thumb {
-              background-color: #263238; /* Color of the scrollbar thumb */
-              border-radius: 10px; /* Rounded corners for the thumb */
-            }
-            div::-webkit-scrollbar-track {
-              background-color: #263238; /* Color of the track */
-              border-radius: 10px; /* Rounded corners for the track */
-            }
-            div::-webkit-scrollbar-button {
-              display: none; /* Hide the arrows */
-            }
-          `}</style>
-          {gardens.map((garden) => (
-            <div key={garden.id} style={styles.card} className="mr-4">
-              {garden.image_url ? (
-                <img
-                  src={garden.image_url}
-                  alt={garden.name}
-                  style={styles.img}
-                  width={170}
-                  height={170}
-                />
-              ) : (
-                <div style={styles.placeholderImg}></div>
-              )}
-              <h3>{garden.name}</h3>
-            </div>
-          ))}
-        </div>
+        {gardens.length === 0 ? (
+          // Empty state when no gardens are available
+          <div className="text-center mt-4">
+            <p className="text-base md:text-lg">
+              You don't have any gardens yet.{' '}
+              <span
+                className="text-primary cursor-pointer"
+                onClick={() => navigate('/my-gardens')}
+              >
+                Go to My Gardens page and add a garden.
+              </span>
+            </p>
+          </div>
+        ) : (
+          <div
+            style={{
+              ...styles.carouselItems,
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#263238 #F0F0F0', // Adjust colors as needed
+            }}
+            className="flex w-full overflow-x-auto"
+          >
+            <style jsx>{`
+              div::-webkit-scrollbar {
+                height: 8px; /* Adjust the scrollbar height */
+              }
+              div::-webkit-scrollbar-thumb {
+                background-color: #263238; /* Color of the scrollbar thumb */
+                border-radius: 10px; /* Rounded corners for the thumb */
+              }
+              div::-webkit-scrollbar-track {
+                background-color: #263238; /* Color of the track */
+                border-radius: 10px; /* Rounded corners for the track */
+              }
+              div::-webkit-scrollbar-button {
+                display: none; /* Hide the arrows */
+              }
+            `}</style>
+            {gardens.map((garden) => (
+              <div key={garden.id} style={styles.card} className="mr-4">
+                {garden.image_url ? (
+                  <img
+                    src={garden.image_url}
+                    alt={garden.name}
+                    style={styles.img}
+                    width={170}
+                    height={170}
+                  />
+                ) : (
+                  <div style={styles.placeholderImg}></div>
+                )}
+                <h3>{garden.name}</h3>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
