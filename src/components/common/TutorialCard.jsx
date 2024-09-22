@@ -79,7 +79,7 @@ const TutorialCard = ({ tutorial }) => {
                   className="text-sm p-2 border-none bg-transparent cursor-pointer hover:bg-primary-reverse text-left"
                   onClick={handleCopyLink}
                 >
-                  Copy YouTube Link
+                  Copy Link
                 </button>
               </div>
             )}

@@ -47,14 +47,14 @@ const MyGardensCarousel = () => {
     <div className="h-full cursor-pointer">
       <div className="flex justify-content-between mt-3 mb-4">
         <h2
-          className="flex align-items-center m-0"
+          className="flex align-items-center m-0 text-base md:text-lg"
           onClick={() => navigate(`/my-gardens`)}
         >
           Go to My Gardens <IoIosArrowForward className="ml-2" />
         </h2>
         <button
           onClick={() => navigate('/my-gardens')}
-          className=" text-sm bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
+          className="text-xs md:text-sm bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
         >
           <FaPlus className="mr-2" />
           Add Garden

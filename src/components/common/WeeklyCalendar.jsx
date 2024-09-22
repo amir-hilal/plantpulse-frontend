@@ -42,12 +42,11 @@ const WeeklyCalendar = () => {
         <p>No watering schedules for this week.</p>
       )}
       {!loading && weekSchedules.length > 0 && (
-        <div className="grid grid-nogutter w-full">
+        <div className="flex flex-column md:flex-row justify-content-between w-full">
           {weekSchedulesByDay.map(({ day, schedules }, index) => (
             <div
               key={day}
-              className={`col-12 md:col-2 p-2 flex`}
-              style={{ borderColor: '#ccc', borderRightWidth: '1px' }}
+              className={`col-12 md:col-2 p-2 flex justify-content-center weekday-column`}
             >
               <div
                 className={`day-column text-center  `}
@@ -67,7 +66,7 @@ const WeeklyCalendar = () => {
                         opacity: schedule.is_done ? 0.8 : 1,
                       }}
                     >
-                      <div className="flex flex-column justify-content-between w-full border-round-xl shadow-1 p-2 h-8rem">
+                      <div className="flex flex-column justify-content-between w-full border-round-xl shadow-1 p-2">
                         <div className="flex justify-content-between align-items-center mb-2">
                           <img
                             src={watringIcon}
@@ -76,25 +75,11 @@ const WeeklyCalendar = () => {
                           />
                           <h3 className="m-2">{schedule.plant_name}</h3>
                         </div>
-                        <button
-                          onClick={() =>
-                            navigate(`/my-gardens/plant/${schedule.plant_id}`)
-                          }
-                          className="text-xs bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-2 flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
-                        >
-                          See Plant Details
-                        </button>
                       </div>
                     </div>
                   ))
                 )}
               </div>
-              {index !== weekSchedulesByDay.length - 1 && (
-                <div
-                  className="h-full surface-400 ml-3"
-                  style={{ width: '1px' }}
-                ></div>
-              )}
             </div>
           ))}
         </div>

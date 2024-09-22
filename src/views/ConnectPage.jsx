@@ -70,7 +70,7 @@ const ConnectPage = () => {
           className="w-full p-2 pl-5 surface-100 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
         />
       </div>
-      <div><h3 className='text-dark-grey'>Search and Connect with people in the industry</h3></div>
+      <div><h3 className='text-dark-grey px-4 text-xs sm:text-base'>Search and Connect with people in the industry</h3></div>
       <div className="grid w-11 md:w-10">
         {users.length > 0 ? (
           users.map((user) => (

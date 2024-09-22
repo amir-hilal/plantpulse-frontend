@@ -75,15 +75,15 @@ const Tutorials = () => {
   };
 
   return (
-    <div className="flex flex-column justify-content-center mt-3 px-8">
+    <div className="flex flex-column justify-content-center mt-3 px-1 sm:px-3 md: px-5 lg:px-8">
       <div className="w-full flex justify-content-between mb-3 align-items-center">
-        <h2 className="text-center m-0">Gardening Tutorials</h2>
+        <h2 className="text-center m-0 text-xs sm:text-base md:text-xl">Gardening Tutorials</h2>
         <input
           type="text"
           value={searchQuery}
           onChange={handleSearchChange}
           placeholder="Search for tutorials"
-          className="py-2 pr-8 pl-6 surface-100 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+          className="py-1 sm:py-2 sm:pl-2 md:pl-4 lg:pr-6 surface-100 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
         />
       </div>
 
