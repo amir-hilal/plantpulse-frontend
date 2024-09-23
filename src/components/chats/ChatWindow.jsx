@@ -41,7 +41,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false); // New loading state for loading more messages
+  const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const messagesEndRef = useRef(null);
@@ -114,7 +114,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     if (hasMore && !loadingMore) {
       scrollPositionRef.current =
         containerRef.current.scrollHeight - containerRef.current.scrollTop+500;
-      setLoadingMore(true); // Set loadingMore to true for loading older messages
+      setLoadingMore(true);
       api
         .get(`/chats/${selectedUser.id}?page=${page}`)
         .then((response) => {
@@ -122,7 +122,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
           setMessages((prevMessages) => [...newMessages, ...prevMessages]);
           setHasMore(response.data.next_page_url !== null);
           setPage((prevPage) => prevPage + 1);
-          setLoadingMore(false); // Stop loadingMore
+          setLoadingMore(false);
           maintainScrollPosition();
         })
         .catch((error) => {

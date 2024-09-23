@@ -1,4 +1,5 @@
 import { debounce } from 'lodash';
+import Markdown from 'markdown-to-jsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { IoIosAttach, IoIosCloseCircle, IoIosSend } from 'react-icons/io';
 import Loading from 'react-loading';
@@ -14,11 +15,10 @@ import {
 } from '../features/plant/timelinesSlice';
 
 const PlantDetailsPage = () => {
-  const { id } = useParams(); // Get plant ID from route
+  const { id } = useParams();
   const dispatch = useDispatch();
 
-  // State for modal visibility
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Control modal visibility
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const {
     plant,
@@ -27,8 +27,8 @@ const PlantDetailsPage = () => {
   } = useSelector((state) => state.plants);
   const {
     timelines,
-    loading: timelineLoading, // For fetching new timelines
-    loadingMore, // For loading more timelines when scrolling
+    loading: timelineLoading,
+    loadingMore,
     page,
     hasMore,
   } = useSelector((state) => state.timelines);
@@ -36,12 +36,12 @@ const PlantDetailsPage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [postMessage, setPostMessage] = useState('');
   const [typing, setTyping] = useState(false); // For AI typing indicator
-  const [fetching, setFetching] = useState(false); // Track whether a fetch request is ongoing
-  const timelineRef = useRef(null); // Ref for the timeline container
+  const [fetching, setFetching] = useState(false);
+  const timelineRef = useRef(null);
 
   useEffect(() => {
-    dispatch(fetchPlantDetails(id)); // Fetch plant details on component mount
-    dispatch(fetchTimelines({ plantId: id, page: 1 })); // Fetch the first page of timelines
+    dispatch(fetchPlantDetails(id));
+    dispatch(fetchTimelines({ plantId: id, page: 1 }));
   }, [dispatch, id]);
 
   const handleScroll = debounce(() => {
@@ -51,14 +51,14 @@ const PlantDetailsPage = () => {
       !timelineLoading &&
       !fetching
     ) {
-      const previousHeight = timelineRef.current.scrollHeight; // Store current scroll height before fetching new data
+      const previousHeight = timelineRef.current.scrollHeight;
       setFetching(true);
       dispatch(fetchTimelines({ plantId: id, page })).finally(() => {
         setFetching(false);
         setTimeout(() => {
-          const newHeight = timelineRef.current.scrollHeight; // Get new scroll height
-          timelineRef.current.scrollTop = newHeight - previousHeight; // Maintain scroll position after new messages are loaded
-        }, 100); // Slight delay to allow for DOM updates
+          const newHeight = timelineRef.current.scrollHeight;
+          timelineRef.current.scrollTop = newHeight - previousHeight;
+        }, 100);
       });
     }
   }, 1000);
@@ -73,7 +73,7 @@ const PlantDetailsPage = () => {
 
   useEffect(() => {
     if (timelines.length && timelineRef.current) {
-      timelineRef.current.scrollTop = timelineRef.current.scrollHeight; // Keep the scroll at the bottom
+      timelineRef.current.scrollTop = timelineRef.current.scrollHeight;
     }
   }, [timelines]);
 
@@ -100,13 +100,13 @@ const PlantDetailsPage = () => {
     }
 
     try {
-      setTyping(true); // Show typing indicator for AI response
+      setTyping(true);
       await dispatch(addTimelineEvent({ plant_id: id, formData })).unwrap();
       toast.success('Update added successfully');
     } catch (error) {
       toast.error('Failed to post update');
     } finally {
-      setTyping(false); // Hide typing indicator
+      setTyping(false);
     }
   };
 
@@ -143,14 +143,17 @@ const PlantDetailsPage = () => {
 
   return (
     <div className="relative flex flex-column h-37rem w-full">
-      <div className="flex justify-content-between align-items-center p-4 bg-tint-5">
+      <div className="flex flex-column md:flex-row justify-content-between align-items-center p1 md:p-2 lg:p-3 bg-tint-5">
         <div className="flex align-items-center">
-          <Link to="/my-gardens" className="text-primary">
+          <Link to="/my-gardens" className="text-primary text-xs md:text-base">
             {garden_name || 'Garden'}
           </Link>
-          <h3 className="ml-2 my-0"> / {plant.plant.name}</h3>
+          <h3 className="ml-2 my-0 text-xs md:text-base">
+            {' '}
+            / {plant.plant.name}
+          </h3>
         </div>
-        <div className="flex align-items-center">
+        <div className="flex align-items-center text-xs md:text-base my-2 md:my-0">
           <span className="px-3 py-2 border-round-xl bg-gray-300 text-black">
             {plant.plant.formatted_age}
           </span>
@@ -176,7 +179,7 @@ const PlantDetailsPage = () => {
         </div>
         <button
           onClick={() => setIsEditModalOpen(true)}
-          className=" h-full bg-primary border-none  hover:bg-primary-reverse text-white py-2 px-4 border-round-xl ml-4"
+          className=" h-full bg-primary border-none  hover:bg-primary-reverse text-white py-2 px-4 border-round-xl ml-4 text-xs md:text-base"
         >
           Edit Plant
         </button>
@@ -206,10 +209,10 @@ const PlantDetailsPage = () => {
               <img
                 src={event.image_path}
                 alt="timeline event"
-                className="border-round"
+                className="border-round w-full"
               />
             )}
-            <p>{event.description}</p>
+            <Markdown>{event.description}</Markdown>
           </div>
         ))}
 

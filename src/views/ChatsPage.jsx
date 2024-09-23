@@ -16,7 +16,7 @@ const ChatsPage = () => {
   const user = useSelector((state) => state.auth.userProfile);
   const userLoading = useSelector((state) => state.auth.loading);
   const [lastMessages, setLastMessages] = useState({});
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [loading, setLoading] = useState(true);
   const [unreadMessages, setUnreadMessages] = useState({});
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const ChatsPage = () => {
     }
 
     if (user) {
-      setLoading(true); // Start loading
+      setLoading(true);
       api
         .get('/chats/users/conversations')
         .then((response) => {
@@ -52,11 +52,11 @@ const ChatsPage = () => {
           // Update the chattedFriends array and lastMessages state
           setChattedFriends(Object.keys(chattedFriendsMap));
           setLastMessages(lastMessagesMap);
-          setLoading(false); // Stop loading
+          setLoading(false);
         })
         .catch((error) => {
           console.error('Error fetching conversations:', error);
-          setLoading(false); // Stop loading on error
+          setLoading(false);
         });
     }
   }, [dispatch, user]);
@@ -88,7 +88,7 @@ const ChatsPage = () => {
       });
 
       return () => {
-        echo.leave(`chat.${user.id}`); // Ensure listener is removed on unmount
+        echo.leave(`chat.${user.id}`);
       };
     }
   }, [user?.id]); // Only run when the user id changes
@@ -113,7 +113,6 @@ const ChatsPage = () => {
     return a.hasChatted === b.hasChatted ? 0 : a.hasChatted ? -1 : 1;
   });
 
-  // Show loading spinner while users are being fetched
   if (userLoading || loading) {
     return (
       <div style={styles.loadingContainer}>
@@ -124,7 +123,7 @@ const ChatsPage = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.userList}>
+      <div className='w-4 md:w-3'>
         <UserList
           users={sortedFriends}
           searchTerm={searchTerm}
@@ -137,7 +136,7 @@ const ChatsPage = () => {
           unreadMessages={unreadMessages}
         />
       </div>
-      <div style={styles.chatWindow}>
+      <div className='w-8 md:w-9'>
         {selectedUser ? (
           <ChatWindow
             selectedUser={selectedUser}
@@ -158,12 +157,7 @@ const styles = {
     height: '89vh',
     width: '100%',
   },
-  userList: {
-    width: '25%',
-  },
-  chatWindow: {
-    width: '75%',
-  },
+
   placeholder: {
     display: 'flex',
     justifyContent: 'center',
