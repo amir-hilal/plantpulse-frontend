@@ -57,7 +57,7 @@ const UserList = ({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search for friends..."
-          className="py-2 pl-6 w-full surface-100 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary"
+          className="py-2 pl-2 text-xs md:text-base lg:text-lg w-full surface-100 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary"
         />
       </div>
 
@@ -72,20 +72,21 @@ const UserList = ({
                   user.id === selectedUserId ? '#E8F5E9' : '#fff',
               }}
               onClick={() => onUserSelect(user)}
-              className="justify-content-between"
+              className="justify-content-between p-1 md:p-2"
             >
-              <div style={styles.userAvatar}>
+              <div className="mr-1 md:mr-2">
                 <img
                   src={
                     user.profile_photo_url || 'https://via.placeholder.com/50'
                   }
                   alt={user.first_name}
                   style={styles.avatar}
+                  className='w-2rem md:w-3rem'
                 />
               </div>
-              <div className='flex justify-content-between w-full'>
+              <div className="flex justify-content-between w-full">
                 <div>
-                  <h4 style={styles.userName}>
+                  <h4 style={styles.userName} className='text-xs md:text-base lg:text-lg'>
                     {user.first_name} {user.last_name}
                   </h4>
                   <p style={styles.lastMessage}> {getLastMessage(user)}</p>
@@ -100,13 +101,15 @@ const UserList = ({
                       {unreadMessages[user.id]}
                     </span>
                   )}
-                  <span style={styles.time}>{getTimeDifference(user)}</span>
+                  <span style={styles.time} className='text-xs md:text-base'>{getTimeDifference(user)}</span>
                 </div>
               </div>
             </li>
           ))
         ) : (
-          <p className="px-2">No chatted friends found.</p>
+          <p className="px-2 text-xs md:text-base lg:text-lg">
+            No chatted friends found.
+          </p>
         )}
 
         <h4
@@ -134,6 +137,7 @@ const UserList = ({
                   }
                   alt={user.first_name}
                   style={styles.avatar}
+                  className="border-circle w-8 h-8"
                 />
               </div>
               <div>
@@ -174,22 +178,16 @@ const styles = {
   listItem: {
     display: 'flex',
     cursor: 'pointer',
-    padding: '10px',
     borderBottom: '1px solid #eee',
     alignItems: 'center',
   },
-  userAvatar: {
-    marginRight: '10px',
-  },
+
   avatar: {
-    width: '50px',
-    height: '50px',
     borderRadius: '50%',
   },
   userName: {
     margin: 0,
     fontWeight: 'bold',
-    fontSize: '14px',
   },
   lastMessage: {
     margin: 0,
@@ -198,7 +196,6 @@ const styles = {
   },
   time: {
     marginLeft: 'auto',
-    fontSize: '8px',
     color: '#aaa',
     width: 'auto',
     textAlign: 'right',

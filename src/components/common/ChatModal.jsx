@@ -74,20 +74,17 @@ const ChatModal = ({ isOpen, onClose }) => {
         weatherInfo = `The current weather is ${currentWeather.weather[0].description}, with a temperature of ${currentWeather.main.temp}°C. `;
       }
 
-      // Create the base system prompt for both plant care and website navigation
       const systemPrompt = {
         role: 'system',
         content:
           'You are a helpful assistant for plant care and website navigation. Answer plant-related questions and guide users through the website, and answer plant-related questions in Markdown format, using titles, bullet points, and numbered lists where appropriate.',
       };
 
-      // User prompt for the message they just sent
       const userPrompt = {
         role: 'user',
         content: `${userMessage}. ${weatherInfo}`,
       };
 
-      // Website information to dynamically inject for navigation questions
       const websiteInfo = {
         gardenSection: {
           keywords: ['health status', 'garden', 'plants overview', 'manage', 'see', 'plants', 'gardens'],

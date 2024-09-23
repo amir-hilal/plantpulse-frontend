@@ -24,21 +24,18 @@ const WateringSchedules = () => {
       .unwrap()
       .catch((err) => {
         toast.error(error);
-        // Handle the error on the client side if necessary
         console.error('Error toggling status:', err);
       });
   };
 
-  const navigateToPlantDetails = (plantId) => {
-    // Logic to navigate to plant details
-  };
+  const navigateToPlantDetails = (plantId) => {};
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
-      weekday: 'short', // "Sun"
-      day: 'numeric', // "15"
-      month: 'short', // "Sep"
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
     });
   };
 
@@ -60,7 +57,7 @@ const WateringSchedules = () => {
         </div>
       )}
       {!loading && sortedSchedules.length === 0 && (
-        <p className="m-0">No watering schedules available.</p>
+        <p className="m-0 mx-2">No watering schedules available for today.</p>
       )}
       {!loading && sortedSchedules.length > 0 && (
         <ul className="flex p-0 m-0 h-full">
@@ -76,20 +73,18 @@ const WateringSchedules = () => {
                   border: '1px solid #ddd',
                   borderRadius: '8px',
                   padding: '20px',
-                  backgroundColor: schedule.is_done ? '#e0e0e0' : '#F0F9F4', // Lower opacity for completed schedules
+                  backgroundColor: schedule.is_done ? '#e0e0e0' : '#F0F9F4',
                   width: '200px',
                   textAlign: 'center',
-                  opacity: schedule.is_done ? 0.6 : 1, // Reduce opacity when completed
+                  opacity: schedule.is_done ? 0.6 : 1,
                 }}
               >
                 <div className="flex justify-content-between w-full align-items-start">
-                  {/* Icon for watering */}
                   <img src={watringIcon} alt="watering" className="w-4" />
 
                   <div>
                     <p className="m-0">
                       {formatDate(schedule.scheduled_date)}{' '}
-                      {/* Display formatted date */}
                     </p>
 
                     <h3 className="mt-2">{schedule.plant_name}</h3>
@@ -101,7 +96,7 @@ const WateringSchedules = () => {
                   onClick={() =>
                     handleToggleStatus(schedule.plant_id, schedule.id)
                   }
-                  disabled={markingDoneById[schedule.id]} // Disable button while loading for this specific event
+                  disabled={markingDoneById[schedule.id]}
                   className="text-primary text-sm bg-transparent border-none hover:text-grey py-2  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
                 >
                   {markingDoneById[schedule.id]
@@ -114,7 +109,7 @@ const WateringSchedules = () => {
                 {/* See Plant Details button */}
                 <button
                   className=" text-sm bg-primary border-round-lg border-solid border-primary hover:bg-primary-reverse py-3  flex align-items-center justify-content-center cursor-pointer ml-1 md:ml-0"
-                  onClick={() => navigateToPlantDetails(schedule.plant_id)} // Logic to go to plant details
+                  onClick={() => navigateToPlantDetails(schedule.plant_id)}
                 >
                   See Plant Details
                 </button>
