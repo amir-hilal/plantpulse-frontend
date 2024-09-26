@@ -68,10 +68,12 @@ const PlantCard = ({ plant }) => {
             <div className=" border-round-xl text-secondary align-self-end border-none surface-300 px-2 flex align-items-center cursor-pointer">
               <img src={wateringCan} alt="watering" className="mr-2" />
               <span className="text-secondary">
-                {new Intl.DateTimeFormat('en-GB', {
-                  day: '2-digit',
-                  month: 'short',
-                }).format(new Date(plant.next_time_to_water))}
+                {plant.next_time_to_water
+                  ? new Intl.DateTimeFormat('en-GB', {
+                      day: '2-digit',
+                      month: 'short',
+                    }).format(new Date(plant.next_time_to_water))
+                  : 'next week'}
               </span>
             </div>
           </div>

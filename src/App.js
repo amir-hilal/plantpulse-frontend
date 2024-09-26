@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from 'react-router-dom';
 import GoogleAuthFailure from './components/common/GoogleAuthFailure';
 import GoogleAuthSuccess from './components/common/GoogleAuthSuccess';
 import Guard from './components/common/Guard';
@@ -26,6 +31,7 @@ import Tutorials from './views/TutorialsPage';
 function App() {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -101,7 +107,6 @@ function App() {
                     </Guard>
                   }
                 />
-
                 <Route
                   path={routes.community_posts}
                   element={
@@ -119,7 +124,6 @@ function App() {
                     </Guard>
                   }
                 />
-
                 <Route
                   path={routes.community_chats}
                   element={
@@ -128,7 +132,6 @@ function App() {
                     </Guard>
                   }
                 />
-
                 <Route
                   path={routes.home}
                   element={
@@ -137,7 +140,6 @@ function App() {
                     </Guard>
                   }
                 />
-
                 <Route
                   path={routes.PlantDetailsPage(':id')}
                   element={
@@ -146,7 +148,6 @@ function App() {
                     </Guard>
                   }
                 />
-
                 <Route
                   path={routes.calendar}
                   element={
@@ -155,6 +156,8 @@ function App() {
                     </Guard>
                   }
                 />
+
+                <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </MainLayout>
           }
