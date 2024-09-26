@@ -88,7 +88,7 @@ const MyGardensPage = () => {
         )}
       </div>
 
-      <div className="sm:col-10 p-0 md:p-4">
+      <div className="sm:col-10 p-0 lg:p-4">
         {!selectedGardenId ? (
           <div className="h-full flex align-items-center justify-content-center">
             <p className="text-lg font-bold">Select a garden to manage</p>
