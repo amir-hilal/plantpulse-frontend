@@ -142,7 +142,7 @@ const PlantDetailsPage = () => {
   }
 
   return (
-    <div className="relative flex flex-column h-37rem w-full">
+    <div className="relative flex flex-column  h-37rem w-full">
       <div className="flex flex-column md:flex-row justify-content-between align-items-center p1 md:p-2 lg:p-3 bg-tint-5">
         <div className="flex align-items-center">
           <Link to="/my-gardens" className="text-primary text-xs md:text-base">
@@ -186,9 +186,10 @@ const PlantDetailsPage = () => {
       </div>
 
       <div
-        className="timeline-container flex flex-column overflow-y-auto mx-2 md:mx-4 lg:mx-8 lg:px-4"
+        className="timeline-container align-self-center flex flex-column overflow-y-auto mx-4 md:mx-4 lg:mx-8 lg:px-4"
         ref={timelineRef}
         onScroll={handleScroll}
+        style={styles.timelineContainer}
       >
         {loadingMore && (
           <div className="flex justify-content-center mb-4">
@@ -198,9 +199,9 @@ const PlantDetailsPage = () => {
         {timelines.slice().map((event, index) => (
           <div
             key={index}
-            className={`timeline-event p-2 mb-2 shadow-1 ${
+            className={`timeline-event p-2 mb-2 shadow-1 border-round-xl ${
               event.source === 'user'
-                ? 'surface-100 max-w-29rem align-self-end border-round-xl p-2'
+                ? 'surface-100 max-w-29rem align-self-end p-2'
                 : 'bg-transparent w-full'
             }`}
             style={event.source === 'user' ? { width: 'fit-content' } : {}} // Inline style for user messages
@@ -303,6 +304,9 @@ const PlantDetailsPage = () => {
 };
 
 const styles = {
+  timelineContainer: {
+    width:'65vw'
+  },
   inputContainer: {
     position: 'relative',
     display: 'flex',
