@@ -3,6 +3,8 @@ import { IoIosSend } from 'react-icons/io';
 import Loading from 'react-loading';
 import api from '../../services/api';
 import echo from '../../services/echo';
+import { useDispatch } from 'react-redux';
+import { updateLastMessage } from '../../features/chat/chatSlice';
 
 const fetchMessages = (
   selectedUser,
@@ -37,7 +39,7 @@ const fetchMessages = (
     });
 };
 
-const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
+const ChatWindow = ({ selectedUser, onFirstChat }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -48,6 +50,9 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const containerRef = useRef(null);
   const scrollPositionRef = useRef(0);
 
+  const dispatch = useDispatch();
+
+  // Scroll to the bottom function
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
@@ -59,30 +64,29 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     }
   }, []);
 
+  // Reset state and fetch initial messages when the selected user changes
   useEffect(() => {
     setMessages([]);
     setPage(1);
     setHasMore(true);
-  }, [selectedUser]);
 
+    if (selectedUser) {
+      fetchMessages(
+        selectedUser,
+        setMessages,
+        setLoading,
+        setHasMore,
+        (userId, message) =>
+          dispatch(updateLastMessage({ userId, message })),
+        scrollToBottom,
+        loading
+      );
+    }
+  }, [selectedUser, scrollToBottom, dispatch]);
+
+  // Set up real-time message listener
   useEffect(() => {
     if (!selectedUser) return;
-
-    const fetchInitialMessages = async () => {
-      if (!loading) {
-        fetchMessages(
-          selectedUser,
-          setMessages,
-          setLoading,
-          setHasMore,
-          updateLastMessage,
-          scrollToBottom,
-          loading
-        );
-      }
-    };
-
-    fetchInitialMessages();
 
     const setupRealTimeListener = () => {
       const channel = echo.private(`chat.${selectedUser.id}`);
@@ -94,7 +98,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
           }
           return prevMessages;
         });
-        updateLastMessage(selectedUser.id, e.message);
+        dispatch(updateLastMessage({ userId: selectedUser.id, message: e.message }));
         scrollToBottom();
       });
 
@@ -108,12 +112,13 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     return () => {
       cleanupListener();
     };
-  }, [selectedUser?.id]);
+  }, [selectedUser?.id, dispatch, scrollToBottom]);
 
+  // Load more messages when scrolling to the top
   const loadMoreMessages = useCallback(() => {
     if (hasMore && !loadingMore) {
       scrollPositionRef.current =
-        containerRef.current.scrollHeight - containerRef.current.scrollTop+500;
+        containerRef.current.scrollHeight - containerRef.current.scrollTop + 500;
       setLoadingMore(true);
       api
         .get(`/chats/${selectedUser.id}?page=${page}`)
@@ -132,18 +137,28 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     }
   }, [hasMore, loadingMore, page, selectedUser.id, maintainScrollPosition]);
 
+  // Handle sending a message
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
+
     api
       .post('/chats/send', {
         receiver_id: selectedUser.id,
         message: newMessage,
       })
       .then((response) => {
-        setMessages((prevMessages) => [...prevMessages, response.data]);
-        updateLastMessage(selectedUser.id, response.data.message);
+        const sentMessage = response.data;
+
+        setMessages((prevMessages) => [...prevMessages, sentMessage]);
+
+        // Dispatch the action to update the last message in Redux
+        dispatch(updateLastMessage({
+          userId: selectedUser.id,
+          message: sentMessage.message,
+        }));
+
         setNewMessage('');
-        onFirstChat(selectedUser.id);
+        onFirstChat(selectedUser);
         scrollToBottom();
       })
       .catch((error) => {
@@ -159,9 +174,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     <div style={styles.container}>
       <div style={styles.chatHeader}>
         <img
-          src={
-            selectedUser.profile_photo_url || 'https://via.placeholder.com/50'
-          }
+          src={selectedUser.profile_photo_url || 'https://via.placeholder.com/50'}
           alt={selectedUser.first_name}
           style={styles.profilePic}
         />
@@ -174,7 +187,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
         ref={containerRef}
         onScroll={(e) => {
           if (e.target.scrollTop === 0 && hasMore && !loadingMore) {
-            loadMoreMessages(); // Load older messages when scrolling to the top
+            loadMoreMessages();
           }
         }}
       >
@@ -188,33 +201,34 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
         )}
         {loadingMore && (
           <div style={styles.loadingMoreIndicator}>
-            {/* New loading indicator for more messages */}
             <Loading type="spin" color="#019444" height={30} width={30} />
           </div>
         )}
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            style={
-              msg.sender_id === selectedUser.id
-                ? styles.receivedMessageContainer
-                : styles.sentMessageContainer
-            }
-          >
+        {messages.map((msg, index) =>
+          msg.message && msg.sender_id ? (
             <div
+              key={index}
               style={
                 msg.sender_id === selectedUser.id
-                  ? styles.receivedMessage
-                  : styles.sentMessage
+                  ? styles.receivedMessageContainer
+                  : styles.sentMessageContainer
               }
             >
-              {msg.message}
-              <div style={styles.timestamp}>
-                {formatTimestamp(msg.created_at)}
+              <div
+                style={
+                  msg.sender_id === selectedUser.id
+                    ? styles.receivedMessage
+                    : styles.sentMessage
+                }
+              >
+                {msg.message}
+                <div style={styles.timestamp}>
+                  {formatTimestamp(msg.created_at)}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ) : null
+        )}
 
         <div ref={messagesEndRef} />
       </div>

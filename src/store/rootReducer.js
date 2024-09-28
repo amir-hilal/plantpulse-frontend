@@ -10,6 +10,7 @@ import tutorialsReducer from '../features/tutorials/tutorialsSlice';
 import uiReducer from '../features/ui/uiSlice';
 import usersReducer from '../features/users/usersSlice';
 import wateringReducer from '../features/watering/wateringSlice';
+import chatReducer from '../features/chat/chatSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   gardens: gardenReducer,
   timelines: timelinesReducer,
   tutorials: tutorialsReducer,
+  chat: chatReducer,
   watering: wateringReducer,
 });
 

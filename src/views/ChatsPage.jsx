@@ -3,6 +3,7 @@ import Loading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import ChatWindow from '../components/chats/ChatWindow';
 import UserList from '../components/chats/UserList';
+import { moveUserToChatted } from '../features/chat/chatSlice';
 import { fetchFriendsByUsername } from '../features/community/friendsSlice';
 import api from '../services/api';
 import echo from '../services/echo';
@@ -10,12 +11,12 @@ import echo from '../services/echo';
 const ChatsPage = () => {
   const dispatch = useDispatch();
   const friends = useSelector((state) => state.friends.friends);
+  const chattedFriends = useSelector((state) => state.chat.chattedFriends);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
-  const [chattedFriends, setChattedFriends] = useState([]);
   const user = useSelector((state) => state.auth.userProfile);
   const userLoading = useSelector((state) => state.auth.loading);
-  const [lastMessages, setLastMessages] = useState({});
+  const lastMessages = useSelector((state) => state.chat.lastMessages); // Get last messages from Redux
   const [loading, setLoading] = useState(true);
   const [unreadMessages, setUnreadMessages] = useState({});
 
@@ -31,27 +32,23 @@ const ChatsPage = () => {
         .then((response) => {
           const conversations = response.data;
 
-          const chattedFriendsMap = {};
+          const chattedFriendsSet = new Set();
           const lastMessagesMap = {};
 
           conversations.forEach((conversation) => {
-            const friendId =
-              conversation.user_one_id === user.id
-                ? conversation.user_two_id
-                : conversation.user_one_id;
+            // Extract the receiver based on who the current user is
+            const receiver = conversation.receiver;
 
-            // Set the friend ID as chatted friend
-            chattedFriendsMap[friendId] = true;
+            // Add the entire receiver object (instead of just ID) to the Set
+            chattedFriendsSet.add(receiver);
 
-            // Add last message if available
             if (conversation.last_message) {
-              lastMessagesMap[friendId] = conversation.last_message;
+              lastMessagesMap[receiver.id] = conversation.last_message;
             }
           });
 
-          // Update the chattedFriends array and lastMessages state
-          setChattedFriends(Object.keys(chattedFriendsMap));
-          setLastMessages(lastMessagesMap);
+          // Dispatch action to store chatted friends (receiver objects) in Redux
+          dispatch(moveUserToChatted(Array.from(chattedFriendsSet)));
           setLoading(false);
         })
         .catch((error) => {
@@ -66,13 +63,12 @@ const ChatsPage = () => {
     setUnreadMessages((prev) => ({ ...prev, [user.id]: 0 }));
   };
 
-  const updateLastMessage = (userId, message) => {
-    console.log(message,'and id:', userId, 'from chat page')
-    setLastMessages((prev) => ({
-      ...prev,
-      [userId]: message,
-    }));
-  };
+  // const updateLastMessage = (userId, message) => {
+  //   setLastMessages((prev) => ({
+  //     ...prev,
+  //     [userId]: message,
+  //   }));
+  // };
 
   useEffect(() => {
     if (user && user.id) {
@@ -91,27 +87,19 @@ const ChatsPage = () => {
         echo.leave(`chat.${user.id}`);
       };
     }
-  }, [user?.id]); // Only run when the user id changes
+  }, [user?.id, selectedUser?.id]);
 
-  const filteredFriends = friends
-    .filter((friend) =>
-      friend.first_name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .map((friend) => ({
-      ...friend,
-      hasChatted: chattedFriends.includes(friend.id),
-    }));
+  // Filter friends into chatted and non-chatted
+  const filteredFriends = friends.filter((friend) =>
+    friend.first_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const otherFriends = filteredFriends.filter(
+    (friend) => !chattedFriends.includes(friend.id)
+  );
 
-  const handleFirstChat = (userId) => {
-    if (!chattedFriends.includes(userId)) {
-      setChattedFriends((prev) => [...prev, userId]);
-    }
+  const handleFirstChat = (user) => {
+    dispatch(moveUserToChatted(user)); // Move user to chatted friends in Redux state
   };
-
-  // Sorting the friends based on chatted status
-  const sortedFriends = filteredFriends.sort((a, b) => {
-    return a.hasChatted === b.hasChatted ? 0 : a.hasChatted ? -1 : 1;
-  });
 
   if (userLoading || loading) {
     return (
@@ -123,9 +111,10 @@ const ChatsPage = () => {
 
   return (
     <div style={styles.container}>
-      <div className='w-4 md:w-3'>
+      <div className="w-4 md:w-3">
         <UserList
-          users={sortedFriends}
+          users={filteredFriends}
+          otherFriends={otherFriends}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           onUserSelect={handleUserSelect}
@@ -136,12 +125,11 @@ const ChatsPage = () => {
           unreadMessages={unreadMessages}
         />
       </div>
-      <div className='w-8 md:w-9'>
+      <div className="w-8 md:w-9">
         {selectedUser ? (
           <ChatWindow
             selectedUser={selectedUser}
             onFirstChat={handleFirstChat}
-            updateLastMessage={updateLastMessage}
           />
         ) : (
           <div style={styles.placeholder}>Select a user to start chatting</div>
@@ -157,7 +145,6 @@ const styles = {
     height: '89vh',
     width: '100%',
   },
-
   placeholder: {
     display: 'flex',
     justifyContent: 'center',
