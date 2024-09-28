@@ -16,7 +16,7 @@ const ChatsPage = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const user = useSelector((state) => state.auth.userProfile);
   const userLoading = useSelector((state) => state.auth.loading);
-  const [lastMessages, setLastMessages] = useState({});
+  const lastMessages = useSelector((state) => state.chat.lastMessages); // Get last messages from Redux
   const [loading, setLoading] = useState(true);
   const [unreadMessages, setUnreadMessages] = useState({});
 
@@ -49,7 +49,6 @@ const ChatsPage = () => {
 
           // Dispatch action to store chatted friends (receiver objects) in Redux
           dispatch(moveUserToChatted(Array.from(chattedFriendsSet)));
-          setLastMessages(lastMessagesMap);
           setLoading(false);
         })
         .catch((error) => {
@@ -64,12 +63,12 @@ const ChatsPage = () => {
     setUnreadMessages((prev) => ({ ...prev, [user.id]: 0 }));
   };
 
-  const updateLastMessage = (userId, message) => {
-    setLastMessages((prev) => ({
-      ...prev,
-      [userId]: message,
-    }));
-  };
+  // const updateLastMessage = (userId, message) => {
+  //   setLastMessages((prev) => ({
+  //     ...prev,
+  //     [userId]: message,
+  //   }));
+  // };
 
   useEffect(() => {
     if (user && user.id) {
@@ -131,7 +130,6 @@ const ChatsPage = () => {
           <ChatWindow
             selectedUser={selectedUser}
             onFirstChat={handleFirstChat}
-            updateLastMessage={updateLastMessage}
           />
         ) : (
           <div style={styles.placeholder}>Select a user to start chatting</div>

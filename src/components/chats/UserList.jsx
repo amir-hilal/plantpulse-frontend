@@ -22,7 +22,7 @@ const UserList = ({
 
   const getLastMessage = (user) => {
     const message = lastMessages[user.id];
-    if (!message) return 'No message yet...';
+    if (!message) return '';
 
     return message.sender_id === currentUserId
       ? `You: ${message.message}`

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   chattedFriends: [],
   unreadMessages: {},
+  lastMessages: {}, // Add this to store the last message per user
 };
 
 const chatSlice = createSlice({
@@ -35,6 +36,11 @@ const chatSlice = createSlice({
       const { userId } = action.payload;
       state.unreadMessages[userId] = 0;
     },
+
+    updateLastMessage(state, action) {
+      const { userId, message } = action.payload;
+      state.lastMessages[userId] = message; // Store the last message in state
+    },
   },
 });
 
@@ -42,6 +48,7 @@ export const {
   moveUserToChatted,
   incrementUnreadMessages,
   resetUnreadMessages,
+  updateLastMessage,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
