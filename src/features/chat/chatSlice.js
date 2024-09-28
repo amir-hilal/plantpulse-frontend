@@ -13,8 +13,14 @@ const chatSlice = createSlice({
       const users = Array.isArray(action.payload)
         ? action.payload
         : [action.payload];
+
       users.forEach((user) => {
-        if (!state.chattedFriends.includes(user.id)) {
+        // Ensure the user is not already in chattedFriends
+        const isAlreadyChatted = state.chattedFriends.some(
+          (chattedUser) => chattedUser.id === user.id
+        );
+
+        if (!isAlreadyChatted) {
           state.chattedFriends.push(user);
         }
       });

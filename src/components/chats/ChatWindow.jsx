@@ -195,29 +195,31 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
             <Loading type="spin" color="#019444" height={30} width={30} />
           </div>
         )}
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            style={
-              msg.sender_id === selectedUser.id
-                ? styles.receivedMessageContainer
-                : styles.sentMessageContainer
-            }
-          >
+        {messages.map((msg, index) =>
+          msg.message && msg.sender_id ? (
             <div
+              key={index}
               style={
                 msg.sender_id === selectedUser.id
-                  ? styles.receivedMessage
-                  : styles.sentMessage
+                  ? styles.receivedMessageContainer
+                  : styles.sentMessageContainer
               }
             >
-              {msg.message}
-              <div style={styles.timestamp}>
-                {formatTimestamp(msg.created_at)}
+              <div
+                style={
+                  msg.sender_id === selectedUser.id
+                    ? styles.receivedMessage
+                    : styles.sentMessage
+                }
+              >
+                {msg.message}
+                <div style={styles.timestamp}>
+                  {formatTimestamp(msg.created_at)}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ) : null
+        )}
 
         <div ref={messagesEndRef} />
       </div>
