@@ -29,7 +29,7 @@ const fetchMessages = (
         );
       }
       setLoading(false);
-      scrollToBottom();
+      scrollToBottom(); // Ensure we scroll to the bottom after fetching messages
     })
     .catch((error) => {
       console.error('Error fetching messages:', error);
@@ -48,6 +48,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
   const containerRef = useRef(null);
   const scrollPositionRef = useRef(0);
 
+  // Scroll to the bottom function
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
@@ -59,30 +60,28 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     }
   }, []);
 
+  // Reset state and fetch initial messages when the selected user changes
   useEffect(() => {
     setMessages([]);
     setPage(1);
     setHasMore(true);
-  }, [selectedUser]);
 
+    if (selectedUser) {
+      fetchMessages(
+        selectedUser,
+        setMessages,
+        setLoading,
+        setHasMore,
+        updateLastMessage,
+        scrollToBottom, // Scroll to bottom after initial message load
+        loading
+      );
+    }
+  }, [selectedUser, scrollToBottom]);
+
+  // Set up real-time message listener
   useEffect(() => {
     if (!selectedUser) return;
-
-    const fetchInitialMessages = async () => {
-      if (!loading) {
-        fetchMessages(
-          selectedUser,
-          setMessages,
-          setLoading,
-          setHasMore,
-          updateLastMessage,
-          scrollToBottom,
-          loading
-        );
-      }
-    };
-
-    fetchInitialMessages();
 
     const setupRealTimeListener = () => {
       const channel = echo.private(`chat.${selectedUser.id}`);
@@ -95,7 +94,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
           return prevMessages;
         });
         updateLastMessage(selectedUser.id, e.message);
-        scrollToBottom();
+        scrollToBottom(); // Scroll to bottom when a new message is received
       });
 
       return () => {
@@ -108,12 +107,15 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     return () => {
       cleanupListener();
     };
-  }, [selectedUser?.id]);
+  }, [selectedUser?.id, updateLastMessage, scrollToBottom]);
 
+  // Load more messages when scrolling to the top
   const loadMoreMessages = useCallback(() => {
     if (hasMore && !loadingMore) {
       scrollPositionRef.current =
-        containerRef.current.scrollHeight - containerRef.current.scrollTop+500;
+        containerRef.current.scrollHeight -
+        containerRef.current.scrollTop +
+        500;
       setLoadingMore(true);
       api
         .get(`/chats/${selectedUser.id}?page=${page}`)
@@ -132,6 +134,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
     }
   }, [hasMore, loadingMore, page, selectedUser.id, maintainScrollPosition]);
 
+  // Handle sending a message
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
     api
@@ -143,8 +146,8 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
         setMessages((prevMessages) => [...prevMessages, response.data]);
         updateLastMessage(selectedUser.id, response.data.message);
         setNewMessage('');
-        onFirstChat(selectedUser.id);
-        scrollToBottom();
+        onFirstChat(selectedUser);
+        scrollToBottom(); // Scroll to bottom after sending a message
       })
       .catch((error) => {
         console.error('Error sending message:', error);
@@ -188,7 +191,7 @@ const ChatWindow = ({ selectedUser, onFirstChat, updateLastMessage }) => {
         )}
         {loadingMore && (
           <div style={styles.loadingMoreIndicator}>
-            {/* New loading indicator for more messages */}
+            {/* Loading indicator for more messages */}
             <Loading type="spin" color="#019444" height={30} width={30} />
           </div>
         )}

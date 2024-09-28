@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime'; // Import relative time plugin
+import relativeTime from 'dayjs/plugin/relativeTime';
 import React from 'react';
 import { RiMessage3Line } from 'react-icons/ri';
 
-dayjs.extend(relativeTime); // Use relative time for time difference calculations
+dayjs.extend(relativeTime);
 
 const UserList = ({
   users,
@@ -16,11 +16,8 @@ const UserList = ({
   selectedUserId,
   unreadMessages,
 }) => {
-  const chattedFriendsList = users.filter((user) =>
-    chattedFriends.includes(String(user.id))
-  );
-  const notChattedFriendsList = users.filter(
-    (user) => !chattedFriends.includes(String(user.id))
+  const otherFriends = users.filter(
+    (user) => !chattedFriends.some((friend) => friend.id === user.id)
   );
 
   const getLastMessage = (user) => {
@@ -36,7 +33,6 @@ const UserList = ({
     const message = lastMessages[user.id];
     if (!message || !message.created_at) return '';
 
-    // Calculate the time difference using dayjs and display it as relative time
     return dayjs(message.created_at).fromNow();
   };
 
@@ -50,7 +46,6 @@ const UserList = ({
       </div>
 
       {/* Search bar */}
-
       <div className="px-2">
         <input
           type="text"
@@ -62,8 +57,9 @@ const UserList = ({
       </div>
 
       <ul style={styles.list}>
-        {chattedFriendsList.length > 0 ? (
-          chattedFriendsList.map((user) => (
+        {/* Chatted Friends */}
+        {chattedFriends.length > 0 ? (
+          chattedFriends.map((user) => (
             <li
               key={user.id}
               style={{
@@ -72,7 +68,7 @@ const UserList = ({
                   user.id === selectedUserId ? '#E8F5E9' : '#fff',
               }}
               onClick={() => onUserSelect(user)}
-              className="justify-content-between p-1 md:p-2"
+              className="justify-content-between p-2"
             >
               <div className="mr-1 md:mr-2">
                 <img
@@ -81,18 +77,20 @@ const UserList = ({
                   }
                   alt={user.first_name}
                   style={styles.avatar}
-                  className='w-2rem md:w-3rem'
+                  className="w-2rem md:w-3rem"
                 />
               </div>
               <div className="flex justify-content-between w-full">
-                <div>
-                  <h4 style={styles.userName} className='text-xs md:text-base lg:text-lg'>
+                <div className="ml-2">
+                  <h4
+                    style={styles.userName}
+                    className="text-xs md:text-base lg:text-lg"
+                  >
                     {user.first_name} {user.last_name}
                   </h4>
-                  <p style={styles.lastMessage}> {getLastMessage(user)}</p>
+                  <p style={styles.lastMessage}>{getLastMessage(user)}</p>
                 </div>
                 <div className="flex flex-column align-items-end">
-                  {/* Notification badge */}
                   {unreadMessages[user.id] > 0 && (
                     <span
                       style={styles.notificationBadge}
@@ -101,7 +99,9 @@ const UserList = ({
                       {unreadMessages[user.id]}
                     </span>
                   )}
-                  <span style={styles.time} className='text-xs md:text-base'>{getTimeDifference(user)}</span>
+                  <span style={styles.time} className="text-xs md:text-base">
+                    {getTimeDifference(user)}
+                  </span>
                 </div>
               </div>
             </li>
@@ -112,14 +112,12 @@ const UserList = ({
           </p>
         )}
 
-        <h4
-          className="px-2 mb-0 mt-4 text-light-grey text-xs"
-          style={styles.sectionHeader}
-        >
+        {/* Other Friends */}
+        <h4 className="px-2 mb-0 mt-4 text-light-grey text-xs">
           Other Friends...
         </h4>
-        {notChattedFriendsList.length > 0 ? (
-          notChattedFriendsList.map((user) => (
+        {otherFriends.length > 0 ? (
+          otherFriends.map((user) => (
             <li
               key={user.id}
               style={{
@@ -130,14 +128,17 @@ const UserList = ({
               onClick={() => onUserSelect(user)}
               className="justify-content-between"
             >
-              <div style={styles.userAvatar}>
+              <div
+                style={styles.userAvatar}
+                className="flex align-items-center p-2"
+              >
                 <img
                   src={
                     user.profile_photo_url || 'https://via.placeholder.com/50'
                   }
                   alt={user.first_name}
                   style={styles.avatar}
-                  className="border-circle w-8 h-8"
+                  className="w-2rem md:w-3rem"
                 />
               </div>
               <div>
@@ -165,15 +166,10 @@ const styles = {
     backgroundColor: '#0000',
     textAlign: 'center',
   },
-
   list: {
     listStyleType: 'none',
     padding: 0,
     marginTop: '10px',
-  },
-  sectionHeader: {
-    fontSize: '14px',
-    fontWeight: 'normal',
   },
   listItem: {
     display: 'flex',
@@ -181,7 +177,6 @@ const styles = {
     borderBottom: '1px solid #eee',
     alignItems: 'center',
   },
-
   avatar: {
     borderRadius: '50%',
   },
